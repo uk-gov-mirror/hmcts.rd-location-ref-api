@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locationrefapi.config;
+package uk.gov.hmcts.reform.demo.config;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

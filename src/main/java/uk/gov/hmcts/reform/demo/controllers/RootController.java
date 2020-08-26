@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locationrefapi.controllers;
+package uk.gov.hmcts.reform.demo.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +10,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * Default endpoints per application.
  */
 @RestController
-public class WelcomeController {
+public class RootController {
 
     /**
      * Root GET endpoint.
@@ -23,6 +23,6 @@ public class WelcomeController {
      */
     @GetMapping("/")
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to location ref api");
+        return ok("Welcome to rd-location-ref-api");
     }
 }
