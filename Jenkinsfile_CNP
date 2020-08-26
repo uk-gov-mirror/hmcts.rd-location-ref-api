@@ -1,0 +1,47 @@
+#!groovy
+
+@Library("Infrastructure")
+
+def type = "java"
+def product = "rd"
+def component = "location-ref-api"
+
+def secrets = [
+  's2s-${env}': [
+    secret('microservicekey-rd-location-ref-api', 'S2S_SECRET')
+  ]
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [$class     : 'AzureKeyVaultSecret',
+     secretType : 'Secret',
+     name       : secretName,
+     version    : '',
+     envVariable: envVar
+    ]
+}
+
+def vaultOverrides = [
+    'preview' : 'aat',
+    'spreview': 'saat'
+]
+
+withPipeline(type, product, component) {
+
+    overrideVaultEnvironments(vaultOverrides)
+    loadVaultSecrets(secrets)
+
+    disableLegacyDeployment()
+    enableAksStagingDeployment()
+
+    env.S2S_URL_FOR_TESTS = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
+
+    after('functionalTest:preview') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    after('functionalTest:aat') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+}
