@@ -1,9 +1,9 @@
 spring:
   cloud:
     propertiesvolume:
-      paths: /mnt/secrets/rd
-      prefixed: false
+      prefixed: true
+      paths: /mnt/secrets/s2s,/mnt/secrets/rd
       aliases:
-        location-ref-api-S2S-SECRET: S2S_SECRET
-        location-ref-api-POSTGRES-PASS: POSTGRES_PASSWORD
-        AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
+        s2s.microservicekey-rd-location-ref-api: S2S_SECRET
+        rd.location-ref-api-POSTGRES-PASS: POSTGRES_PASSWORD
+        rd.AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key

@@ -16,5 +16,4 @@ java:
   keyVaults:
     rd:
       secrets:
-        - location-ref-api-S2S-SECRET
         - AppInsightsInstrumentationKey

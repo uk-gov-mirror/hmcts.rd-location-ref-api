@@ -12,6 +12,5 @@ java:
   keyVaults:
     rd:
       secrets:
-        - location-ref-api-S2S-SECRET
         - location-ref-api-POSTGRES-PASS
         - AppInsightsInstrumentationKey
