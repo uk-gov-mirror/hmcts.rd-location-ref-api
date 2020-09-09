@@ -22,16 +22,19 @@ spring:
             non_contextual_creation: true
   application:
     name: RD Location Ref API
-  jackson.date-format: yyyy-MM-dd
-  flyway.enabled: true
-  flyway.locations: classpath:db/migration
+  jackson:
+    date-format: yyyy-MM-dd
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: locrefdata
 
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5457}/${POSTGRES_DB_NAME:dbrdlocationref}${POSTGRES_CONNECTION_OPTIONS:}
-    username: ${POSTGRES_USERNAME:dbrdlocationref}
-    password: ${POSTGRES_PASSWORD:dbrdlocationref}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:locrefdata}${POSTGRES_CONNECTION_OPTIONS:}
+    username: ${POSTGRES_USERNAME:locrefdata}
+    password: ${POSTGRES_PASSWORD:locrefdata}
     min-idle: 1
     properties:
       charSet: UTF-8

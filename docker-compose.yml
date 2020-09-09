@@ -11,6 +11,6 @@ services:
     environment:
       - POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-dbrdlocation}"
     ports:
-      - 5457:5432
+      - 5458:5432
 volumes:
   rd-location-ref-api-volume:
