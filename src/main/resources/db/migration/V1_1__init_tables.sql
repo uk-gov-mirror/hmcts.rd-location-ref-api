@@ -44,6 +44,7 @@ create table SERVICE(
 create table SERVICE_TO_CCD_CASE_TYPE_ASSOC(
   id bigint NOT NULL,
 	service_code varchar(16),
+	ccd_service_name varchar(256),
 	ccd_case_type varchar(512),
   created_date timestamp,
 	constraint service_to_ccd_service_pk primary key (id)
