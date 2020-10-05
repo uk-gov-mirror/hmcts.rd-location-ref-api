@@ -35,17 +35,19 @@ create table SERVICE(
 	jurisdiction_id bigint NOT NULL,
 	service_code varchar(16),
 	service_description varchar(512),
+	service_short_description varchar(256),
   last_update timestamp,
 	constraint service_id_pk primary key (service_id),
 	constraint service_code_uq1 unique (service_code)
 );
 
-create table SERVICE_TO_CCD_SERVICE_ASSOC(
+create table SERVICE_TO_CCD_CASE_TYPE_ASSOC(
   id bigint NOT NULL,
 	service_code varchar(16),
-	ccd_service_name varchar(512),
+	ccd_case_type varchar(512),
   created_date timestamp,
 	constraint service_to_ccd_service_pk primary key (id)
+	constraint service_to_ccd_case_type_assoc_unq unique (service_code, ccd_case_type)
 );
 
 
