@@ -1,35 +1,36 @@
 variable "product" {
-  type = "string"
+  type = string
 }
 
 variable "raw_product" {
+  type    = string
   default = "rd" // jenkins-library overrides product for PRs and adds e.g. pr-123-ia
 }
 
 variable "component" {
-  type = "string"
+  type = string
 }
 
 variable "location" {
-  type    = "string"
+  type    = string
   default = "UK South"
 }
 
 variable "env" {
-  type = "string"
+  type = string
 }
 
 variable "subscription" {
-  type = "string"
+  type = string
 }
 
 // variable "deployment_namespace" {}
 
 variable "common_tags" {
-  type = "map"
+  type = map(string)
 }
 
 variable "postgresql_version" {
-  type    = "string"
+  type    = string
   default = "11"
 }
