@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.lrdaapi.controllers;
+package uk.gov.hmcts.reform.lrdapi.controllers;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

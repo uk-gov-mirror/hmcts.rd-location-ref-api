@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.lrdaapi;
+package uk.gov.hmcts.reform.lrdapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
