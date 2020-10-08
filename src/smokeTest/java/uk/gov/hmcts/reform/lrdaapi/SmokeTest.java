@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locrefdataapi;
+package uk.gov.hmcts.reform.lrdaapi;
 
 import io.restassured.RestAssured;
 import net.serenitybdd.rest.SerenityRest;

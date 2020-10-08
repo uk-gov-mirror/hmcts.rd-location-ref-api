@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locrefdataapi.controllers;
+package uk.gov.hmcts.reform.lrdaapi.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

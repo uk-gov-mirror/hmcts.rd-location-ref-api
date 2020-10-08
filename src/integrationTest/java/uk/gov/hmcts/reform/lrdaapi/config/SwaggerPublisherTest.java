@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locrefdataapi.config;
+package uk.gov.hmcts.reform.lrdaapi.config;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

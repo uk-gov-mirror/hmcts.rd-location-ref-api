@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locrefdataapi;
+package uk.gov.hmcts.reform.lrdaapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

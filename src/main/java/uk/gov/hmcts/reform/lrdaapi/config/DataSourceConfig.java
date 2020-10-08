@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.locrefdataapi.config;
+package uk.gov.hmcts.reform.lrdaapi.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
