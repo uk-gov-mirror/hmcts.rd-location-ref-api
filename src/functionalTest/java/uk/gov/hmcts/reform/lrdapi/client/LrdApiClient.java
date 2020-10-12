@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
+import uk.gov.hmcts.reform.lrdapi.idam.IdamOpenIdClient;
 
 
 @Slf4j
@@ -21,14 +22,17 @@ public class LrdApiClient {
     private static final String SERVICE_HEADER = "ServiceAuthorization";
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private final String professionalApiUrl;
+    private final String lrdApiUrl;
     private final String s2sToken;
+    private IdamOpenIdClient idamOpenIdClient;
 
 
     public LrdApiClient(
-        String professionalApiUrl,
-        String s2sToken) {
-        this.professionalApiUrl = professionalApiUrl;
+        String lrdApiUrl,
+        String s2sToken,
+        IdamOpenIdClient idamOpenIdClient) {
+        this. lrdApiUrl = lrdApiUrl;
+        this.idamOpenIdClient = idamOpenIdClient;
         this.s2sToken = s2sToken;
     }
 
@@ -80,7 +84,7 @@ public class LrdApiClient {
     private RequestSpecification withUnauthenticatedRequest() {
         return SerenityRest.given()
             .relaxedHTTPSValidation()
-            .baseUri(professionalApiUrl)
+            .baseUri(lrdApiUrl)
             .header("Content-Type", APPLICATION_JSON_VALUE)
             .header("Accepts", APPLICATION_JSON_VALUE);
     }
@@ -91,13 +95,13 @@ public class LrdApiClient {
     }
 
     private RequestSpecification getMultipleAuthHeadersInternal() {
-        return null;
+        return  getMultipleAuthHeaders(idamOpenIdClient.getOpenIdToken());
     }
 
     public RequestSpecification getMultipleAuthHeaders(String userToken) {
         return SerenityRest.with()
             .relaxedHTTPSValidation()
-            .baseUri(professionalApiUrl)
+            .baseUri(lrdApiUrl)
             .header("Content-Type", APPLICATION_JSON_VALUE)
             .header("Accepts", APPLICATION_JSON_VALUE)
             .header(SERVICE_HEADER, "Bearer " + s2sToken)

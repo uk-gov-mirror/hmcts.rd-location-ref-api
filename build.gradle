@@ -218,16 +218,6 @@ repositories {
   jcenter()
 }
 
-ext.libraries = [
-  junit5: [
-    "org.junit.jupiter:junit-jupiter-api:${versions.junit}",
-    "org.junit.jupiter:junit-jupiter-engine:${versions.junit}",
-    "org.junit.jupiter:junit-jupiter-params:${versions.junit}",
-    "org.junit.platform:junit-platform-commons:${versions.junitPlatform}",
-    "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
-  ]
-]
-
 dependencies {
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
@@ -277,7 +267,6 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
-    compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
     compile group:"org.yaml", name: "snakeyaml", version:"1.27"
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
