@@ -42,7 +42,7 @@ def versions = [
   junitPlatform      : '1.6.2'
 ]
 
-mainClassName = 'uk.gov.hmcts.reform.lrdapi.Application'
+mainClassName = 'uk.gov.hmcts.reform.lrdapi.LrdApplication'
 def jarName = 'rd-location-ref-api.jar'
 
 group = 'uk.gov.hmcts.reform.rdlocation'
