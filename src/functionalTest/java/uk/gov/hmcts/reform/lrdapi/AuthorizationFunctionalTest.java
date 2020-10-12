@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.lrdapi.client.LrdApiClient;
 import uk.gov.hmcts.reform.lrdapi.client.S2sClient;
 import uk.gov.hmcts.reform.lrdapi.config.Oauth2;
 import uk.gov.hmcts.reform.lrdapi.config.TestConfigProperties;
+import uk.gov.hmcts.reform.lrdapi.idam.IdamOpenIdClient;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 
@@ -47,7 +48,7 @@ public class AuthorizationFunctionalTest extends AbstractTestExecutionListener {
 
     protected RequestSpecification bearerToken;
 
-    //protected IdamOpenIdClient idamOpenIdClient;
+    protected IdamOpenIdClient idamOpenIdClient;
 
     public static final String EMAIL_TEMPLATE = "freg-test-user-%s@prdfunctestuser.com";
     @Autowired
@@ -78,8 +79,8 @@ public class AuthorizationFunctionalTest extends AbstractTestExecutionListener {
         if (s2sToken == null) {
             s2sToken = new S2sClient(s2sUrl, s2sName, s2sSecret).signIntoS2S();
         }
-        //idamOpenIdClient = new IdamOpenIdClient(configProperties);
-        // lrdApiClient = new LrdApiClient(lrdApiUrl,s2sToken, idamOpenIdClient);
+        idamOpenIdClient = new IdamOpenIdClient(configProperties);
+        lrdApiClient = new LrdApiClient(lrdApiUrl,s2sToken, idamOpenIdClient);
 
     }
 
