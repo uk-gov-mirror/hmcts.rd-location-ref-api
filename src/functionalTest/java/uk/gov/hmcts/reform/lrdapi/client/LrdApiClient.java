@@ -1,18 +1,19 @@
 package uk.gov.hmcts.reform.lrdapi.client;
 
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import java.io.IOException;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
+
 import uk.gov.hmcts.reform.lrdapi.idam.IdamOpenIdClient;
 
+import java.io.IOException;
+import java.util.Map;
+
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class LrdApiClient {

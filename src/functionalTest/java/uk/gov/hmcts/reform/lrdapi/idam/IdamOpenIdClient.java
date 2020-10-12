@@ -1,5 +1,21 @@
 package uk.gov.hmcts.reform.lrdapi.idam;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.mifmif.common.regex.Generex;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import uk.gov.hmcts.reform.lrdapi.config.TestConfigProperties;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
@@ -8,26 +24,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.lrdapi.AuthorizationFunctionalTest.CREDS;
 import static uk.gov.hmcts.reform.lrdapi.AuthorizationFunctionalTest.EMAIL;
 import static uk.gov.hmcts.reform.lrdapi.AuthorizationFunctionalTest.generateRandomEmail;
-
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import com.mifmif.common.regex.Generex;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import uk.gov.hmcts.reform.lrdapi.config.TestConfigProperties;
-
 
 @Slf4j
 public class IdamOpenIdClient {
