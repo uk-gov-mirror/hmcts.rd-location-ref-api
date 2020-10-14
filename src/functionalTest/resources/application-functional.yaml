@@ -5,7 +5,7 @@ s2s-url: ${S2S_URL_FOR_TESTS:http://rpe-service-auth-provider-aat.service.core-c
 s2s-name: rd-location-ref-api
 
 idam.api.url: ${IDAM_URL:https://idam-api.aat.platform.hmcts.net}
-oauth2-client-secret: ${OAUTH2_CLIENT_SECRET:}
+oauth2-client-secret: ${OAUTH2_CLIENT_SECRET:9f4dcf60-fc13-11ea-adc1-0242ac120002}
 idam.auth.clientId: ${OAUTH2_CLIENT_ID:rd-professional-api}
 idam.auth.redirectUrl: ${OAUTH2_REDIRECT_URI:https://rd-location-ref-api-aat.service.core-compute-aat.internal/oauth2redirect}
 s2s-secret: ${S2S_SECRET:}
