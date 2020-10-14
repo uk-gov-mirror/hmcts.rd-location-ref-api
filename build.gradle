@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.5")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.6")
     }
 }
 
@@ -37,8 +37,6 @@ def versions = [
         springBoot         : '2.3.4.RELEASE',
         springHystrix      : '2.1.1.RELEASE',
         springfoxSwagger   : '2.9.2',
-        junit              : '5.6.2',
-        junitPlatform      : '1.6.2',
         pact_version       : '3.5.24',
         launchDarklySdk    : "5.0.5"
 ]
@@ -258,7 +256,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
 
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.11.2'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.11.3'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version:'0.9.1'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.3'
     compile group: 'javax.inject', name: 'javax.inject', version: '1'
@@ -275,7 +273,7 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
     compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.13.3'
 
-    compile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
+    compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
     compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
@@ -302,7 +300,7 @@ dependencies {
 
     testCompile group: 'com.h2database', name: 'h2'
     testCompile "com.github.tomakehurst:wiremock:2.19.0"
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.4.6'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.5.13'
     testCompile group: 'org.mockito', name: 'mockito-inline', version: '3.5.13'
     testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
 
