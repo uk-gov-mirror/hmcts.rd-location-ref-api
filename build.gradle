@@ -42,6 +42,7 @@ def versions = [
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
+
 def jarName = 'rd-location-ref-api.jar'
 
 group = 'uk.gov.hmcts.reform.lrdapi'
