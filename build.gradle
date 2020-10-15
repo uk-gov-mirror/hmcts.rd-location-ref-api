@@ -303,7 +303,7 @@ dependencies {
     force = true
   }
 
-  functionalTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.23') {
+  functionalTestCompile(group: 'org.yaml', name: 'snakeyaml', version: '1.27') {
     force = true
   }
 
