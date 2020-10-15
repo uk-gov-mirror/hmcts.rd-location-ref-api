@@ -55,6 +55,8 @@ spring:
       log-abandoned: true
       abandon-when-percentage-full: 0
 
+currentSchema: locrefdata
+
 security:
   anonymousPaths:
     - "/"

@@ -23,6 +23,9 @@ public class DataSourceConfig {
     @Value("${spring.datasource.min-idle}")
     int idleConnections;
 
+    @Value("${currentSchema}")
+    String schema;
+
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
@@ -31,6 +34,7 @@ public class DataSourceConfig {
         dataSourceBuilder.username(userName);
         dataSourceBuilder.password(password);
         HikariDataSource dataSource = (HikariDataSource) dataSourceBuilder.build();
+        dataSource.setSchema(schema);
         dataSource.setMinimumIdle(idleConnections);
         return dataSource;
     }
