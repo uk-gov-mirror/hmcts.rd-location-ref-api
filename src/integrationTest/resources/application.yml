@@ -1,0 +1,60 @@
+spring:
+  flyway:
+    locations: classpath:db/migration
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:locrefdata
+    platform: h2
+    username: ${POSTGRES_USERNAME:locrefdata}
+    password: ${POSTGRES_PASSWORD:locrefdata}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        globally_quoted_identifiers_skip_column_definitions: true
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${OPEN_ID_API_BASE_URI:http://0.0.0.0:6000/o}
+        registration:
+          oidc:
+            client-id: microservicekey-rd-location-ref-api
+            client-secret: ${S2S_SECRET:AAAAAAAAAAAAAAAA}
+security:
+  anonymousPaths:
+    - "/"
+    - "/csrf"
+    - "/health"
+    - "/health/liveness"
+    - "/loggers/**"
+    - "/swagger-ui.html"
+    - "/swagger-resources/**"
+    - "/v2/api-docs"
+    - "/webjars/springfox-swagger-ui/**"
+    - "/favicon.ico"
+    - "/error"
+idam:
+  s2s-auth:
+    totp_secret: ${S2S_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: rd_location_ref_api
+    url: ${S2S_URL:http://127.0.0.1:8990}
+  client:
+      redirect_uri: https://rd-location-ref-api-aat.service.core-compute-aat.internal/oauth2redirect
+      id: rd-location-ref-api
+
+  s2s-authorised:
+    services: ${LRD_S2S_AUTHORISED_SERVICES:rd_location_ref_api}
+  api:
+    url: ${IDAM_URL:http://127.0.0.1:5000}
+
+auth.idam.client.baseUrl: ${http://127.0.0.1:5000/o}
+oidc:
+  issuer: ${OIDC_ISSUER:http://127.0.0.1:5000/openam/oauth2/hmcts}
+  expiration: 14400000 # milliseconds 4 hours
+
+loggingComponentName: Rd_location_ref_api

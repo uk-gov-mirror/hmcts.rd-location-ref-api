@@ -20,6 +20,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: RD Location Ref API
   security:
@@ -37,7 +39,6 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-    schemas: locrefdata
 
   ### database configuration
   datasource:

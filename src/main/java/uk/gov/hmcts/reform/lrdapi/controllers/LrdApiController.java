@@ -7,14 +7,18 @@ import io.swagger.annotations.Authorization;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
+import uk.gov.hmcts.reform.lrdapi.controllers.advice.InvalidRequestException;
+import uk.gov.hmcts.reform.lrdapi.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.service.LrdService;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -61,10 +65,14 @@ public class LrdApiController  {
     public ResponseEntity<Object> retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType(
         @RequestParam(value = "serviceCode",required = false) String serviceCode,
         @RequestParam(value = "ccdCaseType",required = false) String ccdCaseType) {
-        LrdOrgInfoServiceResponse lrdOrgInfoServiceResponse = null;
+        List<LrdOrgInfoServiceResponse> lrdOrgInfoServiceResponse = null;
+        if (!StringUtils.isBlank(serviceCode) && !StringUtils.isBlank(ccdCaseType)) {
+
+            throw new InvalidRequestException("Request contains both serviceCode and ccdCasetype values");
+        }
         log.info("inside retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType");
 
-        lrdOrgInfoServiceResponse = lrdService.findByServiceCode(serviceCode, ccdCaseType);
+        lrdOrgInfoServiceResponse = lrdService.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode, ccdCaseType);
         return ResponseEntity.status(200).body(lrdOrgInfoServiceResponse);
     }
 

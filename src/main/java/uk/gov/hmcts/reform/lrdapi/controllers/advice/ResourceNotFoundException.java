@@ -1,4 +1,4 @@
-package  uk.gov.hmcts.reform.lrdapi.controllers.advice;
+package uk.gov.hmcts.reform.lrdapi.controllers.advice;
 
 public class ResourceNotFoundException extends RuntimeException {
 

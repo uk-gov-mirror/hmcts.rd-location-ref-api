@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import uk.gov.hmcts.reform.lrdapi.constants.ErrorConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,11 +23,6 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants.ACCESS_EXCEPTION;
-import static uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants.EMPTY_RESULT_DATA_ACCESS;
-import static uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants.INVALID_REQUEST;
-import static uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants.MALFORMED_JSON;
-import static uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants.UNKNOWN_EXCEPTION;
 
 
 @Slf4j
@@ -42,18 +38,18 @@ public class ExceptionMapper {
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<Object> handleEmptyResultDataAccessException(
             EmptyResultDataAccessException ex) {
-        return errorDetailsResponseEntity(ex, NOT_FOUND, EMPTY_RESULT_DATA_ACCESS.getErrorMessage());
+        return errorDetailsResponseEntity(ex, NOT_FOUND, ErrorConstants.EMPTY_RESULT_DATA_ACCESS.getErrorMessage());
     }
 
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return errorDetailsResponseEntity(ex, BAD_REQUEST, INVALID_REQUEST.getErrorMessage());
+        return errorDetailsResponseEntity(ex, BAD_REQUEST, ErrorConstants.INVALID_REQUEST.getErrorMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
-        return errorDetailsResponseEntity(ex, BAD_REQUEST, INVALID_REQUEST.getErrorMessage());
+        return errorDetailsResponseEntity(ex, BAD_REQUEST, ErrorConstants.INVALID_REQUEST.getErrorMessage());
     }
 
     @ExceptionHandler(HttpStatusCodeException.class)
@@ -64,7 +60,7 @@ public class ExceptionMapper {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> httpMessageNotReadableExceptionError(HttpMessageNotReadableException ex) {
-        return errorDetailsResponseEntity(ex, BAD_REQUEST, MALFORMED_JSON.getErrorMessage());
+        return errorDetailsResponseEntity(ex, BAD_REQUEST, ErrorConstants.MALFORMED_JSON.getErrorMessage());
 
     }
 
@@ -75,18 +71,18 @@ public class ExceptionMapper {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
-        return errorDetailsResponseEntity(ex, INTERNAL_SERVER_ERROR, UNKNOWN_EXCEPTION.getErrorMessage());
+        return errorDetailsResponseEntity(ex,INTERNAL_SERVER_ERROR, ErrorConstants.UNKNOWN_EXCEPTION.getErrorMessage());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(
         ResourceNotFoundException ex) {
-        return errorDetailsResponseEntity(ex, NOT_FOUND, EMPTY_RESULT_DATA_ACCESS.getErrorMessage());
+        return errorDetailsResponseEntity(ex, NOT_FOUND, ErrorConstants.EMPTY_RESULT_DATA_ACCESS.getErrorMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleForbiddenException(Exception ex) {
-        return errorDetailsResponseEntity(ex, FORBIDDEN, ACCESS_EXCEPTION.getErrorMessage());
+        return errorDetailsResponseEntity(ex, FORBIDDEN, ErrorConstants.ACCESS_EXCEPTION.getErrorMessage());
     }
 
     private String getTimeStamp() {

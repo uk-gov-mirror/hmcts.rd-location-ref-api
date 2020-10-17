@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
+import uk.gov.hmcts.reform.lrdapi.constants.ErrorConstants;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -19,8 +20,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants.INVALID_REQUEST;
 
 
 @Component
@@ -50,9 +49,10 @@ public class LogAndSuppressRequestRejectedExceptionFilter extends GenericFilterB
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.setStatus(400);
-            response.getWriter().print(this.gson.toJson(new ErrorResponse(INVALID_REQUEST.getErrorMessage(),
-                    "The request was rejected because the URL is potentially malicious",
-                    new Timestamp(System.currentTimeMillis()).toString())));
+            response.getWriter().print(this.gson.toJson(new ErrorResponse(
+                ErrorConstants.INVALID_REQUEST.getErrorMessage(),
+                "The request was rejected because the URL is potentially malicious",
+                new Timestamp(System.currentTimeMillis()).toString())));
         }
     }
 }

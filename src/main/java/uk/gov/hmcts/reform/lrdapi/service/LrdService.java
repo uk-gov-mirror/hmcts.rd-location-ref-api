@@ -1,8 +1,10 @@
 package uk.gov.hmcts.reform.lrdapi.service;
 
-import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
+import uk.gov.hmcts.reform.lrdapi.response.LrdOrgInfoServiceResponse;
+
+import java.util.List;
 
 public interface LrdService {
 
-    LrdOrgInfoServiceResponse findByServiceCode(String serviceCode, String ccdCode);
+    List<LrdOrgInfoServiceResponse> findByServiceCodeOrCcdCaseTypeOrDefault(String serviceCode, String ccdCode);
 }

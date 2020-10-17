@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.lrdapi.controllers.constants;
+package uk.gov.hmcts.reform.lrdapi.constants;
 
 
 public enum ErrorConstants {

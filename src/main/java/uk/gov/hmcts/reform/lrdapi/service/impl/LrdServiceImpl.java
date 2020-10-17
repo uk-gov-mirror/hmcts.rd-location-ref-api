@@ -1,17 +1,21 @@
 package uk.gov.hmcts.reform.lrdapi.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
-import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.domain.Service;
 import uk.gov.hmcts.reform.lrdapi.domain.ServiceToCcdCaseTypeAssoc;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceRepository;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceToCcdCaseTypeAssocRepositry;
+import uk.gov.hmcts.reform.lrdapi.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.service.LrdService;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 
 @org.springframework.stereotype.Service
@@ -28,31 +32,44 @@ public class LrdServiceImpl implements LrdService {
     ServiceToCcdCaseTypeAssocRepositry serviceToCcdCaseTypeAssocRepositry;
 
     @Override
-    public LrdOrgInfoServiceResponse findByServiceCode(String serviceCode, String ccdCaseType) {
+    public List<LrdOrgInfoServiceResponse> findByServiceCodeOrCcdCaseTypeOrDefault(String serviceCode,
+                                                                                   String ccdCaseType) {
 
         Service servicePojo = null;
         ServiceToCcdCaseTypeAssoc serToCcdCaseType = null;
-        List<Service> service = null;
-        if (null != serviceCode && null == ccdCaseType) {
+        List<Service> services = null;
+        final List<LrdOrgInfoServiceResponse> orgInfoServiceResponses = new ArrayList<>();
+        if (!StringUtils.isBlank(serviceCode) && StringUtils.isBlank(ccdCaseType)) {
 
-            servicePojo = serviceRepository.findByServiceCode(serviceCode);
-            serToCcdCaseType = serviceToCcdCaseTypeAssocRepositry.findByServiceCode(serviceCode);
+            servicePojo = serviceRepository.findByServiceCode(serviceCode.trim().toUpperCase());
+            ifServiceResponseNullThrowException(servicePojo);
+            orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(servicePojo));
 
-        } else if ((null == serviceCode && null != ccdCaseType)) {
+        } else if (StringUtils.isBlank(serviceCode) && !StringUtils.isBlank(ccdCaseType)) {
 
-            serToCcdCaseType = serviceToCcdCaseTypeAssocRepositry.findByCcdCaseType(ccdCaseType);
-
+            serToCcdCaseType = serviceToCcdCaseTypeAssocRepositry.findByCcdCaseType(ccdCaseType.trim().toUpperCase());
+            servicePojo = serToCcdCaseType != null ? serToCcdCaseType.getService() : null;
+            ifServiceResponseNullThrowException(servicePojo);
+            orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(servicePojo));
 
         } else {
 
-            service = serviceRepository.findAll();
+            services = serviceRepository.findAll();
+
+            if (null == services) {
+                throw new EmptyResultDataAccessException(1);
+            }
+            services.stream().map(service -> {
+                return orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(service));
+            }).collect(toList());
+
         }
+        return orgInfoServiceResponses;
+    }
 
-        // Service servicePojo = serviceRepository.findByServiceCode(serviceCode);
-        if (null == servicePojo) {
-
+    public void ifServiceResponseNullThrowException(Service service) {
+        if (null == service) {
             throw new EmptyResultDataAccessException(1);
         }
-        return new LrdOrgInfoServiceResponse(servicePojo);
     }
 }
