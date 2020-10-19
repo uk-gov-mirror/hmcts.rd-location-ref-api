@@ -267,6 +267,7 @@ repositories {
 }
 
 dependencies {
+
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
@@ -290,10 +291,10 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
 
-  compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
-  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
-  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
+    compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0'
+    compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.reformS2sClient
 
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.11.2'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version:'0.9.1'
@@ -345,9 +346,9 @@ dependencies {
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
 
 
-  testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
-  testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.0'
-  testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+    testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
+    testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.6'
+    testCompile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
     testCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
     testCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -362,6 +363,7 @@ dependencies {
         force = true
     }
 
+
     contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.0")
     contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.0')
@@ -370,8 +372,9 @@ dependencies {
     integrationTestCompile sourceSets.main.runtimeClasspath
     integrationTestCompile sourceSets.test.runtimeClasspath
 
+
     functionalTestCompile sourceSets.main.runtimeClasspath
-  functionalTestCompile sourceSets.test.runtimeClasspath
+    functionalTestCompile sourceSets.test.runtimeClasspath
 
     smokeTestCompile sourceSets.main.runtimeClasspath
     smokeTestCompile sourceSets.test.runtimeClasspath
