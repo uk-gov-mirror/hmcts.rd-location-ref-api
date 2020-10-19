@@ -1,2 +1,0 @@
-"Story","Title","Result","Date","Stability","Duration (s)"
-"Retrieve org service details integration test","Dont returns org service details by unknown ccd case type code 404","FAILURE","2020-10-17T21:30:29.147752+01:00[Europe/London]","0.0","129.85"
