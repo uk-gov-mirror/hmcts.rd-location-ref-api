@@ -1,0 +1,6 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Retrieve org service details integration test","Returns org service details by ccd case type code200","SUCCESS","2020-10-17T21:14:11.780539+01:00[Europe/London]","0.0","1.86"
+"Retrieve org service details integration test","Returns org service details without input params 200","SUCCESS","2020-10-17T21:19:59.036645+01:00[Europe/London]","0.0","1.79"
+"Retrieve org service details integration test","Do not return org service details by unknown ccd case type code 404","SUCCESS","2020-10-17T21:36:54.065644+01:00[Europe/London]","0.0","1.81"
+"Retrieve org service details integration test","Returns org service details by service code with status code200","SUCCESS","2020-10-18T21:25:18.479792+01:00[Europe/London]","0.0","1.75"
+"Retrieve org service details integration test","Do not return org service details by unknown service code 404","SUCCESS","2020-10-19T11:55:45.429538+01:00[Europe/London]","0.0","40.69"

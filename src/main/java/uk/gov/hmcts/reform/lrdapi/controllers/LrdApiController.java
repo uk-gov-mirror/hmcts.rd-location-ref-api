@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.lrdapi.controllers.advice.InvalidRequestException;
-import uk.gov.hmcts.reform.lrdapi.response.LrdOrgInfoServiceResponse;
+import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.service.LrdService;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class LrdApiController  {
     @ApiResponses({
             @ApiResponse(
                     code = 200,
-                    message = "Details of Service Code or ccdCaseType"
+                    message = "Details of Service Code or ccdCaseType or by default all the data"
             ),
             @ApiResponse(
                     code = 400,
@@ -62,16 +62,15 @@ public class LrdApiController  {
             )
     })
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType(
+    public ResponseEntity<Object> retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(
         @RequestParam(value = "serviceCode",required = false) String serviceCode,
         @RequestParam(value = "ccdCaseType",required = false) String ccdCaseType) {
+        log.info("inside retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType");
         List<LrdOrgInfoServiceResponse> lrdOrgInfoServiceResponse = null;
         if (!StringUtils.isBlank(serviceCode) && !StringUtils.isBlank(ccdCaseType)) {
 
             throw new InvalidRequestException("Request contains both serviceCode and ccdCasetype values");
         }
-        log.info("inside retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType");
-
         lrdOrgInfoServiceResponse = lrdService.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode, ccdCaseType);
         return ResponseEntity.status(200).body(lrdOrgInfoServiceResponse);
     }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite errors="0" failures="1" name="uk.gov.hmcts.reform.lrdapi.RetrieveOrgServiceDetailsIntegrationTest" skipped="0" tests="1" time="129.85" timestamp="2020-10-17 09:30:29"><testcase classname="uk.gov.hmcts.reform.lrdapi.RetrieveOrgServiceDetailsIntegrationTest" name="Dont returns org service details by unknown ccd case type code 404"><failure message="&#10;Expecting:&#10; &lt;404 NOT_FOUND&gt;&#10;to be equal to:&#10; &lt;&quot;404&quot;&gt;&#10;but was not." type="org.opentest4j.AssertionFailedError">
+Expecting:
+ &lt;404 NOT_FOUND&gt;
+to be equal to:
+ &lt;"404"&gt;
+but was not.</failure><system-err>
+Expecting:
+ &lt;404 NOT_FOUND&gt;
+to be equal to:
+ &lt;"404"&gt;
+but was not.
+uk.gov.hmcts.reform.lrdapi.RetrieveOrgServiceDetailsIntegrationTest.dontReturnsOrgServiceDetailsByUnknownCcdCaseTypeCode_404(RetrieveOrgServiceDetailsIntegrationTest.java:45)
+org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)
+org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)
+org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+</system-err></testcase></testsuite>

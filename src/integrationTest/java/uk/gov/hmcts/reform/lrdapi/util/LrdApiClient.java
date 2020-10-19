@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -7,10 +8,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.lrdapi.controllers.advice.ErrorResponse;
+import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,36 +46,60 @@ public class LrdApiClient {
         this.expiration = tokenExpirationInterval;
     }
 
-    public Map<String, Object> findOrgServiceDetailsByServiceCode(String serviceCode) {
-        return getRequest(APP_BASE_PATH + "?serviceCode={serviceCode}", serviceCode);
+    public Object findOrgServiceDetailsByServiceCode(String serviceCode, Class expectedClass) throws
+        JsonProcessingException {
+        ResponseEntity<Object> responseEntity = getRequest(APP_BASE_PATH + "?serviceCode={serviceCode}",
+                                                           expectedClass, serviceCode);
+        return mapApiResponse(responseEntity,expectedClass);
     }
 
-    public Map<String, Object> findOrgServiceDetailsByCcdCaseType(String ccdCaseType) {
-        return getRequest(APP_BASE_PATH + "?ccdCaseType={ccdCaseType}", ccdCaseType);
+    public Object findOrgServiceDetailsByCcdCaseType(String ccdCaseType, Class expectedClass) throws
+        JsonProcessingException {
+        ResponseEntity<Object> responseEntity = getRequest(APP_BASE_PATH + "?ccdCaseType={ccdCaseType}",
+                                                           expectedClass, ccdCaseType);
+        return mapApiResponse(responseEntity,expectedClass);
+    }
+
+    public Object findOrgServiceDetailsByDefaultAll(Class expectedClass) throws
+        JsonProcessingException {
+        ResponseEntity<Object> responseEntity = getRequest(APP_BASE_PATH,
+                                                           expectedClass, "");
+        return mapApiResponse(responseEntity,expectedClass);
+    }
+
+    private Object mapApiResponse(ResponseEntity<Object> responseEntity, Class expectedClass) throws
+        JsonProcessingException {
+
+        HttpStatus status = responseEntity.getStatusCode();
+        if (status.is2xxSuccessful()) {
+            return Arrays.asList((LrdOrgInfoServiceResponse[]) objectMapper.convertValue(
+                responseEntity.getBody(), expectedClass));
+        } else {
+            Map<String, Object> errorResponseMap = new HashMap<>();
+            errorResponseMap.put("response_body",  objectMapper.readValue(
+                responseEntity.getBody().toString(), ErrorResponse.class));
+            errorResponseMap.put("http_status", status);
+            return errorResponseMap;
+        }
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private Map<String, Object> getRequest(String uriPath, Object... params) {
+    private ResponseEntity<Object> getRequest(String uriPath,Class clasz,Object... params) {
 
-        ResponseEntity<Map> responseEntity;
-
+        ResponseEntity<Object> responseEntity;
         try {
-
             HttpEntity<?> request = new HttpEntity<>(getMultipleAuthHeaders());
             responseEntity = restTemplate
                 .exchange("http://localhost:" + lrdApiPort + uriPath,
                           HttpMethod.GET,
                           request,
-                          Map.class,
+                          clasz,
                           params);
         } catch (HttpStatusCodeException ex) {
-            HashMap<String, Object> statusAndBody = new HashMap<>(2);
-            statusAndBody.put("http_status", String.valueOf(ex.getRawStatusCode()));
-            statusAndBody.put("response_body", ex.getResponseBodyAsString());
-            return statusAndBody;
+            return ResponseEntity.status(ex.getRawStatusCode()).body(ex.getResponseBodyAsString());
         }
 
-        return getResponse(responseEntity);
+        return responseEntity;
     }
 
     private Map getResponse(ResponseEntity<Map> responseEntity) {

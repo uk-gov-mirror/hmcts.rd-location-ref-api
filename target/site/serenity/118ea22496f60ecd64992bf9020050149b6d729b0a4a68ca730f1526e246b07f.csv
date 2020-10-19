@@ -1,0 +1,2 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Retrieve org service details integration test","Returns org service details without input params 200","ERROR","2020-10-17T21:18:00.52368+01:00[Europe/London]","0.0","1.98"

@@ -21,8 +21,8 @@ module "db-rd-location-ref-api" {
   location            = var.location
   subscription        = var.subscription
   env                 = var.env
-  postgresql_user     = "dbrdlocationref"
-  database_name       = "dbrdlocationref"
+  postgresql_user     = "locrefdata"
+  database_name       = "locrefdata"
   common_tags         = var.common_tags
   postgresql_version  = var.postgresql_version
 }

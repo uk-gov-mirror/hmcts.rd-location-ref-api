@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.lrdapi.response;
+package uk.gov.hmcts.reform.lrdapi.controllers.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.reform.lrdapi.domain.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -16,28 +15,36 @@ import static java.util.stream.Collectors.toList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LrdOrgInfoServiceResponse {
 
-    @JsonProperty
+    @JsonProperty("service_id")
     protected Long serviceId;
-    @JsonProperty
+
+    @JsonProperty("org_unit")
     protected String orgUnit;
-    @JsonProperty
+
+    @JsonProperty("business_area")
     protected String businessArea;
-    @JsonProperty
+
+    @JsonProperty("sub_business_area")
     protected String subBusinessArea;
     @JsonProperty
     protected String jurisdiction;
-    @JsonProperty
-    protected String serviceDescription;
-    @JsonProperty
-    protected String serviceCode;
-    @JsonProperty
-    protected String serviceShortDescription;
-    @JsonProperty
-    protected String ccdServiceName;
-    @JsonProperty
-    protected LocalDateTime lastUpdate;
 
-    @JsonProperty
+    @JsonProperty("service_description")
+    protected String serviceDescription;
+
+    @JsonProperty("service_code")
+    protected String serviceCode;
+
+    @JsonProperty("service_short_description")
+    protected String serviceShortDescription;
+
+    @JsonProperty("ccd_service_name")
+    protected String ccdServiceName;
+
+    @JsonProperty("last_update")
+    protected String lastUpdate;
+
+    @JsonProperty("ccd_case_types")
     protected List<String> ccdCaseTypes;
 
     public LrdOrgInfoServiceResponse(Service service) {
@@ -63,7 +70,7 @@ public class LrdOrgInfoServiceResponse {
 
                           serviceToCcdCaseTypeAssoc.getCcdCaseType())
                 .collect(toList());
-            this.lastUpdate = service.getLastUpdate();
+            this.lastUpdate = service.getLastUpdate().toString();
         }
 
     }

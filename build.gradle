@@ -177,7 +177,7 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 
 task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
     baselineOnMigrate = true
-    
+
     if (project.hasProperty("dburl")) {
         url = "jdbc:postgresql://${dburl}"
     }
@@ -188,7 +188,7 @@ task contract(type: Test) {
     useJUnitPlatform()
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
-    include "uk/gov/hmcts/reform/professionalapi/**"
+    include "uk/gov/hmcts/reform/lrdapi/**"
     systemProperty 'pact.rootDir', "pacts"
 }
 
@@ -203,7 +203,6 @@ runAndPublishConsumerPactTests.finalizedBy pactPublish
 pact {
     publish {
         pactDirectory = 'pacts'
-        //pactBrokerUrl = 'http://localhost:9292'
         pactBrokerUrl = 'https://pact-broker.platform.hmcts.net'
         tags = ['Dev']
         version = "2.3"
@@ -224,16 +223,19 @@ jacocoTestReport {
 }
 
 pitest {
-  targetClasses = ['uk.gov.hmcts.reform.*']
+  targetClasses = ['uk.gov.hmcts.reform.lrdapi.*']
   excludedClasses = [
-    'uk.gov.hmcts.reform.*']
+    'uk.gov.hmcts.reform.lrdapi.config.*',
+    'uk.gov.hmcts.reform.lrdapi.controllers.*',
+    'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
+  ]
   threads = 10
   enableDefaultIncrementalAnalysis = true
   historyInputLocation = 'build/reports/pitest/fastermutationtesting'
   historyOutputLocation = 'build/reports/pitest/fastermutationtestingoutput'
   outputFormats = ['XML', 'HTML']
   timestampedReports = true
-  mutationThreshold = 90
+  mutationThreshold = 85
   useClasspathFile = true
 }
 
@@ -244,10 +246,10 @@ sonarqube {
   properties {
     property "sonar.projectName", "reform::rd-location-ref-api"
     property "sonar.projectKey", "uk.gov.hmcts.reform:reform::rd-location-ref-api"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"   
-    property "sonar.pitest.mode", "reuseReport" 
+    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/lrdapi/configuration/**," +
+    property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/lrdapi/config/**," +
                 "src/main/java/uk/gov/hmcts/reform/lrdapi/LrdApiApplication.java"
   }
 }

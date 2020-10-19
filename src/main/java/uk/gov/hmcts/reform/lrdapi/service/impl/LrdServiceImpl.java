@@ -5,11 +5,11 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
+import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.domain.Service;
 import uk.gov.hmcts.reform.lrdapi.domain.ServiceToCcdCaseTypeAssoc;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceRepository;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceToCcdCaseTypeAssocRepositry;
-import uk.gov.hmcts.reform.lrdapi.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.service.LrdService;
 
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ public class LrdServiceImpl implements LrdService {
     @Override
     public List<LrdOrgInfoServiceResponse> findByServiceCodeOrCcdCaseTypeOrDefault(String serviceCode,
                                                                                    String ccdCaseType) {
-
         Service servicePojo = null;
         ServiceToCcdCaseTypeAssoc serToCcdCaseType = null;
         List<Service> services = null;

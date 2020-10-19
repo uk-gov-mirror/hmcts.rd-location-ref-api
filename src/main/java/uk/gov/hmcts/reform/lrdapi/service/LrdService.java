@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi.service;
 
-import uk.gov.hmcts.reform.lrdapi.response.LrdOrgInfoServiceResponse;
+import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 
 import java.util.List;
 

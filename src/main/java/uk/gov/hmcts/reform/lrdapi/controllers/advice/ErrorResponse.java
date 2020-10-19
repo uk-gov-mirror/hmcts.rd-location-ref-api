@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ErrorResponse {
 
-    //private String errorCode;
+    private int errorCode;
 
-    //private String status;
+    private String status;
 
     private String errorMessage;
 
@@ -19,10 +19,10 @@ public class ErrorResponse {
 
     private String timeStamp;
 
-    public ErrorResponse(String errorMessage, String errorDescription,
+    public ErrorResponse(int errorCode, String status,String errorMessage, String errorDescription,
                          String timeStamp) {
-        //this.errorCode = errorCode;
-        //this.status = status;
+        this.errorCode = errorCode;
+        this.status = status;
         this.errorMessage = errorMessage;
         this.errorDescription = errorDescription;
         this.timeStamp = timeStamp;

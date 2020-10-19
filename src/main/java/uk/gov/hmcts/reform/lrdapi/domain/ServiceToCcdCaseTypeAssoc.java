@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -46,7 +45,7 @@ public class ServiceToCcdCaseTypeAssoc implements Serializable {
     @Size(max = 256)
     private String  ccdCaseType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "service_code",referencedColumnName = "service_code", insertable = false, updatable = false)
     private Service service;
 
