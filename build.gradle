@@ -44,7 +44,7 @@ def versions = [
 mainClassName = 'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
 def jarName = 'rd-location-ref-api.jar'
 
-group = 'uk.gov.hmcts.reform.lrdapi'
+group = 'uk.gov.hmcts.reform.rdlocation'
 version = '0.0.1'
 
 sourceCompatibility = 11
@@ -56,7 +56,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.00
+                minimum = 80.00
             }
         }
     }
@@ -176,11 +176,10 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 }
 
 task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
-    baselineOnMigrate = true
-
-    if (project.hasProperty("dburl")) {
-        url = "jdbc:postgresql://${dburl}"
-    }
+  baselineOnMigrate = true
+  if (project.hasProperty("dburl")) {
+    url = "jdbc:postgresql://${dburl}"
+  }
 }
 
 task contract(type: Test) {
