@@ -15,9 +15,6 @@ import uk.gov.hmcts.reform.lrdapi.service.LrdService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
-
 @org.springframework.stereotype.Service
 @Slf4j
 public class LrdServiceImpl implements LrdService {

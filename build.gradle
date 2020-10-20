@@ -54,9 +54,9 @@ jacocoTestCoverageVerification {
   afterEvaluate {
     getClassDirectories().setFrom(classDirectories.files.collect {
       fileTree(dir: it, exclude:  [
-        'src/main/java/uk/gov/hmcts/reform/lrdapi/controllers/constants/ErrorConstants.java',
-        'src/main/java/uk/gov/hmcts/reform/lrdapi/LrdApiApplication.java',
-        'src/main/java/uk/gov/hmcts/reform/lrdapi/controllers/advice/*'
+        'src/main/java/uk/gov/hmcts/reform/lrdapi/controllers/constants/ErrorConstants.class',
+        'src/main/java/uk/gov/hmcts/reform/lrdapi/LrdApiApplication.class',
+        'src/main/java/uk/gov/hmcts/reform/lrdapi/controllers/advice/**'
       ])
     })
   }
@@ -65,7 +65,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.80
+                minimum = 0.60
             }
         }
     }
