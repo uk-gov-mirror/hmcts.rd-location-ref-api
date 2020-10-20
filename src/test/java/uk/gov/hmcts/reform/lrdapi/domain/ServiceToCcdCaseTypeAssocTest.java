@@ -22,13 +22,8 @@ public class ServiceToCcdCaseTypeAssocTest {
         service.setJurisdictionId(1L);
         service.setServiceDescription("Insolvency");
         service.setServiceShortDescription("Insolvency");
-        OrgSubBusinessArea orgSubBusArea = new OrgSubBusinessArea(1L, "OrgSubBusinessArea");
-        OrgBusinessArea orgBusinessArea = new OrgBusinessArea(1L, "BusinessArea");
-        Jurisdiction jurisdiction = new Jurisdiction(1L, "Jurisdiction");
-        service.setOrgBusinessArea(orgBusinessArea);
-        service.setOrgSubBusinessArea(orgSubBusArea);
-        service.setJurisdiction(jurisdiction);
         service.setLastUpdate(LocalDateTime.now());
+
         ServiceToCcdCaseTypeAssoc serviceToCcdCaseTypeAssoc = new ServiceToCcdCaseTypeAssoc();
         serviceToCcdCaseTypeAssoc.setId(1L);
         serviceToCcdCaseTypeAssoc.setCcdCaseType("CCDCASETYPE1");

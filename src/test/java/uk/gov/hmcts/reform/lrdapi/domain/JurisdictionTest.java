@@ -9,16 +9,17 @@ public class JurisdictionTest {
     @Test
     public void testCreateJurisdiction() {
 
-        Jurisdiction jurisdiction = new Jurisdiction(1L, "Jurisdiction");
+        Jurisdiction jurisdiction = new Jurisdiction(1L, "jurisdiction");
 
         assertThat(jurisdiction).isNotNull();
-        assertThat(jurisdiction.getDescription()).isEqualTo("Jurisdiction");
+        assertThat(jurisdiction.getDescription()).isEqualTo("jurisdiction");
         assertThat(jurisdiction.getJurisdictionId()).isEqualTo(1L);
 
         Jurisdiction jurisdictionOne = new Jurisdiction();
-        jurisdictionOne.setDescription("Jurisdiction");
+        jurisdictionOne.setDescription("jurisdiction");
         jurisdictionOne.setJurisdictionId(1L);
-        assertThat(jurisdiction.getDescription()).isEqualTo("Jurisdiction");
+        assertThat(jurisdictionOne).isNotNull();
+        assertThat(jurisdiction.getDescription()).isEqualTo("jurisdiction");
         assertThat(jurisdiction.getJurisdictionId()).isEqualTo(1L);
     }
 }

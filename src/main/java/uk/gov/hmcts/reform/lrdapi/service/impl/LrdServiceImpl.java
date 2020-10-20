@@ -58,9 +58,9 @@ public class LrdServiceImpl implements LrdService {
             if (null == services) {
                 throw new EmptyResultDataAccessException(1);
             }
-            services.stream().map(service -> {
-                return orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(service));
-            }).collect(toList());
+            services.forEach(service -> {
+                orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(service));
+            });
 
         }
         return orgInfoServiceResponses;

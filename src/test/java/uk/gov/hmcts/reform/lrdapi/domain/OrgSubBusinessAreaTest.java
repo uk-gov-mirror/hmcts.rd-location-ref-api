@@ -9,16 +9,16 @@ public class OrgSubBusinessAreaTest {
     @Test
     public void testOrgSubBusinessArea() {
 
-        OrgSubBusinessArea orgSubBusinessArea = new OrgSubBusinessArea(1L, "OrgSubBusArea");
+        OrgSubBusinessArea orgSubBusinessArea = new OrgSubBusinessArea(1L, "orgSubBusArea");
         assertThat(orgSubBusinessArea).isNotNull();
         assertThat(orgSubBusinessArea.getSubBusinessAreaId()).isEqualTo(1L);
-        assertThat(orgSubBusinessArea.getDescription()).isEqualTo("OrgSubBusArea");
+        assertThat(orgSubBusinessArea.getDescription()).isEqualTo("orgSubBusArea");
 
         OrgSubBusinessArea orgSubBusinessAreaOne = new OrgSubBusinessArea();
         orgSubBusinessAreaOne.setSubBusinessAreaId(1L);
-        orgSubBusinessAreaOne.setDescription("OrgSubBusArea");
+        orgSubBusinessAreaOne.setDescription("orgSubBusArea");
         assertThat(orgSubBusinessAreaOne).isNotNull();
         assertThat(orgSubBusinessAreaOne.getSubBusinessAreaId()).isEqualTo(1L);
-        assertThat(orgSubBusinessAreaOne.getDescription()).isEqualTo("OrgSubBusArea");
+        assertThat(orgSubBusinessAreaOne.getDescription()).isEqualTo("orgSubBusArea");
     }
 }
