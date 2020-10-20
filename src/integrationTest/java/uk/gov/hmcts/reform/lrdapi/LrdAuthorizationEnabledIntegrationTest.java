@@ -13,7 +13,6 @@ import com.nimbusds.jose.jwk.RSAKey;
 
 import net.minidev.json.JSONObject;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -111,15 +110,6 @@ public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootI
                                                           .withStatus(200)
                                                           .withHeader("Content-Type", "application/json")
                                                           .withBody(getDynamicJwksResponse())));
-    }
-
-
-    @After
-    public void cleanupTestData() {
-
-        serviceToCcdCaseTypeAssocRepositry.deleteAll();
-        serviceRepository.deleteAll();
-
     }
 
     public static String getDynamicJwksResponse() throws JOSEException, JsonProcessingException {
