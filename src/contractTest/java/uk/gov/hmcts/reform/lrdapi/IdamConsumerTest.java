@@ -12,7 +12,6 @@ import com.google.common.collect.Maps;
 import groovy.util.logging.Slf4j;
 
 import net.serenitybdd.rest.SerenityRest;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -93,23 +92,16 @@ public class IdamConsumerTest {
         assertThat(response.getString("uid")).isNotBlank();
         assertThat(response.getString("given_name")).isNotBlank();
         assertThat(response.getString("family_name")).isNotBlank();
-        JSONArray rolesArr = response.getJSONArray("roles");
-        assertThat(rolesArr).isNotNull();
-        assertThat(rolesArr.length()).isNotZero();
-        assertThat(rolesArr.get(0).toString()).isNotBlank();
 
     }
 
     private DslPart createUserInfoResponse() {
 
         return new PactDslJsonBody()
-                .stringType("uid", "1111-2222-3333-4567")
-                .stringType("given_name", "puiCaseManager")
-                .stringType("family_name", "Jar")
-                .array("roles")
-                .stringType("prd-admin")
-                .stringType("IDAM_ADMIN_USER")
-                .closeArray();
+                .stringType("uid", "1131-2222-3333-4567")
+                .stringType("given_name", "lrd")
+                .stringType("family_name", "Jar");
+
 
     }
 
