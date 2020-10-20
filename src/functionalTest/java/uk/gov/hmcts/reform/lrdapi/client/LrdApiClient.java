@@ -7,10 +7,13 @@ import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
 
+import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.lrdapi.controllers.advice.ErrorResponse;
+import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.idam.IdamOpenIdClient;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.Arrays;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -37,6 +40,20 @@ public class LrdApiClient {
         this.s2sToken = s2sToken;
     }
 
+    public Object retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus expectedStatus, String param) {
+        Response response = getMultipleAuthHeaders()
+            .get("/refdata/location/orgServices" + param)
+            .andReturn();
+
+        response.then()
+            .assertThat()
+            .statusCode(expectedStatus.value());
+        if (expectedStatus.is2xxSuccessful()) {
+            return Arrays.asList(response.getBody().as(LrdOrgInfoServiceResponse[].class));
+        } else {
+            return response.getBody().as(ErrorResponse.class);
+        }
+    }
 
     public String getWelcomePage() {
         return withUnauthenticatedRequest()
@@ -50,38 +67,6 @@ public class LrdApiClient {
             .asString();
     }
 
-    public String getHealthPage() {
-        return withUnauthenticatedRequest()
-            .get("/health")
-            .then()
-            .statusCode(OK.value())
-            .and()
-            .extract()
-            .response()
-            .body()
-            .asString();
-    }
-
-
-
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> retrieveServiceCodeInfo(String serviceCode) {
-        Response response = getMultipleAuthHeadersInternal()
-            .body("")
-            .get("/refdata/location/orgServices?serviceCode=" + serviceCode)
-            .andReturn();
-
-        log.info("Retrieve  response: " + response.asString());
-
-        response.then()
-            .assertThat()
-            .statusCode(OK.value());
-
-        return response.body().as(Map.class);
-    }
-
-
-
     private RequestSpecification withUnauthenticatedRequest() {
         return SerenityRest.given()
             .relaxedHTTPSValidation()
@@ -90,23 +75,15 @@ public class LrdApiClient {
             .header("Accepts", APPLICATION_JSON_VALUE);
     }
 
-    private RequestSpecification getS2sTokenHeaders() {
-        return withUnauthenticatedRequest()
-            .header(SERVICE_HEADER, "Bearer " + s2sToken);
-    }
 
-    private RequestSpecification getMultipleAuthHeadersInternal() {
-        return  getMultipleAuthHeaders(idamOpenIdClient.getOpenIdToken());
-    }
-
-    public RequestSpecification getMultipleAuthHeaders(String userToken) {
+    public RequestSpecification getMultipleAuthHeaders() {
         return SerenityRest.with()
             .relaxedHTTPSValidation()
             .baseUri(lrdApiUrl)
             .header("Content-Type", APPLICATION_JSON_VALUE)
             .header("Accepts", APPLICATION_JSON_VALUE)
             .header(SERVICE_HEADER, "Bearer " + s2sToken)
-            .header(AUTHORIZATION_HEADER, "Bearer " + userToken);
+            .header(AUTHORIZATION_HEADER, "Bearer " + idamOpenIdClient.getOpenIdToken());
     }
 
     @SuppressWarnings("unused")

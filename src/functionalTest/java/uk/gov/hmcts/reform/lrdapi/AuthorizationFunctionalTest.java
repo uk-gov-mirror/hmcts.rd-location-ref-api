@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi;
 
 import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
 import io.restassured.specification.RequestSpecification;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
@@ -48,7 +47,7 @@ public class AuthorizationFunctionalTest extends AbstractTestExecutionListener {
 
     protected RequestSpecification bearerToken;
 
-    protected IdamOpenIdClient idamOpenIdClient;
+    protected static IdamOpenIdClient idamOpenIdClient;
 
     public static final String EMAIL_TEMPLATE = "freg-test-user-%s@prdfunctestuser.com";
     @Autowired
@@ -66,8 +65,8 @@ public class AuthorizationFunctionalTest extends AbstractTestExecutionListener {
             .getAutowireCapableBeanFactory()
             .autowireBean(this);
 
-        RestAssured.useRelaxedHTTPSValidation();
-        RestAssured.defaultParser = Parser.JSON;
+        /*RestAssured.useRelaxedHTTPSValidation();
+        RestAssured.defaultParser = Parser.JSON;*/
 
         log.info("Configured S2S secret: " + s2sSecret.substring(0, 2) + "************" + s2sSecret.substring(14));
         log.info("Configured S2S microservice: " + s2sName);
@@ -76,16 +75,22 @@ public class AuthorizationFunctionalTest extends AbstractTestExecutionListener {
         SerenityRest.proxy("proxyout.reform.hmcts.net", 8080);
         RestAssured.proxy("proxyout.reform.hmcts.net", 8080);
 
-        if (s2sToken == null) {
+        if (null == s2sToken) {
             s2sToken = new S2sClient(s2sUrl, s2sName, s2sSecret).signIntoS2S();
         }
-        idamOpenIdClient = new IdamOpenIdClient(configProperties);
+        if (null == idamOpenIdClient) {
+            idamOpenIdClient = new IdamOpenIdClient(configProperties);
+        }
+
         lrdApiClient = new LrdApiClient(lrdApiUrl,s2sToken, idamOpenIdClient);
 
     }
 
+
+
     public static String generateRandomEmail() {
         return String.format(EMAIL_TEMPLATE, randomAlphanumeric(10));
     }
+
 
 }
