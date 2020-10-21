@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi.repository;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -25,7 +24,6 @@ public class ServiceRepositoryTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Ignore
     @Test
     public void testFindOrgServiceDetailsByServiceCode() {
 
