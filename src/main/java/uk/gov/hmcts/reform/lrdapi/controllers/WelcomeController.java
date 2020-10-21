@@ -1,6 +1,6 @@
+/*
 package uk.gov.hmcts.reform.lrdapi.controllers;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -16,13 +16,11 @@ import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+*/
 /**
  * Default endpoints per application.
- */
-@Api(
-    value = "/",
-    produces = APPLICATION_JSON_VALUE
-)
+ *//*
+
 @Slf4j
 @RestController
 public class WelcomeController {
@@ -31,9 +29,10 @@ public class WelcomeController {
     private String loggingComponentName;
 
     private static final String INSTANCE_ID = UUID.randomUUID().toString();
-    private static final String MESSAGE = "Welcome to the Location Reference Data API";
+    private static final String MESSAGE = "Welcome to the Location Ref Data API";
 
-    /**
+    */
+/**
      * Root GET endpoint.
      *
      * <p>Azure application service has a hidden feature of making requests to root endpoint when
@@ -41,8 +40,9 @@ public class WelcomeController {
      * This is the endpoint to deal with that and therefore silence the unnecessary 404s as a response code.
      *
      * @return Welcome message from the service.
-     */
-    @ApiOperation("Welcome message for the Location Reference Data API")
+     *//*
+
+    @ApiOperation("Welcome message for the Location Ref Data API")
     @ApiResponses({
         @ApiResponse(
             code = 200,
@@ -65,3 +65,4 @@ public class WelcomeController {
             .body("{\"message\": \"" + MESSAGE + "\"}");
     }
 }
+*/

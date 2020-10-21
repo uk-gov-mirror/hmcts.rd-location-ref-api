@@ -33,7 +33,7 @@ public class LrdApiController  {
     LrdService lrdService;
 
     @ApiOperation(
-            value = "This API will retrieve service code association with ccd case type",
+            value = "This API will retrieve service code details association with ccd case type",
             authorizations = {
                     @Authorization(value = "ServiceAuthorization"),
                     @Authorization(value = "Authorization")
@@ -42,7 +42,9 @@ public class LrdApiController  {
     @ApiResponses({
             @ApiResponse(
                     code = 200,
-                    message = "Details of Service Code or ccdCaseType or by default all the data"
+                    message = "Successfully retrieved list of Service Code or Ccd Case Type Details",
+                    response = LrdOrgInfoServiceResponse.class,
+                    responseContainer = "list"
             ),
             @ApiResponse(
                     code = 400,
