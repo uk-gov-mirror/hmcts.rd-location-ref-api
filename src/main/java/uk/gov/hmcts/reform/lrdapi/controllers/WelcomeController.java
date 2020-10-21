@@ -32,7 +32,7 @@ public class WelcomeController {
     private static final String MESSAGE = "Welcome to the Location Ref Data API";
 
 
-/**
+    /**
      * Root GET endpoint.
      *
      * <p>Azure application service has a hidden feature of making requests to root endpoint when
