@@ -1,16 +1,37 @@
 package uk.gov.hmcts.reform.lrdapi.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.ResponseEntity.ok;
+import java.util.UUID;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 /**
  * Default endpoints per application.
  */
+@Api(
+    value = "/",
+    produces = APPLICATION_JSON_VALUE
+)
+@Slf4j
 @RestController
 public class WelcomeController {
+
+    @Value("${loggingComponentName}")
+    private String loggingComponentName;
+
+    private static final String INSTANCE_ID = UUID.randomUUID().toString();
+    private static final String MESSAGE = "Welcome to the Location Reference Data API";
 
     /**
      * Root GET endpoint.
@@ -21,8 +42,26 @@ public class WelcomeController {
      *
      * @return Welcome message from the service.
      */
-    @GetMapping("/")
+    @ApiOperation("Welcome message for the Location Reference Data API")
+    @ApiResponses({
+        @ApiResponse(
+            code = 200,
+            message = "Welcome message",
+            response = String.class
+        )
+    })
+    @GetMapping(
+        path = "/",
+        produces = APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
     public ResponseEntity<String> welcome() {
-        return ok("Welcome to rd-location-ref-api");
+
+        log.info("{}:: Welcome message '{}' from running instance: {}", loggingComponentName, MESSAGE, INSTANCE_ID);
+
+        return ResponseEntity
+            .ok()
+            .cacheControl(CacheControl.noCache())
+            .body("{\"message\": \"" + MESSAGE + "\"}");
     }
 }

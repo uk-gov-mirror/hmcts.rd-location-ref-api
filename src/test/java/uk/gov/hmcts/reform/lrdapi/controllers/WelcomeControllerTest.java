@@ -16,7 +16,7 @@ public class WelcomeControllerTest {
     public void test_should_return_welcome_response() {
 
         ResponseEntity<String> responseEntity = welcomeController.welcome();
-        String expectedMessage = "Welcome to rd-location-ref-api";
+        String expectedMessage = "Welcome to the Location Reference Data API";
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
