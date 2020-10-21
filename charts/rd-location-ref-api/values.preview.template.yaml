@@ -17,4 +17,3 @@ java:
     rd:
       secrets:
         - AppInsightsInstrumentationKey
-        - s2s-secret

@@ -18,4 +18,3 @@ java:
       secrets:
         - location-ref-api-POSTGRES-PASS
         - AppInsightsInstrumentationKey
-        - s2s-secret
