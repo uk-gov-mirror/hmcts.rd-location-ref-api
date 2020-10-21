@@ -1,3 +1,4 @@
+/*
 package uk.gov.hmcts.reform.lrdapi.config;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -35,3 +36,4 @@ public class DataSourceConfig {
         return dataSource;
     }
 }
+*/
