@@ -1,4 +1,4 @@
-/*
+
 package uk.gov.hmcts.reform.lrdapi.controllers;
 
 import org.junit.Test;
@@ -24,4 +24,4 @@ public class WelcomeControllerTest {
         assertThat(responseEntity.getBody()).contains(expectedMessage);
     }
 }
-*/
+

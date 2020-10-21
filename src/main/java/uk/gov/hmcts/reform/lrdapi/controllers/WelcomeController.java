@@ -1,4 +1,4 @@
-/*
+
 package uk.gov.hmcts.reform.lrdapi.controllers;
 
 import io.swagger.annotations.ApiOperation;
@@ -16,10 +16,10 @@ import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-*/
+
 /**
  * Default endpoints per application.
- *//*
+ */
 
 @Slf4j
 @RestController
@@ -31,7 +31,7 @@ public class WelcomeController {
     private static final String INSTANCE_ID = UUID.randomUUID().toString();
     private static final String MESSAGE = "Welcome to the Location Ref Data API";
 
-    */
+
 /**
      * Root GET endpoint.
      *
@@ -40,7 +40,7 @@ public class WelcomeController {
      * This is the endpoint to deal with that and therefore silence the unnecessary 404s as a response code.
      *
      * @return Welcome message from the service.
-     *//*
+     */
 
     @ApiOperation("Welcome message for the Location Ref Data API")
     @ApiResponses({
@@ -65,4 +65,4 @@ public class WelcomeController {
             .body("{\"message\": \"" + MESSAGE + "\"}");
     }
 }
-*/
+

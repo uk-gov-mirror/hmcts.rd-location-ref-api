@@ -45,8 +45,9 @@ public class SmokeTest {
             .andReturn();
         log.info("Response::" + response);
         if (null != response && response.statusCode() == 200) {
+            log.info("Response::" + response.body().asString());
             assertThat(response.body().asString())
-                .contains("Welcome to rd-location-ref-api");
+                .contains("Welcome to the Location Ref Data API");
 
         } else {
 
