@@ -22,7 +22,6 @@ def secrets = [
   ],
   'rd-${env}': [
     secret('LOC-REF-OAUTH2-CLIENT-SECRET', 'LOC_REF_OAUTH2_CLIENT_SECRET'),
-    secret('LOC-REF-OAUTH2-CLIENT-AUTH', 'LOC_REF_OAUTH2_CLIENT_AUTH'),
     secret('LOC-REF-OAUTH2-CLIENT-ID', 'LOC_REF_OAUTH2_CLIENT_ID')
   ]
 ]
