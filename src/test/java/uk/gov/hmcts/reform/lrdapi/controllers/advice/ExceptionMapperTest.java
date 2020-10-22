@@ -15,6 +15,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -90,6 +92,7 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.handleHttpStatusException(exception);
         assertNotNull(responseEntity.getStatusCode());
         assertEquals(exception.getMessage(), ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        verify(exception, times(1)).getStatusCode();
 
     }
 
@@ -127,6 +130,7 @@ public class ExceptionMapperTest {
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
         assertEquals(externalApiException.getMessage(), ((ErrorResponse)responseEntity.getBody())
                 .getErrorDescription());
+        verify(externalApiException, times(1)).getHttpStatus();
 
     }
 

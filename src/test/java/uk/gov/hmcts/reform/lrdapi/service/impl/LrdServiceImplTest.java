@@ -95,6 +95,7 @@ public class LrdServiceImplTest {
         String ccdCaseType = null;
         when(serviceRepository.findByServiceCode(any())).thenReturn(null);
         sut.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode,ccdCaseType);
+        verify(serviceRepository,times(1)).findByServiceCode(any());
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -103,6 +104,7 @@ public class LrdServiceImplTest {
         String ccdCaseType = "ccdcodeType";
         when(serToCcdCsTypeRep.findByCcdCaseType(any())).thenReturn(null);
         sut.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode,ccdCaseType);
+        verify(serToCcdCsTypeRep,times(1)).findByCcdCaseType(any());
     }
 
     @Test
@@ -123,6 +125,7 @@ public class LrdServiceImplTest {
         when(serviceRepository.findAll()).thenReturn(null);
         lrdOrgInfoServiceResponses = sut.findByServiceCodeOrCcdCaseTypeOrDefault(null,null);
         assertThat(lrdOrgInfoServiceResponses).isNull();
+        verify(serviceRepository,times(1)).findAll();
     }
 
 }

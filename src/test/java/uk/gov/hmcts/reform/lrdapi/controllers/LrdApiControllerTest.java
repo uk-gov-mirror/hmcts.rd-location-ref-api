@@ -86,7 +86,6 @@ public class LrdApiControllerTest {
         final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
         String serviceCode = "AAA1";
         String ccdCaseType = "ccdCaseType1";
-        when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
         assertThat(actual).isNotNull();

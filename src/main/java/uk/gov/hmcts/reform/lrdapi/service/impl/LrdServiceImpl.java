@@ -35,13 +35,13 @@ public class LrdServiceImpl implements LrdService {
         ServiceToCcdCaseTypeAssoc serToCcdCaseType = null;
         List<Service> services = null;
         final List<LrdOrgInfoServiceResponse> orgInfoServiceResponses = new ArrayList<>();
-        if (!StringUtils.isBlank(serviceCode) && StringUtils.isBlank(ccdCaseType)) {
+        if (!StringUtils.isBlank(serviceCode)) {
 
             servicePojo = serviceRepository.findByServiceCode(serviceCode.trim().toUpperCase());
             ifServiceResponseNullThrowException(servicePojo);
             orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(servicePojo));
 
-        } else if (StringUtils.isBlank(serviceCode) && !StringUtils.isBlank(ccdCaseType)) {
+        } else if (!StringUtils.isBlank(ccdCaseType)) {
 
             serToCcdCaseType = serviceToCcdCaseTypeAssocRepositry.findByCcdCaseType(ccdCaseType.trim().toUpperCase());
             servicePojo = serToCcdCaseType != null ? serToCcdCaseType.getService() : null;
