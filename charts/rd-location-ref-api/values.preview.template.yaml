@@ -7,7 +7,7 @@ java:
     POSTGRES_USERNAME: "{{ .Values.postgresql.postgresqlUsername}}"
     POSTGRES_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
     POSTGRES_PORT: "{{ .Values.postgresql.postgresqlPort}}"
-    LOCATIONS: classpath:db/migration,classpath:db/postgres,classpath:db/migrationAks
+    LOCATIONS_DB: classpath:db/migration,classpath:db/postgres,classpath:db/migrationAks
   postgresql:
     enabled: true
     postgresqlUsername: locrefdata
