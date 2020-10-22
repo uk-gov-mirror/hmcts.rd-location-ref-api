@@ -83,6 +83,7 @@ public class IdamOpenIdClient {
     }
 
     public String getOpenIdToken() {
+
         if (openIdTokenLrdAdmin == null) {
             Map<String,String> userCreds = createUser("lrd-admin");
             openIdTokenLrdAdmin = getOpenIdToken(userCreds.get(EMAIL), userCreds.get(CREDS));
@@ -99,7 +100,7 @@ public class IdamOpenIdClient {
         tokenParams.put("client_id", testConfig.getClientId());
         tokenParams.put("client_secret", testConfig.getClientSecret());
         tokenParams.put("redirect_uri", testConfig.getOauthRedirectUrl());
-        tokenParams.put("scope", "openid profile roles manage-user create-user search-user");
+        tokenParams.put("scope", "openid profile roles search-user");
 
         Response openIdTokenResponse = RestAssured
             .given()

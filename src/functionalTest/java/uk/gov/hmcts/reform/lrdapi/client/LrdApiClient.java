@@ -27,8 +27,8 @@ public class LrdApiClient {
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final String lrdApiUrl;
-    private final String s2sToken;
-    private IdamOpenIdClient idamOpenIdClient;
+    private  String s2sToken;
+    private  IdamOpenIdClient idamOpenIdClient;
 
 
     public LrdApiClient(

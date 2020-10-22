@@ -11,11 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class TestConfigProperties {
 
 
-    @Value("${oauth2-client-secret}")
+    @Value("${oauth2.client.secret}")
     public String clientSecret;
-
-    @Value("${test.user.password}")
-    public String testUserPassword;
 
     @Value("${idam.api.url}")
     public String idamApiUrl;
@@ -23,7 +20,7 @@ public class TestConfigProperties {
     @Value("${idam.auth.redirectUrl}")
     public String oauthRedirectUrl;
 
-    @Value("${idam.auth.clientId:xuiwebapp}")
+    @Value("${idam.auth.clientId:rd-location-ref-api}")
     public String clientId;
 
 }
