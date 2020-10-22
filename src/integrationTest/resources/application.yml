@@ -1,6 +1,6 @@
 spring:
   flyway:
-    locations: classpath:db/migration
+    locations: classpath:db/migration,classpath:db/migrationAks
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:locrefdata
