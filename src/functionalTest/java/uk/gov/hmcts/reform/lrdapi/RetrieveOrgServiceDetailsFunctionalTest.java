@@ -32,6 +32,17 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
     }
 
     @Test
+    public void returnsOrgServiceDetailsByCcdCaseTypeWithStatusCode_200() throws JsonProcessingException {
+
+        List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
+            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,
+                                                                            "?ccdCaseType=CCDCASETYPE1");
+
+        assertThat(responses.size()).isEqualTo(1);
+        responseVerification(responses);
+    }
+
+    @Test
     public void returnsOrgServiceDetailsByDefaultAll_200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
@@ -46,14 +57,14 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
             assertThat(response.getServiceId()).isEqualTo(1L);
             assertThat(response.getBusinessArea()).isEqualToIgnoringCase("Civil, Family and Tribunals");
             assertThat(response.getOrgUnit()).isEqualToIgnoringCase("HMCTS");
-            assertThat(response.getCcdServiceName()).isNull();
+            assertThat(response.getCcdServiceName()).isNotNull();
             assertThat(response.getServiceCode()).isEqualTo("AAA1");
             assertThat(response.getJurisdiction()).isEqualToIgnoringCase("Civil");
             assertThat(response.getLastUpdate()).isNotNull();
             assertThat(response.getServiceDescription()).isEqualToIgnoringCase("Civil Enforcement");
             assertThat(response.getServiceShortDescription()).isEqualToIgnoringCase("Civil Enforcement");
             assertThat(response.getSubBusinessArea()).isEqualToIgnoringCase("Civil and Family");
-            assertThat(response.getCcdCaseTypes().size()).isEqualTo(0);
+            assertThat(response.getCcdCaseTypes().size()).isGreaterThanOrEqualTo(1);
 
         });
 
