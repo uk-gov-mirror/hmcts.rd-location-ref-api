@@ -7,13 +7,13 @@ if [ -z "$POSTGRES_PASSWORD" ]; then
   exit 1
 fi
 
-echo "Creating locrefdata database . . ."
+echo "Creating dbrdlocationref database . . ."
 
 psql -v ON_ERROR_STOP=1 --username postgres --dbname postgres <<-EOSQL
-  CREATE ROLE locrefdata WITH PASSWORD 'locrefdata';
-  CREATE DATABASE locrefdata ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  GRANT ALL PRIVILEGES ON DATABASE locrefdata TO locrefdata;
-  ALTER ROLE locrefdata WITH LOGIN;
+  CREATE ROLE dbrdlocationref WITH PASSWORD 'dbrdlocationref';
+  CREATE DATABASE dbrdlocationref ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+  GRANT ALL PRIVILEGES ON DATABASE dbrdlocationref TO dbrdlocationref;
+  ALTER ROLE dbrdlocationref WITH LOGIN;
 EOSQL
 
-echo "Done creating database locrefdata."
+echo "Done creating database dbrdlocationref."

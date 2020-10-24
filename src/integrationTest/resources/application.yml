@@ -3,10 +3,10 @@ spring:
     locations: classpath:db/migration
   datasource:
     driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:locrefdata
+    url: jdbc:h2:mem:dbrdlocationref
     platform: h2
-    username: ${POSTGRES_USERNAME:locrefdata}
-    password: ${POSTGRES_PASSWORD:locrefdata}
+    username: ${POSTGRES_USERNAME:dbrdlocationref}
+    password: ${POSTGRES_PASSWORD:dbrdlocationref}
   jpa:
     show-sql: true
     properties:

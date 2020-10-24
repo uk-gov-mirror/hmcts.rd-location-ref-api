@@ -13,6 +13,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 
 import net.minidev.json.JSONObject;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.WithTag;
+import net.thucydides.core.annotations.WithTags;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -45,6 +47,7 @@ import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.getUserIdAndRoleFromT
 
 @Configuration
 @RunWith(SpringIntegrationSerenityRunner.class)
+@WithTags({@WithTag("testType:Integration")})
 @TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990", "IDAM_URL:http://127.0.0.1:5000"})
 @DirtiesContext
 public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootIntegrationTest {

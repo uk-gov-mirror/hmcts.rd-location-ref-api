@@ -9,9 +9,9 @@ spring:
 
   datasource:
     driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:locrefdata
-    username: ${POSTGRES_USERNAME:locrefdata}
-    password: ${POSTGRES_PASSWORD:locrefdata}
+    url: jdbc:h2:mem:dbrdlocationref
+    username: ${POSTGRES_USERNAME:dbrdlocationref}
+    password: ${POSTGRES_PASSWORD:dbrdlocationref}
 
 defaultPageSize: ${DEFAULTPAGESIZE:10}
 

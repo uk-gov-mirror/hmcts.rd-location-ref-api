@@ -43,9 +43,9 @@ spring:
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:locrefdata}
-    username: ${POSTGRES_USERNAME:locrefdata}
-    password: ${POSTGRES_PASSWORD:locrefdata}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}
+    username: ${POSTGRES_USERNAME:dbrdlocationref}
+    password: ${POSTGRES_PASSWORD:dbrdlocationref}
     min-idle: 1
     properties:
       charSet: UTF-8

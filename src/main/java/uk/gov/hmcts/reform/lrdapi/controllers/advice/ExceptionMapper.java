@@ -80,8 +80,8 @@ public class ExceptionMapper {
     }
 
     @ExceptionHandler(LrdApiException.class)
-    public ResponseEntity<Object> getUserProfileExceptionError(LrdApiException ex) {
-        return errorDetailsResponseEntity(ex, ex.getHttpStatus(), ex.getErrorMessage());
+    public ResponseEntity<Object> getExceptionError(LrdApiException ex) {
+        return errorDetailsResponseEntity(ex, INTERNAL_SERVER_ERROR, ex.getErrorMessage());
     }
 
     @ExceptionHandler(Exception.class)

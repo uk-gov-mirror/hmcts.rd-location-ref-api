@@ -9,7 +9,7 @@ services:
     volumes:
       - rd-location-ref-api-volume:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-dbrdlocation}"
+      - POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-dbrdlocationref}"
     ports:
       - 5458:5432
 volumes:
