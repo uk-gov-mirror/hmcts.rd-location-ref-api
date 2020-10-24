@@ -123,14 +123,11 @@ public class ExceptionMapperTest {
     @Test
     public void test_handle_external_api_exception() {
         LrdApiException externalApiException = mock(LrdApiException.class);
-        when(externalApiException.getHttpStatus()).thenReturn(HttpStatus.INTERNAL_SERVER_ERROR);
-
-        ResponseEntity<Object> responseEntity = exceptionMapper.getUserProfileExceptionError(externalApiException);
+        ResponseEntity<Object> responseEntity = exceptionMapper.getExceptionError(externalApiException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
         assertEquals(externalApiException.getMessage(), ((ErrorResponse)responseEntity.getBody())
                 .getErrorDescription());
-        verify(externalApiException, times(1)).getHttpStatus();
 
     }
 

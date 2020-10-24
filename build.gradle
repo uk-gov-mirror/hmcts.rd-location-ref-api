@@ -255,7 +255,7 @@ sonarqube {
   properties {
     property "sonar.projectName", "reform::rd-location-ref-api"
     property "sonar.projectKey", "uk.gov.hmcts.reform:reform::rd-location-ref-api"
-    property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+    property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.exclusions", "src/main/java/uk/gov/hmcts/reform/lrdapi/config/**," +
