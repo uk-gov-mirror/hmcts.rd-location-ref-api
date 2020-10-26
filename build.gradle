@@ -1,10 +1,10 @@
 buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.83")
-  }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.3.6")
+    }
 }
 
 plugins {
@@ -248,10 +248,6 @@ pitest {
   useClasspathFile = true
 }
 
-test {
-  useJUnitPlatform()
-  failFast = true
-}
 
 project.tasks['pitest'].group = "Verification"
 
