@@ -2,14 +2,15 @@ server:
   port: 8099
 
 management:
+  endpoints:
+    jmx:
+      exposure:
+        include: 'health'
+    web:
+      base-path: "/"
   endpoint:
     health:
       show-details: "always"
-  endpoints:
-    web:
-      base-path: /
-      exposure:
-        include: health, info, prometheus
 
 spring:
   jpa:
@@ -20,21 +21,31 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: RD Location Ref API
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${OPEN_ID_API_BASE_URI:https://idam-web-public.aat.platform.hmcts.net/o}
+        registration:
+          oidc:
+            client-id: microservicekey-rd-location-ref-api
+            client-secret: ${S2S_SECRET:AAAAAAAAAAAAAAAA}
   jackson:
     date-format: yyyy-MM-dd
   flyway:
     enabled: true
-    locations: classpath:db/migration
-    schemas: locrefdata
-
+    locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres}
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:locrefdata}?currentSchema=locrefdata
-    username: ${POSTGRES_USERNAME:locrefdata}
-    password: ${POSTGRES_PASSWORD:locrefdata}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}
+    username: ${POSTGRES_USERNAME:dbrdlocationref}
+    password: ${POSTGRES_PASSWORD:dbrdlocationref}
     min-idle: 1
     properties:
       charSet: UTF-8
@@ -69,24 +80,16 @@ security:
     - "/csrf"
     - "/error"
     - "/favicon.ico"
-    - "/**"
-  authorisedServices:
-    - rd-location-ref-api
-
 ### dependency configuration
-auth.provider.service.client.baseUrl: ${S2S_URL:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
 idam:
   s2s-auth:
     totp_secret: ${S2S_SECRET:}
-    microservice: rd-location-ref-api
+    microservice: rd_location_ref_api
     url: ${S2S_URL:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}
+  s2s-authorised:
+    services: ${LRD_S2S_AUTHORISED_SERVICES:rd_location_ref_api}
+  api.url: ${idam_url:https://idam-api.aat.platform.hmcts.net}
 
-auth.idam.client.baseUrl: ${idam_url:https://idam-api.aat.platform.hmcts.net}
+oidc.issuer: ${OIDC_ISSUER_URL:https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts}
 
-auth.idam.client.detailsUri: "/details"
-
-feign:
-  allow:
-    headers:
-      - authorization
-      - serviceauthorization
+loggingComponentName: RD-Location-Ref-Api
