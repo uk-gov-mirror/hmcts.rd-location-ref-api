@@ -69,7 +69,7 @@ public class LrdApiController  {
         @RequestParam(value = "ccdCaseType",required = false) String ccdCaseType) {
         log.info("inside retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType");
         List<LrdOrgInfoServiceResponse> lrdOrgInfoServiceResponse = null;
-        if (!StringUtils.isBlank(serviceCode) && !StringUtils.isBlank(ccdCaseType)) {
+        if (StringUtils.isNotBlank(serviceCode) && StringUtils.isNotBlank(ccdCaseType)) {
 
             throw new InvalidRequestException("Request contains both serviceCode and ccdCasetype values");
         }
