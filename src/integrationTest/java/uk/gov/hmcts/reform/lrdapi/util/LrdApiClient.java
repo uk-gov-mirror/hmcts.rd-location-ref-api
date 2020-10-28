@@ -3,7 +3,12 @@ package uk.gov.hmcts.reform.lrdapi.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.TextCodec;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +21,7 @@ import uk.gov.hmcts.reform.lrdapi.controllers.advice.ErrorResponse;
 import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,8 +35,7 @@ public class LrdApiClient {
 
     private static final String APP_BASE_PATH = "/refdata/location/orgServices";
 
-    private static final String JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI"
-        + "6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    private static  String JWT_TOKEN = null;
     private final Integer lrdApiPort;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
@@ -38,6 +43,9 @@ public class LrdApiClient {
 
     private String issuer;
     private long expiration;
+
+    @Value("${s2s-authorised.services}")
+    private String serviceName;
 
     public LrdApiClient(int port, String issuer, Long tokenExpirationInterval) {
         this.lrdApiPort = port;
@@ -119,6 +127,10 @@ public class LrdApiClient {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
+        if (StringUtils.isBlank(JWT_TOKEN)) {
+
+            JWT_TOKEN = generateDummyS2SToken(serviceName);
+        }
         headers.add("ServiceAuthorization", JWT_TOKEN);
         String bearerToken = "Bearer ".concat(getBearerToken(UUID.randomUUID().toString()));
         headers.add("Authorization", bearerToken);
@@ -130,6 +142,14 @@ public class LrdApiClient {
 
         return generateToken(issuer, expiration, userId);
 
+    }
+
+    public static String generateDummyS2SToken(String serviceName) {
+        return Jwts.builder()
+            .setSubject(serviceName)
+            .setIssuedAt(new Date())
+            .signWith(SignatureAlgorithm.HS256, TextCodec.BASE64.encode("AA"))
+            .compact();
     }
 
 }
