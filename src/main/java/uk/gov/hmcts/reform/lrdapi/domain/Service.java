@@ -7,7 +7,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -46,19 +45,15 @@ public class Service implements Serializable {
     @Column(name = "service_id")
     private Long  serviceId;
 
-    @NonNull
     @Column(name = "org_unit_id")
     private Long orgUnitId;
 
-    @NonNull
     @Column(name = "business_area_id")
     private Long businessAreaId;
 
-    @NonNull
     @Column(name = "sub_business_area_id")
     private Long subBusinessAreaId;
 
-    @NonNull
     @Column(name = "jurisdiction_id")
     private Long  jurisdictionId;
 

@@ -52,21 +52,12 @@ sourceCompatibility = 11
 targetCompatibility = 11
 
 jacocoTestCoverageVerification {
-  afterEvaluate {
-    getClassDirectories().setFrom(classDirectories.files.collect {
-      fileTree(dir: it, exclude:  [
-        'src/main/java/uk/gov/hmcts/reform/lrdapi/controllers/constants/ErrorConstants.class',
-        'src/main/java/uk/gov/hmcts/reform/lrdapi/LrdApiApplication.class',
-        'src/main/java/uk/gov/hmcts/reform/lrdapi/controllers/advice/**'
-      ])
-    })
-  }
     violationRules {
         rule {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.60
+                minimum = 0.65
             }
         }
     }
@@ -223,7 +214,7 @@ jacoco {
 }
 
 jacocoTestReport {
-  executionData(test)
+  executionData(test, integration)
   reports {
     xml.enabled = true
     csv.enabled = false
