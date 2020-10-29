@@ -1,0 +1,16 @@
+{
+  "10021_X-Content-Type-Options Header Missing_http://rd-location-ref-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10021_X-Content-Type-Options Header Missing_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=CCDCASETYPE1": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?serviceCode=AAA1": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=CCDCASETYPE1": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?serviceCode=AAA1": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=CCDCASETYPE1": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?serviceCode=AAA1": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=CCDCASETYPE1": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?serviceCode=AAA1": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices": "ignore"
+}
