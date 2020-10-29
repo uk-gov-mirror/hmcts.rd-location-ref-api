@@ -1,0 +1,23 @@
+{
+  "10021_X-Content-Type-Options Header Missing_http://rd-location-ref-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10021_X-Content-Type-Options Header Missing_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=ccdCaseType\u0026serviceCode=serviceCode_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10010_Cookie No HttpOnly Flag_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices_GET": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices_GET": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices_GET": "ignore",
+  "100000_A Client Error response code was returned by the server_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices_GET": "ignore",
+  "100000_A Client Error response code was returned by the server_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=ccdCaseType\u0026serviceCode=serviceCode_GET": "ignore",
+  "90033_Loosely Scoped Cookie_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=ccdCaseType\u0026serviceCode=serviceCode_GET": "ignore",
+  "100000_A Client Error response code was returned by the server_http://rd-location-ref-api-aat.service.core-compute-aat.internal/refdata/location/orgServices?ccdCaseType=ccdCaseType\u0026serviceCode=serviceCode_GET":  "ignore",
+  "90022_Application Error Disclosure_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10023_Information Disclosure - Debug Error Messages_http://rd-location-ref-api-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
+  "10054_Cookie Without SameSite Attribute_http://rd-location-ref-api-aat.service.core-compute-aat.internal/_GET": "ignore"
+
+}
