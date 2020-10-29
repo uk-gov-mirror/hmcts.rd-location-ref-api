@@ -155,6 +155,8 @@ pmd {
   ]
 }
 
+
+
 task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
@@ -222,8 +224,14 @@ jacocoTestReport {
   }
 }
 
+
 pitest {
   targetClasses = ['uk.gov.hmcts.reform.lrdapi.*']
+  excludedClasses = [
+    'uk.gov.hmcts.reform.lrdapi.config.*',
+    'uk.gov.hmcts.reform.lrdapi.controllers.*',
+    'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
+  ]
   excludedClasses = [
     'uk.gov.hmcts.reform.lrdapi.config.*',
     'uk.gov.hmcts.reform.lrdapi.controllers.*',

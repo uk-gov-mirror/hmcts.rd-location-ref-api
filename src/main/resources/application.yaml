@@ -39,11 +39,11 @@ spring:
     date-format: yyyy-MM-dd
   flyway:
     enabled: true
-    locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres}
+    locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres,classpath:db/migrationAks}
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}?currentSchema=locrefdata
     username: ${POSTGRES_USERNAME:dbrdlocationref}
     password: ${POSTGRES_PASSWORD:dbrdlocationref}
     min-idle: 1
