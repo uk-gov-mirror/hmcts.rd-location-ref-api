@@ -232,11 +232,7 @@ pitest {
     'uk.gov.hmcts.reform.lrdapi.controllers.*',
     'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
   ]
-  excludedClasses = [
-    'uk.gov.hmcts.reform.lrdapi.config.*',
-    'uk.gov.hmcts.reform.lrdapi.controllers.*',
-    'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
-  ]
+
   threads = 10
   enableDefaultIncrementalAnalysis = true
   historyInputLocation = 'build/reports/pitest/fastermutationtesting'
