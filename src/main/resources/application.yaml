@@ -40,6 +40,7 @@ spring:
   flyway:
     enabled: true
     locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres,classpath:db/migrationAks}
+    schemas: locrefdata
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
