@@ -1,7 +1,3 @@
-truncate  dataload_schedular_audit;
-
-truncate dataload_exception_records;
-
 ALTER TABLE dataload_schedular_audit  RENAME COLUMN scheduler_status TO status;
 
 ALTER TABLE dataload_schedular_audit ADD COLUMN file_name varchar(128);
