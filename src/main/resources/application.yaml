@@ -40,8 +40,8 @@ spring:
   flyway:
     enabled: true
     locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres}
-    baselineOnMigrate: true
-    validateOnMigrate: false
+    schemas:
+      - dbrdlocationref
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
