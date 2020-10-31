@@ -49,7 +49,6 @@ import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.getUserIdAndRoleFromT
 @RunWith(SpringIntegrationSerenityRunner.class)
 @WithTags({@WithTag("testType:Integration")})
 @TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990", "IDAM_URL:http://127.0.0.1:5000"})
-@TestPropertySource("classpath:application.yml")
 @DirtiesContext
 public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootIntegrationTest {
 
