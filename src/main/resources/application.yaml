@@ -18,9 +18,11 @@ spring:
     show-sql: false
     properties:
       hibernate:
+        default_schema: locrefdata
         jdbc:
           lob:
             non_contextual_creation: true
+
   main:
     allow-bean-definition-overriding: true
   application:
@@ -40,10 +42,12 @@ spring:
   flyway:
     enabled: true
     locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres}
+    schemas:
+      - locrefdata
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}?currentSchema=locrefdata
     username: ${POSTGRES_USERNAME:dbrdlocationref}
     password: ${POSTGRES_PASSWORD:dbrdlocationref}
     min-idle: 1

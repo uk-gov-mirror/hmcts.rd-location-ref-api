@@ -30,7 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateToken;
 
 @Slf4j
-@PropertySource(value = "/integrationTest/resources/application.yml")
+@PropertySource(value = "/integrationTest/resources/application-test.yml")
 public class LrdApiClient {
 
     private static final String APP_BASE_PATH = "/refdata/location/orgServices";

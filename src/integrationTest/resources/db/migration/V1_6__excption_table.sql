@@ -1,3 +1,4 @@
+
 CREATE TABLE dataload_exception_records(
                                            id SERIAL NOT NULL,
                                            file_name varchar(256),

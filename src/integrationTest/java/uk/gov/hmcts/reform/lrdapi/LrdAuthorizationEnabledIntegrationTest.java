@@ -10,20 +10,14 @@ import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
-
 import net.minidev.json.JSONObject;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.WithTag;
-import net.thucydides.core.annotations.WithTags;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
-
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceRepository;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceToCcdCaseTypeAssocRepositry;
 import uk.gov.hmcts.reform.lrdapi.util.KeyGenUtil;
@@ -44,16 +38,13 @@ import static java.lang.String.format;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.decodeJwtToken;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.getUserIdAndRoleFromToken;
 
-
 @Configuration
-@RunWith(SpringIntegrationSerenityRunner.class)
-@WithTags({@WithTag("testType:Integration")})
 @TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990", "IDAM_URL:http://127.0.0.1:5000"})
 @DirtiesContext
 public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootIntegrationTest {
 
     @Autowired
-    protected  ServiceRepository serviceRepository;
+    protected ServiceRepository serviceRepository;
 
     @Autowired
     protected ServiceToCcdCaseTypeAssocRepositry serviceToCcdCaseTypeAssocRepositry;
@@ -62,13 +53,13 @@ public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootI
     public static WireMockRule s2sService = new WireMockRule(wireMockConfig().port(8990));
 
     @ClassRule
-    public  static WireMockRule idamService = new WireMockRule(5000);
+    public static WireMockRule idamService = new WireMockRule(5000);
 
     @ClassRule
     public static WireMockRule mockHttpServerForOidc = new WireMockRule(wireMockConfig().port(7000));
 
 
-    protected  LrdApiClient lrdApiClient;
+    protected LrdApiClient lrdApiClient;
 
     @Value("${oidc.issuer}")
     private String issuer;
@@ -86,27 +77,27 @@ public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootI
     public void setUpIdamStubs() throws Exception {
 
         s2sService.stubFor(get(urlEqualTo("/details"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("rd_location_ref_api")));
+                               .willReturn(aResponse()
+                                               .withStatus(200)
+                                               .withHeader("Content-Type", "application/json")
+                                               .withBody("rd_location_ref_api")));
 
         idamService.stubFor(get(urlPathMatching("/o/userinfo"))
-                                 .willReturn(aResponse()
-                                                 .withStatus(200)
-                                                 .withHeader("Content-Type", "application/json")
-                                                 .withBody("{"
-                                                               +  "  \"id\": \"%s\","
-                                                               +  "  \"uid\": \"%s\","
-                                                               +  "  \"forename\": \"Super\","
-                                                               +  "  \"surname\": \"User\","
-                                                               +  "  \"email\": \"super.user@hmcts.net\","
-                                                               +  "  \"accountStatus\": \"active\","
-                                                               +  "  \"roles\": ["
-                                                               +  "  \"%s\""
-                                                               +  "  ]"
-                                                               +  "}")
-                                                 .withTransformers("external_user-token-response")));
+                                .willReturn(aResponse()
+                                                .withStatus(200)
+                                                .withHeader("Content-Type", "application/json")
+                                                .withBody("{"
+                                                              + "  \"id\": \"%s\","
+                                                              + "  \"uid\": \"%s\","
+                                                              + "  \"forename\": \"Super\","
+                                                              + "  \"surname\": \"User\","
+                                                              + "  \"email\": \"super.user@hmcts.net\","
+                                                              + "  \"accountStatus\": \"active\","
+                                                              + "  \"roles\": ["
+                                                              + "  \"%s\""
+                                                              + "  ]"
+                                                              + "}")
+                                                .withTransformers("external_user-token-response")));
 
         mockHttpServerForOidc.stubFor(get(urlPathMatching("/jwks"))
                                           .willReturn(aResponse()
