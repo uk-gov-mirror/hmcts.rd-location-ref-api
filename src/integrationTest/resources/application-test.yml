@@ -15,7 +15,6 @@ spring:
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
-        globally_quoted_identifiers_skip_column_definitions: true
   main:
     allow-bean-definition-overriding: true
   security:
