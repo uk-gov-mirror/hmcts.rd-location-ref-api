@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.lrdapi.domain.ServiceToCcdCaseTypeAssoc;
 
@@ -13,7 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class ServiceToCcdCaseTypeAssocRepositoryTest  {
+@TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
+public class ServiceToCcdCaseTypeAssocRepositoryTest {
 
     @Autowired
     ServiceToCcdCaseTypeAssocRepositry serviceToCcdCaseTypeAssocRepositry;

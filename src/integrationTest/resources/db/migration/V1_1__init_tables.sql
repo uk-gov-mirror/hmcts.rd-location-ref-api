@@ -1,4 +1,3 @@
-create schema if not exists locrefdata;
 create table ORG_UNIT(
 	org_unit_id bigint NOT NULL,
 	description varchar(512),
