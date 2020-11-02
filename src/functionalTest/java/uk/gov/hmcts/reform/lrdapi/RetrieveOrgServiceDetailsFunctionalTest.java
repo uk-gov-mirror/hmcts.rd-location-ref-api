@@ -25,7 +25,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
     public void returnsOrgServiceDetailsByServiceCodeWithStatusCode_200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,"?serviceCode=AAA1");
+            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,"?serviceCode=AAA6");
 
         assertThat(responses.size()).isEqualTo(1);
         responseVerification(responses);
@@ -36,7 +36,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
             lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,
-                                                                            "?ccdCaseType=CCDCASETYPE1");
+                                                                            "?ccdCaseType=MONEYCLAIMCASE");
 
         assertThat(responses.size()).isEqualTo(1);
         responseVerification(responses);
@@ -54,15 +54,15 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
     private void responseVerification(List<LrdOrgInfoServiceResponse> responses) throws JsonProcessingException {
 
         responses.stream().forEach(response -> {
-            assertThat(response.getServiceId()).isEqualTo(1L);
+            assertThat(response.getServiceId()).isGreaterThanOrEqualTo(1L);
             assertThat(response.getBusinessArea()).isEqualToIgnoringCase("Civil, Family and Tribunals");
             assertThat(response.getOrgUnit()).isEqualToIgnoringCase("HMCTS");
             assertThat(response.getCcdServiceName()).isNotNull();
-            assertThat(response.getServiceCode()).isEqualTo("AAA1");
+            assertThat(response.getServiceCode()).isEqualTo("AAA6");
             assertThat(response.getJurisdiction()).isEqualToIgnoringCase("Civil");
             assertThat(response.getLastUpdate()).isNotNull();
-            assertThat(response.getServiceDescription()).isEqualToIgnoringCase("Civil Enforcement");
-            assertThat(response.getServiceShortDescription()).isEqualToIgnoringCase("Civil Enforcement");
+            assertThat(response.getServiceDescription()).isEqualToIgnoringCase("Specified Money Claims");
+            assertThat(response.getServiceShortDescription()).isEqualToIgnoringCase("Specified Money Claims");
             assertThat(response.getSubBusinessArea()).isEqualToIgnoringCase("Civil and Family");
             assertThat(response.getCcdCaseTypes().size()).isGreaterThanOrEqualTo(1);
 
