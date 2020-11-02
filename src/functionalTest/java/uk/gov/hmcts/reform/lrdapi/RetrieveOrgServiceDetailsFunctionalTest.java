@@ -61,8 +61,8 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
             assertThat(response.getServiceCode()).isEqualTo("AAA6");
             assertThat(response.getJurisdiction()).isEqualToIgnoringCase("Civil");
             assertThat(response.getLastUpdate()).isNotNull();
-            assertThat(response.getServiceDescription()).isEqualToIgnoringCase("Civil Enforcement");
-            assertThat(response.getServiceShortDescription()).isEqualToIgnoringCase("Civil Enforcement");
+            assertThat(response.getServiceDescription()).isEqualToIgnoringCase("Specified Money Claims");
+            assertThat(response.getServiceShortDescription()).isEqualToIgnoringCase("Specified Money Claims");
             assertThat(response.getSubBusinessArea()).isEqualToIgnoringCase("Civil and Family");
             assertThat(response.getCcdCaseTypes().size()).isGreaterThanOrEqualTo(1);
 
