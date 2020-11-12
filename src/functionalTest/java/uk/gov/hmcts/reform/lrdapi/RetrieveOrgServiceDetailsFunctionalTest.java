@@ -21,6 +21,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
 
 
 
+    @SuppressWarnings("unchecked")
     @Test
     public void returnsOrgServiceDetailsByServiceCodeWithStatusCode_200() throws JsonProcessingException {
 
@@ -31,6 +32,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
         responseVerification(responses);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void returnsOrgServiceDetailsByCcdCaseTypeWithStatusCode_200() throws JsonProcessingException {
 
@@ -42,6 +44,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
         responseVerification(responses);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void returnsOrgServiceDetailsByDefaultAll_200() throws JsonProcessingException {
 
