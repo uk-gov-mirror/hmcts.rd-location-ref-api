@@ -2,6 +2,8 @@
 
 @Library("Infrastructure")
 
+import uk.gov.hmcts.contino.AppPipelineDsl
+
 def type = "java"
 def product = "rd"
 def component = "location-ref-api"
@@ -9,6 +11,10 @@ def component = "location-ref-api"
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-rd-location-ref-api', 'S2S_SECRET')
+  ],
+  'rd-${env}': [
+    secret('LOC-REF-OAUTH2-CLIENT-SECRET', 'LOC_REF_OAUTH2_CLIENT_SECRET'),
+    secret('LOC-REF-OAUTH2-CLIENT-ID', 'LOC_REF_OAUTH2_CLIENT_ID')
   ]
 ]
 
@@ -37,7 +43,15 @@ withPipeline(type, product, component) {
 
     env.S2S_URL_FOR_TESTS = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
-    env.TEST_URL = "http://rd-judicial-api-aat.service.core-compute-aat.internal"
+
+
+    after('integrationTest:preview') {
+     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    after('integrationTest:aat') {
+     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
 
     after('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
@@ -46,5 +60,10 @@ withPipeline(type, product, component) {
     after('functionalTest:aat') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
+
+
+   enablePactAs([
+    AppPipelineDsl.PactRoles.CONSUMER
+   ])
 
 }
