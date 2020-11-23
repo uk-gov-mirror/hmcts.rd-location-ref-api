@@ -34,6 +34,8 @@ public class LrdApiControllerTest {
     private JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverterMock;
     private UserInfo userInfoMock;
     HttpServletRequest httpRequest = mock(HttpServletRequest.class);
+    String serviceCode;
+    String ccdCaseType;
 
     @Before
     public void setUp() throws Exception {
@@ -45,8 +47,7 @@ public class LrdApiControllerTest {
     @Test
     public void testRetrieveOrgServiceDetailsByServiceCode() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
-        String serviceCode = "AAA1";
-        String ccdCaseType = null;
+        serviceCode = "AAA1";
         when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
@@ -58,8 +59,7 @@ public class LrdApiControllerTest {
     @Test
     public void testRetrieveOrgServiceDetailsByCcdCaseType() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
-        String serviceCode = null;
-        String ccdCaseType = "ccdCaseType1";
+        ccdCaseType = "ccdCaseType1";
         when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
@@ -71,8 +71,6 @@ public class LrdApiControllerTest {
     @Test
     public void testRetrieveOrgServiceDetailsByDefaultRequestParamsNull() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
-        String serviceCode = null;
-        String ccdCaseType = null;
         when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
@@ -84,8 +82,8 @@ public class LrdApiControllerTest {
     @Test(expected = InvalidRequestException.class)
     public void testRetrieveOrgServiceDetailsShouldThrowExceptionWhenBothParamValuesPresent() {
         final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
-        String serviceCode = "AAA1";
-        String ccdCaseType = "ccdCaseType1";
+        serviceCode = "AAA1";
+        ccdCaseType = "ccdCaseType1";
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
         assertThat(actual).isNotNull();
