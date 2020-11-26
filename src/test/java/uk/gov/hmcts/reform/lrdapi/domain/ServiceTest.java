@@ -16,11 +16,8 @@ public class ServiceTest {
         OrgUnit orgUnit = new OrgUnit(1L,"orgUnit");
         Service service = new Service();
         service.setServiceId(1L);
-        service.setOrgUnitId(1L);
         service.setOrgUnit(orgUnit);
-        service.setBusinessAreaId(1L);
         service.setServiceCode("AAA1");
-        service.setJurisdictionId(1L);
         service.setServiceDescription("Insolvency");
         service.setServiceShortDescription("Insolvency");
         OrgSubBusinessArea orgSubBusArea = new OrgSubBusinessArea(1L, "OrgSubBusinessArea");
@@ -40,8 +37,6 @@ public class ServiceTest {
         service.setServiceToCcdCaseTypeAssocs(serviceToCcdCaseTypeAssocs);
 
         assertThat(service).isNotNull();
-        assertThat(service.getOrgUnitId()).isEqualTo(1L);
-        assertThat(service.getBusinessAreaId()).isEqualTo(1L);
         assertThat(service.getServiceCode()).isEqualTo("AAA1");
         assertThat(service.getJurisdiction()).isNotNull();
         assertThat(service.getJurisdiction().getJurisdictionId()).isEqualTo(1L);

@@ -11,7 +11,6 @@ import uk.gov.hmcts.reform.idam.client.IdamApi;
 @EnableJpaAuditing
 @EnableJpaRepositories
 @SpringBootApplication
-@EnableCircuitBreaker
 @EnableFeignClients(basePackages = {
     "uk.gov.hmcts.reform.lrdapi" },
     basePackageClasses = { IdamApi.class }

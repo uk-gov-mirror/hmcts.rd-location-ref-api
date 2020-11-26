@@ -17,9 +17,9 @@ public class ServiceToCcdCaseTypeAssocTest {
         Service service = new Service();
         service.setServiceId(1L);
         service.setOrgUnit(orgUnit);
-        service.setBusinessAreaId(1L);
+//        service.setBusinessAreaId(1L);
         service.setServiceCode("AAA1");
-        service.setJurisdictionId(1L);
+        // service.setJurisdictionId(1L);
         service.setServiceDescription("Insolvency");
         service.setServiceShortDescription("Insolvency");
         service.setLastUpdate(LocalDateTime.now());
