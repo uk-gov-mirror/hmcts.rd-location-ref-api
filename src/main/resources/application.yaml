@@ -15,9 +15,10 @@ management:
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
+        default_schema: locrefdata
         jdbc:
           lob:
             non_contextual_creation: true
@@ -41,10 +42,12 @@ spring:
   flyway:
     enabled: true
     locations: ${LOCATIONS_DB:classpath:db/migration,classpath:db/postgres}
+    schemas:
+      - locrefdata
   ### database configuration
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:locrefdata}
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5458}/${POSTGRES_DB_NAME:dbrdlocationref}?currentSchema=locrefdata
     username: ${POSTGRES_USERNAME:dbrdlocationref}
     password: ${POSTGRES_PASSWORD:dbrdlocationref}
     min-idle: 1
@@ -82,7 +85,6 @@ security:
     - "/csrf"
     - "/error"
     - "/favicon.ico"
-    - "/refdata/location/orgServices"
 ### dependency configuration
 idam:
   s2s-auth:
