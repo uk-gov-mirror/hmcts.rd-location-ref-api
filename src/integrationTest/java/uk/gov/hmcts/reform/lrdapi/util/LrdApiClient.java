@@ -62,6 +62,7 @@ public class LrdApiClient {
 
     public Object findOrgServiceDetailsByCcdCaseType(String ccdCaseType, Class expectedClass) throws
         JsonProcessingException {
+
         ResponseEntity<Object> responseEntity = getRequest(APP_BASE_PATH + "?ccdCaseType={ccdCaseType}",
                                                            expectedClass, ccdCaseType);
         return mapApiResponse(responseEntity,expectedClass);

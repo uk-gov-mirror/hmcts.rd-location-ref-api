@@ -1,44 +1,52 @@
 package uk.gov.hmcts.reform.lrdapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import uk.gov.hmcts.reform.lrdapi.controllers.advice.ErrorResponse;
 import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
+import uk.gov.hmcts.reform.lrdapi.util.CustomSerenityRunner;
+import uk.gov.hmcts.reform.lrdapi.util.ToggleEnable;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.hmcts.reform.lrdapi.util.CustomSerenityRunner.getFeatureFlagName;
+import static uk.gov.hmcts.reform.lrdapi.util.FeatureConditionEvaluation.FORBIDDEN_EXCEPTION_LD;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@RunWith(CustomSerenityRunner.class)
 @WithTags({@WithTag("testType:Functional")})
 @ActiveProfiles("functional")
-public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunctionalTest {
+public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFunctionalTest {
 
-
+    public static final String mapKey = "LrdApiController.retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType";
 
     @SuppressWarnings("unchecked")
     @Test
+    @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByServiceCodeWithStatusCode_200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,"?serviceCode=AAA6");
-
+            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "?serviceCode=AAA6");
         assertThat(responses.size()).isEqualTo(1);
         responseVerification(responses);
     }
 
     @SuppressWarnings("unchecked")
     @Test
+    @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByCcdCaseTypeWithStatusCode_200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,
-                                                                            "?ccdCaseType=MONEYCLAIMCASE");
+            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(
+                HttpStatus.OK,
+                "?ccdCaseType=MONEYCLAIMCASE"
+            );
 
         assertThat(responses.size()).isEqualTo(1);
         responseVerification(responses);
@@ -46,12 +54,25 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
 
     @SuppressWarnings("unchecked")
     @Test
+    @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByDefaultAll_200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK,"");
+            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "");
 
         assertThat(responses.size()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    @ToggleEnable(mapKey = mapKey, withFeature = false)
+    public void should_retrieve_403_when_Api_toggled_off() {
+        String exceptionMessage = getFeatureFlagName().concat(SPACE).concat(FORBIDDEN_EXCEPTION_LD);
+        validateErrorResponse(
+            (ErrorResponse) lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(
+                HttpStatus.FORBIDDEN, ""),
+            exceptionMessage,
+            exceptionMessage
+        );
     }
 
     private void responseVerification(List<LrdOrgInfoServiceResponse> responses) throws JsonProcessingException {
@@ -70,6 +91,11 @@ public class RetrieveOrgServiceDetailsFunctionalTest  extends AuthorizationFunct
             assertThat(response.getCcdCaseTypes().size()).isGreaterThanOrEqualTo(1);
 
         });
+    }
 
+    public void validateErrorResponse(ErrorResponse errorResponse, String expectedErrorMessage,
+                                      String expectedErrorDescription) {
+        assertThat(errorResponse.getErrorDescription()).isEqualTo(expectedErrorDescription);
+        assertThat(errorResponse.getErrorMessage()).isEqualTo(expectedErrorMessage);
     }
 }
