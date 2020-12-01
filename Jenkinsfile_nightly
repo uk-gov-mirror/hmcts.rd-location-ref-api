@@ -22,7 +22,8 @@ def secrets = [
   ],
   'rd-${env}': [
     secret('LOC-REF-OAUTH2-CLIENT-SECRET', 'LOC_REF_OAUTH2_CLIENT_SECRET'),
-    secret('LOC-REF-OAUTH2-CLIENT-ID', 'LOC_REF_OAUTH2_CLIENT_ID')
+    secret('LOC-REF-OAUTH2-CLIENT-ID', 'LOC_REF_OAUTH2_CLIENT_ID'),
+    secret('LD-SDK-KEY', 'LD_SDK_KEY'),
   ]
 ]
 
@@ -46,6 +47,7 @@ withNightlyPipeline(type, product, component) {
   env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
   env.TEST_URL = "http://rd-location-ref-api-aat.service.core-compute-aat.internal"
   env.Rules = params.SecurityRules
+  env.execution_environment = "aat"
 
   overrideVaultEnvironments(vaultOverrides)
   loadVaultSecrets(secrets)
