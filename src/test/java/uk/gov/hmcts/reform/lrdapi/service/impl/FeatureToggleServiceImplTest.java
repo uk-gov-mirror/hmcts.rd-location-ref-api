@@ -15,7 +15,7 @@ public class FeatureToggleServiceImplTest {
     @Test
     public void testIsFlagEnabled() {
         flaFeatureToggleService = new FeatureToggleServiceImpl(ldClient, "rd");
-        assertFalse(flaFeatureToggleService.isFlagEnabled("lrd", "lrd-get-org-services-flag"));
+        assertFalse(flaFeatureToggleService.isFlagEnabled("lrd", "lrd-get-org-services-flag-mock"));
     }
 
     @Test
