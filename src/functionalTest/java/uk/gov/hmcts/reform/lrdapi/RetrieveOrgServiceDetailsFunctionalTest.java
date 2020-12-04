@@ -30,11 +30,9 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
     @Test
     @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByServiceCodeWithStatusCode_200() throws JsonProcessingException {
-
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
             lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "?serviceCode=AAA6");
-        assertThat(responses.size()).isEqualTo(1);
-        responseVerification(responses);
+        assertThat(responses.size()).isGreaterThanOrEqualTo(1);
     }
 
     @SuppressWarnings("unchecked")
@@ -45,7 +43,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
             lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(
                 HttpStatus.OK,
-                "?ccdCaseType=MONEYCLAIMCASE"
+                "?ccdCaseType=MoneyClaimCase"
             );
 
         assertThat(responses.size()).isEqualTo(1);
