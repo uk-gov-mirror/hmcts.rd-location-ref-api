@@ -43,7 +43,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
             lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(
                 HttpStatus.OK,
-                "?ccdCaseType=MONEYCLAIMCASE"
+                "?ccdCaseType=MoneyClaimCase"
             );
 
         assertThat(responses.size()).isEqualTo(1);
