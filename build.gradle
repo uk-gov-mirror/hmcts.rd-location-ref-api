@@ -320,6 +320,8 @@ dependencies {
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
     compile group:"org.yaml", name: "snakeyaml", version:"1.27"
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.24.Final'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
