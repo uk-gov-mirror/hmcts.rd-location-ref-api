@@ -64,7 +64,7 @@ public class LrdServiceImplTest {
         serviceToCcdCaseTypeAssoc.setService(service);
         services.add(service);
         when(serviceRepository.findByServiceCode(any())).thenReturn(service);
-        when(serToCcdCsTypeRep.findByCcdCaseType(any())).thenReturn(serviceToCcdCaseTypeAssoc);
+        when(serToCcdCsTypeRep.findByCcdCaseTypeIgnoreCase(any())).thenReturn(serviceToCcdCaseTypeAssoc);
         when(serviceRepository.findAll()).thenReturn(services);
 
     }
@@ -86,7 +86,7 @@ public class LrdServiceImplTest {
         lrdOrgInfoServiceResponses = sut.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode,ccdCaseType);
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
-        verify(serToCcdCsTypeRep, times(1)).findByCcdCaseType(ccdCaseType);
+        verify(serToCcdCsTypeRep, times(1)).findByCcdCaseTypeIgnoreCase(ccdCaseType);
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -102,9 +102,9 @@ public class LrdServiceImplTest {
     public void testShouldThrowExceptionForUnKnownCcdCodeType() {
         String serviceCode = null;
         String ccdCaseType = "ccdcodeType";
-        when(serToCcdCsTypeRep.findByCcdCaseType(any())).thenReturn(null);
+        when(serToCcdCsTypeRep.findByCcdCaseTypeIgnoreCase(any())).thenReturn(null);
         sut.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode,ccdCaseType);
-        verify(serToCcdCsTypeRep,times(1)).findByCcdCaseType(any());
+        verify(serToCcdCsTypeRep,times(1)).findByCcdCaseTypeIgnoreCase(any());
     }
 
     @Test

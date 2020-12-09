@@ -49,6 +49,16 @@ public class RetrieveOrgServiceDetailsIntegrationTest extends LrdAuthorizationEn
     }
 
     @Test
+    public void returnOrgServiceDetailsByCcdCaseTypeIgnoreCaseCode200() throws JsonProcessingException {
+
+        List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
+            lrdApiClient.findOrgServiceDetailsByCcdCaseType(" moneyCLAIMCASE ",LrdOrgInfoServiceResponse[].class);
+
+        assertThat(responses.size()).isEqualTo(1);
+        responseVerification(responses);
+    }
+
+    @Test
     public void doNotReturnOrgServiceDetailsByUnknownCcdCaseTypeCode_404() throws JsonProcessingException {
 
         Map<String, Object> errorResponseMap = (Map<String, Object>)

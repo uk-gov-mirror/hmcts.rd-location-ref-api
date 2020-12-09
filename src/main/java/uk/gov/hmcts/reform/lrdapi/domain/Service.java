@@ -15,15 +15,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -31,7 +28,6 @@ import javax.validation.constraints.Size;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-@SequenceGenerator(name = "service_seq", sequenceName = "service_seq", allocationSize = 1)
 @NamedEntityGraph(
         name = "Service.alljoins",
         attributeNodes = {
@@ -41,7 +37,6 @@ import javax.validation.constraints.Size;
 public class Service implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "service_seq")
     @Column(name = "service_id")
     private Long  serviceId;
 
