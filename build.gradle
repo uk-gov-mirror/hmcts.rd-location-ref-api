@@ -42,7 +42,7 @@ def versions = [
         launchDarklySdk    : "5.0.5"
 ]
 
-mainClassName = 'uk.gov.hmcts.reform.lrdapi.LrdApplication'
+mainClassName = 'uk.gov.hmcts.reform.lrdapi.LrdApiApplication'
 def jarName = 'rd-location-ref-api.jar'
 
 group = 'uk.gov.hmcts.reform.rdlocation'
