@@ -44,7 +44,7 @@ public class LrdServiceImpl implements LrdService {
         } else if (StringUtils.isNotBlank(ccdCaseType)) {
 
             serToCcdCaseType = serviceToCcdCaseTypeAssocRepositry
-                .findByCcdCaseTypeIgnoreCase(ccdCaseType.trim().toUpperCase());
+                .findByCcdCaseTypeIgnoreCase(ccdCaseType.trim());
             servicePojo = serToCcdCaseType != null ? serToCcdCaseType.getService() : null;
             ifServiceResponseNullThrowException(servicePojo);
             orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(servicePojo));
