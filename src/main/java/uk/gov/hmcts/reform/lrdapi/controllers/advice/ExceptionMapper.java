@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpStatusCodeException;
 import uk.gov.hmcts.reform.lrdapi.controllers.constants.ErrorConstants;
+import uk.gov.hmcts.reform.lrdapi.exception.ForbiddenException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,6 +93,11 @@ public class ExceptionMapper {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleForbiddenException(Exception ex) {
         return errorDetailsResponseEntity(ex, FORBIDDEN, ErrorConstants.ACCESS_EXCEPTION.getErrorMessage());
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<Object> handleLaunchDarklyException(Exception ex) {
+        return errorDetailsResponseEntity(ex, FORBIDDEN, ex.getMessage());
     }
 
     private String getTimeStamp() {
