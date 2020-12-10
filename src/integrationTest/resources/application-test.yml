@@ -60,3 +60,8 @@ oidc:
   expiration: 14400000 # milliseconds 4 hours
 
 loggingComponentName: Rd_location_ref_api
+launchdarkly:
+  sdk:
+    key: ${LD_SDK_KEY:test}
+    environment: ${LAUNCH_DARKLY_ENV:local}
+    user: rd

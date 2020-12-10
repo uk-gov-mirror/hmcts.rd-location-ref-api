@@ -32,10 +32,6 @@ public class ServiceToCcdCaseTypeAssoc implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "service_code")
-    @Size(max = 16)
-    private String serviceCode;
-
     @Column(name = "ccd_service_name")
     @Size(max = 256)
     private String ccdServiceName;

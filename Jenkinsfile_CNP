@@ -14,56 +14,68 @@ def secrets = [
   ],
   'rd-${env}': [
     secret('LOC-REF-OAUTH2-CLIENT-SECRET', 'LOC_REF_OAUTH2_CLIENT_SECRET'),
-    secret('LOC-REF-OAUTH2-CLIENT-ID', 'LOC_REF_OAUTH2_CLIENT_ID')
+    secret('LOC-REF-OAUTH2-CLIENT-ID', 'LOC_REF_OAUTH2_CLIENT_ID'),
+    secret('LD-SDK-KEY', 'LD_SDK_KEY')
   ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
-    [$class     : 'AzureKeyVaultSecret',
-     secretType : 'Secret',
-     name       : secretName,
-     version    : '',
-     envVariable: envVar
-    ]
+  [$class     : 'AzureKeyVaultSecret',
+    secretType : 'Secret',
+    name       : secretName,
+    version    : '',
+    envVariable: envVar
+  ]
 }
 
 def vaultOverrides = [
-    'preview' : 'aat',
-    'spreview': 'saat'
+  'preview' : 'aat',
+  'spreview': 'saat'
 ]
+
+// Configure branches to sync with master branch
+def branchesToSync = ['ithc', 'perftest']
 
 withPipeline(type, product, component) {
 
-    overrideVaultEnvironments(vaultOverrides)
-    loadVaultSecrets(secrets)
+  overrideVaultEnvironments(vaultOverrides)
+  loadVaultSecrets(secrets)
 
-    enableDbMigration('rd')
-    disableLegacyDeployment()
-    enableAksStagingDeployment()
+  enableDbMigration('rd')
+  disableLegacyDeployment()
+  enableAksStagingDeployment()
 
-    env.S2S_URL_FOR_TESTS = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
+  // Sync demo and perftest with master branch
+  syncBranchesWithMaster(branchesToSync)
 
+  env.S2S_URL_FOR_TESTS = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+  env.IDAM_URL = "https://idam-api.aat.platform.hmcts.net"
 
-    after('integrationTest:preview') {
-     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
+  before('functionalTest:preview') {
+    env.execution_environment = "preview"
+  }
 
-    after('integrationTest:aat') {
-     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
+  before('functionalTest:aat') {
+    env.execution_environment = "aat"
+  }
 
-    after('functionalTest:preview') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
+  after('integrationTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+  }
 
-    after('functionalTest:aat') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
+  after('integrationTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+  }
 
+  after('functionalTest:preview') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+  }
 
-   enablePactAs([
+  after('functionalTest:aat') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+  }
+
+  enablePactAs([
     AppPipelineDsl.PactRoles.CONSUMER
-   ])
-
+  ])
 }
