@@ -178,6 +178,7 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 
 task migratePostgresDatabase(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
   baselineOnMigrate = true
+  schemas = ['locrefdata']
   if (project.hasProperty("dburl")) {
     url = "jdbc:postgresql://${dburl}"
   }
@@ -305,6 +306,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-oauth2-client"
     compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
     compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '8.20'
+    compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
     implementation "io.github.openfeign:feign-httpclient:10.7.0"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -331,7 +333,6 @@ dependencies {
         'with the subsequent stream. While this would most likely lead to an error and the closure of the HTTP/2 connection, ' +
         'it is possible that information could leak between requests'
     }
-
     compile group: 'org.flywaydb', name: 'flyway-core', version: '5.2.4'
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
 

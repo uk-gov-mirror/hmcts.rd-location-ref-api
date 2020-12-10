@@ -15,11 +15,13 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceRepository;
 import uk.gov.hmcts.reform.lrdapi.repository.ServiceToCcdCaseTypeAssocRepositry;
+import uk.gov.hmcts.reform.lrdapi.service.impl.FeatureToggleServiceImpl;
 import uk.gov.hmcts.reform.lrdapi.util.KeyGenUtil;
 import uk.gov.hmcts.reform.lrdapi.util.LrdApiClient;
 
@@ -35,6 +37,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static java.lang.String.format;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.decodeJwtToken;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.getUserIdAndRoleFromToken;
 
@@ -61,6 +65,9 @@ public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootI
 
     protected LrdApiClient lrdApiClient;
 
+    @MockBean
+    protected FeatureToggleServiceImpl featureToggleService;
+
     @Value("${oidc.issuer}")
     private String issuer;
 
@@ -69,7 +76,7 @@ public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootI
 
     @Before
     public void setUpClient() {
-
+        when(featureToggleService.isFlagEnabled(anyString(), anyString())).thenReturn(true);
         lrdApiClient = new LrdApiClient(port, issuer, expiration);
     }
 

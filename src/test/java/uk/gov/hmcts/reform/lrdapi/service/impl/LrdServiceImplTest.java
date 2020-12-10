@@ -45,9 +45,7 @@ public class LrdServiceImplTest {
         Service service = new Service();
         service.setServiceId(1L);
         service.setOrgUnit(orgUnit);
-        service.setBusinessAreaId(1L);
         service.setServiceCode("AAA1");
-        service.setJurisdictionId(1L);
         service.setServiceDescription("Insolvency");
         service.setServiceShortDescription("Insolvency");
         OrgSubBusinessArea orgSubBusArea = new OrgSubBusinessArea(1L, "OrgSubBusinessArea");

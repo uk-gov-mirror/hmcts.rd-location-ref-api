@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.client.HttpStatusCodeException;
+import uk.gov.hmcts.reform.lrdapi.exception.ForbiddenException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,11 +31,13 @@ public class ExceptionMapperTest {
         EmptyResultDataAccessException emptyResultDataAccessException = new EmptyResultDataAccessException(1);
 
         ResponseEntity<Object> responseEntity
-                = exceptionMapper.handleEmptyResultDataAccessException(emptyResultDataAccessException);
+            = exceptionMapper.handleEmptyResultDataAccessException(emptyResultDataAccessException);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals(emptyResultDataAccessException.getMessage(),
-                ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals(
+            emptyResultDataAccessException.getMessage(),
+            ((ErrorResponse) responseEntity.getBody()).getErrorDescription()
+        );
     }
 
     @Test
@@ -42,10 +45,10 @@ public class ExceptionMapperTest {
         ResourceNotFoundException resourceNotFoundException = new ResourceNotFoundException("Resource not found");
 
         ResponseEntity<Object> responseEntity
-                = exceptionMapper.handleResourceNotFoundException(resourceNotFoundException);
+            = exceptionMapper.handleResourceNotFoundException(resourceNotFoundException);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals("Resource not found", ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals("Resource not found", ((ErrorResponse) responseEntity.getBody()).getErrorDescription());
 
     }
 
@@ -56,7 +59,7 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.handleIllegalArgumentException(exception);
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(exception.getMessage(), ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals(exception.getMessage(), ((ErrorResponse) responseEntity.getBody()).getErrorDescription());
 
     }
 
@@ -67,7 +70,7 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.httpMessageNotReadableExceptionError(exception);
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(exception.getMessage(), ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals(exception.getMessage(), ((ErrorResponse) responseEntity.getBody()).getErrorDescription());
 
     }
 
@@ -78,7 +81,7 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.handleForbiddenException(exception);
 
         assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-        assertEquals(exception.getMessage(), ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals(exception.getMessage(), ((ErrorResponse) responseEntity.getBody()).getErrorDescription());
 
     }
 
@@ -91,7 +94,7 @@ public class ExceptionMapperTest {
 
         ResponseEntity<Object> responseEntity = exceptionMapper.handleHttpStatusException(exception);
         assertNotNull(responseEntity.getStatusCode());
-        assertEquals(exception.getMessage(), ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals(exception.getMessage(), ((ErrorResponse) responseEntity.getBody()).getErrorDescription());
         verify(exception, times(1)).getStatusCode();
 
     }
@@ -103,7 +106,7 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.handleException(exception);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals(exception.getMessage(), ((ErrorResponse)responseEntity.getBody()).getErrorDescription());
+        assertEquals(exception.getMessage(), ((ErrorResponse) responseEntity.getBody()).getErrorDescription());
 
     }
 
@@ -115,8 +118,8 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.customValidationError(invalidRequestException);
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(invalidRequestException.getMessage(), ((ErrorResponse)responseEntity.getBody())
-                .getErrorDescription());
+        assertEquals(invalidRequestException.getMessage(), ((ErrorResponse) responseEntity.getBody())
+            .getErrorDescription());
 
     }
 
@@ -126,9 +129,18 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.getExceptionError(externalApiException);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
-        assertEquals(externalApiException.getMessage(), ((ErrorResponse)responseEntity.getBody())
-                .getErrorDescription());
+        assertEquals(externalApiException.getMessage(), ((ErrorResponse) responseEntity.getBody())
+            .getErrorDescription());
 
+    }
+
+    @Test
+    public void test_handle_launchDarkly_exception() {
+        ForbiddenException forbiddenException = new ForbiddenException("LD Forbidden Exception");
+        ResponseEntity<Object> responseEntity = exceptionMapper.handleLaunchDarklyException(forbiddenException);
+        assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        assertEquals(forbiddenException.getMessage(), ((ErrorResponse) responseEntity.getBody())
+            .getErrorDescription());
     }
 
     @Test
@@ -138,8 +150,8 @@ public class ExceptionMapperTest {
         ResponseEntity<Object> responseEntity = exceptionMapper.duplicateKeyException(duplicateKeyException);
 
         assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
-        assertEquals(duplicateKeyException.getMessage(), ((ErrorResponse)responseEntity.getBody())
-                .getErrorDescription());
+        assertEquals(duplicateKeyException.getMessage(), ((ErrorResponse) responseEntity.getBody())
+            .getErrorDescription());
 
     }
 

@@ -3,8 +3,6 @@ package uk.gov.hmcts.reform.lrdapi.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -40,18 +38,6 @@ public class Service implements Serializable {
     @Column(name = "service_id")
     private Long  serviceId;
 
-    @Column(name = "org_unit_id")
-    private Long orgUnitId;
-
-    @Column(name = "business_area_id")
-    private Long businessAreaId;
-
-    @Column(name = "sub_business_area_id")
-    private Long subBusinessAreaId;
-
-    @Column(name = "jurisdiction_id")
-    private Long  jurisdictionId;
-
     @Column(name = "service_code")
     @Size(max = 16)
     @NaturalId
@@ -68,12 +54,11 @@ public class Service implements Serializable {
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
-    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(targetEntity = ServiceToCcdCaseTypeAssoc.class, mappedBy = "service")
     private List<ServiceToCcdCaseTypeAssoc> serviceToCcdCaseTypeAssocs = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "jurisdiction_id", insertable = false, updatable = false)
+    @JoinColumn(name = "jurisdiction_id",nullable = false, insertable = false, updatable = false)
     private Jurisdiction jurisdiction;
 
     @ManyToOne
