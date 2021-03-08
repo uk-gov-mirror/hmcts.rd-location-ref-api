@@ -309,10 +309,7 @@ dependencies {
     compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: versions.launchDarklySdk
     implementation "io.github.openfeign:feign-httpclient:11.0"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation('org.apache.httpcomponents:httpclient:4.5.13') {
-      because 'Apache HttpClient versions prior to version 4.5.13 can misinterpret malformed authority component in ' +
-        'request URIs passed to the library as java.net.URI object and pick the wrong target host for request execution.'
-    }
+
     implementation('org.hibernate:hibernate-core:5.4.24.Final') {
       because 'A flaw was found in hibernate-core in versions prior to and including 5.4.23.Final. ' +
         'A SQL injection in the implementation of the JPA Criteria API can permit unsanitized literals when a ' +
