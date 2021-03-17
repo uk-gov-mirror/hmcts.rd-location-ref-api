@@ -15,8 +15,8 @@ public class ServiceToCcdCaseTypeAssocRepositoryTest {
 
     @Test
     public void findByServiceCodeTest() {
-        when(serviceToCcdCaseTypeAssocRepositry.findByCcdCaseType(anyString()))
+        when(serviceToCcdCaseTypeAssocRepositry.findByCcdCaseTypeIgnoreCase(anyString()))
             .thenReturn(new ServiceToCcdCaseTypeAssoc());
-        assertNotNull(serviceToCcdCaseTypeAssocRepositry.findByCcdCaseType(anyString()));
+        assertNotNull(serviceToCcdCaseTypeAssocRepositry.findByCcdCaseTypeIgnoreCase(anyString()));
     }
 }

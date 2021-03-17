@@ -5,5 +5,5 @@ import uk.gov.hmcts.reform.lrdapi.domain.ServiceToCcdCaseTypeAssoc;
 
 public interface ServiceToCcdCaseTypeAssocRepositry extends JpaRepository<ServiceToCcdCaseTypeAssoc, Long> {
 
-    ServiceToCcdCaseTypeAssoc findByCcdCaseType(String ccdCaseType);
+    ServiceToCcdCaseTypeAssoc findByCcdCaseTypeIgnoreCase(String ccdCaseType);
 }
