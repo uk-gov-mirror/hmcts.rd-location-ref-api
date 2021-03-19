@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.lrdapi.provider;
 
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
+import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
@@ -38,9 +39,10 @@ import static org.mockito.Mockito.when;
 @Provider("referenceData_location")
 @PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
     host = "${PACT_BROKER_URL:localhost}", port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
-    @VersionSelector(tag = "${PACT_BRANCH_NAME:Dev}")})
+    @VersionSelector(tag = "master")})
 @ContextConfiguration(classes = {LrdApiController.class, LrdServiceImpl.class})
 @TestPropertySource(properties = {"loggingComponentName=LrdApiProviderTest"})
+@IgnoreNoPactsToVerify
 public class LrdApiProviderTest {
 
     @MockBean
@@ -56,16 +58,19 @@ public class LrdApiProviderTest {
     @TestTemplate
     @ExtendWith(PactVerificationInvocationContextProvider.class)
     void pactVerificationTestTemplate(PactVerificationContext context) {
-        context.verifyInteraction();
+        if (context != null) {
+            context.verifyInteraction();
+        }
     }
 
     @BeforeEach
     void before(PactVerificationContext context) {
-        System.getProperties().setProperty("pact.verifier.publishResults", "true");
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
         testTarget.setControllers(
             lrdApiController);
-        context.setTarget(testTarget);
+        if (context != null) {
+            context.setTarget(testTarget);
+        }
 
     }
 
