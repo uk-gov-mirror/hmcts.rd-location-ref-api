@@ -37,9 +37,9 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @Provider("referenceData_location")
-@PactBroker(scheme = "${PACT_BROKER_SCHEME:https}",
-    host = "${PACT_BROKER_URL:pact-broker.platform.hmcts.net}",
-    port = "${PACT_BROKER_PORT:443}", consumerVersionSelectors = {
+@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
+    host = "${PACT_BROKER_URL:localhost}",
+    port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
     @VersionSelector(tag = "master")})
 @ContextConfiguration(classes = {LrdApiController.class, LrdServiceImpl.class})
 @TestPropertySource(properties = {"loggingComponentName=LrdApiProviderTest"})
