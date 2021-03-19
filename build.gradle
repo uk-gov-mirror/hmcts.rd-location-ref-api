@@ -199,15 +199,16 @@ task contract(type: Test) {
 
 }
 
-task runAndPublishConsumerPactTests(type: Test, description: 'Publish pact test to broker.', group: 'Verification') {
-    // Nothing to do here
-    useJUnitPlatform()
+task runProviderPactVerification(type: Test) {
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
     systemProperty 'pact.provider.version', project.pactVersion
 }
 
-runAndPublishConsumerPactTests.finalizedBy pactPublish
+runProviderPactVerification.dependsOn contract
+
+runProviderPactVerification.finalizedBy pactVerify
+
 
 def getCheckedOutGitCommitHash() {
     'git rev-parse --verify --short HEAD'.execute().text.trim()
