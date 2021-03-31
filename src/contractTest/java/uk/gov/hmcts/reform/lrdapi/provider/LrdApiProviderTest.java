@@ -66,7 +66,6 @@ public class LrdApiProviderTest {
 
     @BeforeEach
     void before(PactVerificationContext context) {
-        //System.getProperties().setProperty("pact.verifier.publishResults", "true");
         MockMvcTestTarget testTarget = new MockMvcTestTarget();
         testTarget.setControllers(
             lrdApiController);
