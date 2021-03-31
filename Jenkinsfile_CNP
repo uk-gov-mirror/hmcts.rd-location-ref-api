@@ -1,8 +1,7 @@
 #!groovy
+import uk.gov.hmcts.contino.AppPipelineDsl
 
 @Library("Infrastructure")
-
-import uk.gov.hmcts.contino.AppPipelineDsl
 
 def type = "java"
 def product = "rd"
@@ -35,6 +34,12 @@ def vaultOverrides = [
 
 // Configure branches to sync with master branch
 def branchesToSync = ['ithc', 'perftest']
+
+// Vars for Kubernetes
+env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
+env.PACT_BROKER_URL = 'pact-broker.platform.hmcts.net'
+env.PACT_BROKER_SCHEME = 'https'
+env.PACT_BROKER_PORT = '443'
 
 withPipeline(type, product, component) {
 
@@ -75,7 +80,15 @@ withPipeline(type, product, component) {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
   }
 
-  enablePactAs([
-    AppPipelineDsl.PactRoles.CONSUMER
-  ])
+  onMaster() {
+    enablePactAs([
+      AppPipelineDsl.PactRoles.PROVIDER
+    ])
+  }
+
+  onPR() {
+    enablePactAs([
+            AppPipelineDsl.PactRoles.PROVIDER
+    ])
+  }
 }
