@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse
 import uk.gov.hmcts.reform.lrdapi.service.LrdService;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -62,16 +63,21 @@ public class LrdApiController  {
             )
     })
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(
-        @RequestParam(value = "serviceCode",required = false) String serviceCode,
-        @RequestParam(value = "ccdCaseType",required = false) String ccdCaseType) {
-        log.info("inside retrieveServiceCodeDetailsByServiceCodeOrCcdCaseType");
+    public ResponseEntity<Object> retrieveOrgServiceDetails(
+        @RequestParam(value = "serviceCode", required = false) String serviceCode,
+        @RequestParam(value = "ccdCaseType", required = false) String ccdCaseType,
+        @RequestParam(value = "ccdServiceName", required = false) String ccdServiceName) {
+        log.info("Inside retrieveOrgServiceDetails");
         List<LrdOrgInfoServiceResponse> lrdOrgInfoServiceResponse = null;
-        if (StringUtils.isNotBlank(serviceCode) && StringUtils.isNotBlank(ccdCaseType)) {
 
-            throw new InvalidRequestException("Request contains both serviceCode and ccdCasetype values");
+        long requestParamSize = Stream.of(serviceCode, ccdCaseType, ccdServiceName)
+            .filter(StringUtils::isNotBlank)
+            .count();
+        if (requestParamSize > 1) {
+            throw new InvalidRequestException("Please provide only 1 of 3 params: "
+                                                  + "serviceCode, ccdCaseType, ccdServiceName ");
         }
-        lrdOrgInfoServiceResponse = lrdService.findByServiceCodeOrCcdCaseTypeOrDefault(serviceCode, ccdCaseType);
+        lrdOrgInfoServiceResponse = lrdService.retrieveOrgServiceDetails(serviceCode, ccdCaseType);
         return ResponseEntity.status(200).body(lrdOrgInfoServiceResponse);
     }
 

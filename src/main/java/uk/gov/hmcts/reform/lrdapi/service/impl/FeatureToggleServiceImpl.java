@@ -34,7 +34,7 @@ public class FeatureToggleServiceImpl implements FeatureToggleService {
     public void mapServiceToFlag() {
         launchDarklyMap = new HashMap<>();
         launchDarklyMap.put(
-            "LrdApiController.retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType",
+            "LrdApiController.retrieveOrgServiceDetails",
             "lrd-get-org-services-flag"
         );
     }

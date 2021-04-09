@@ -29,8 +29,8 @@ public class LrdServiceImpl implements LrdService {
     ServiceToCcdCaseTypeAssocRepositry serviceToCcdCaseTypeAssocRepositry;
 
     @Override
-    public List<LrdOrgInfoServiceResponse> findByServiceCodeOrCcdCaseTypeOrDefault(String serviceCode,
-                                                                                   String ccdCaseType) {
+    public List<LrdOrgInfoServiceResponse> retrieveOrgServiceDetails(String serviceCode,
+                                                                     String ccdCaseType) {
         Service servicePojo = null;
         ServiceToCcdCaseTypeAssoc serToCcdCaseType = null;
         List<Service> services = null;

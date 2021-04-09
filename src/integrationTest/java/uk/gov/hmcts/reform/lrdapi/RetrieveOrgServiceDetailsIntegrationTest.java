@@ -87,7 +87,7 @@ public class RetrieveOrgServiceDetailsIntegrationTest extends LrdAuthorizationEn
         throws Exception {
         Map<String, String> launchDarklyMap = new HashMap<>();
         launchDarklyMap.put(
-            "LrdApiController.retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType",
+            "LrdApiController.retrieveOrgServiceDetails",
             "lrd-disable-retrieve-org"
         );
         when(featureToggleService.isFlagEnabled(anyString(), anyString())).thenReturn(false);

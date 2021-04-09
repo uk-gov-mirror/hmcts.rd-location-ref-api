@@ -36,6 +36,7 @@ public class LrdApiControllerTest {
     HttpServletRequest httpRequest = mock(HttpServletRequest.class);
     String serviceCode;
     String ccdCaseType;
+    String ccdServiceName;
 
     @Before
     public void setUp() throws Exception {
@@ -48,35 +49,35 @@ public class LrdApiControllerTest {
     public void testRetrieveOrgServiceDetailsByServiceCode() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
         serviceCode = "AAA1";
-        when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
+        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
-            .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
-        verify(lrdServiceMock, times(1)).findByServiceCodeOrCcdCaseTypeOrDefault(any(),any());
+        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any());
     }
 
     @Test
     public void testRetrieveOrgServiceDetailsByCcdCaseType() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
         ccdCaseType = "ccdCaseType1";
-        when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
+        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
-            .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
-        verify(lrdServiceMock, times(1)).findByServiceCodeOrCcdCaseTypeOrDefault(any(),any());
+        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any());
     }
 
     @Test
     public void testRetrieveOrgServiceDetailsByDefaultRequestParamsNull() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
-        when(lrdServiceMock.findByServiceCodeOrCcdCaseTypeOrDefault(any(),any())).thenReturn(lrdOrgInfoServiceResponse);
+        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any())).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
-            .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
-        verify(lrdServiceMock, times(1)).findByServiceCodeOrCcdCaseTypeOrDefault(any(),any());
+        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any());
     }
 
     @Test(expected = InvalidRequestException.class)
@@ -85,9 +86,45 @@ public class LrdApiControllerTest {
         serviceCode = "AAA1";
         ccdCaseType = "ccdCaseType1";
         ResponseEntity<?> actual = lrdApiController
-            .retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType(serviceCode,ccdCaseType);
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
     }
 
+    //1. Validate that only 1 out of 3 query params are being passed. Use null and empty values for testing
+    @Test(expected = InvalidRequestException.class)
+    public void testRetrieveOrgServiceDetailsShouldThrowExceptionWhenMultipleParamValuesPresent() {
+        final HttpStatus expectedHttpStatus = HttpStatus.BAD_REQUEST;
+        serviceCode = "AAA1";
+        ccdCaseType = "ccdCaseType1";
+        ccdServiceName = "fpla";
+        ResponseEntity<?> actual = lrdApiController
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
+    }
+
+    @Test
+    public void testRetrieveOrgServiceDetailsShouldPassForNullAndBlankValuesScenario1() {
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
+        serviceCode = "";
+        ccdCaseType = null;
+        ccdServiceName = "fpla";
+        ResponseEntity<?> actual = lrdApiController
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
+    }
+
+    @Test
+    public void testRetrieveOrgServiceDetailsShouldPassForNullAndBlankValuesScenario2() {
+        final HttpStatus expectedHttpStatus = HttpStatus.OK;
+        serviceCode = "";
+        ccdCaseType = null;
+        ccdServiceName = "";
+        ResponseEntity<?> actual = lrdApiController
+            .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
+    }
 }

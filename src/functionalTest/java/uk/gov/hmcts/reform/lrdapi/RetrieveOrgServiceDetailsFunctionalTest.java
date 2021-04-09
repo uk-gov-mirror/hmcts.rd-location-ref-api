@@ -25,7 +25,7 @@ import static uk.gov.hmcts.reform.lrdapi.util.FeatureConditionEvaluation.FORBIDD
 @ActiveProfiles("functional")
 public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFunctionalTest {
 
-    public static final String mapKey = "LrdApiController.retrieveOrgServiceDetailsByServiceCodeOrCcdCaseType";
+    public static final String mapKey = "LrdApiController.retrieveOrgServiceDetails";
 
     @SuppressWarnings("unchecked")
     @Test
