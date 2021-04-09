@@ -49,35 +49,35 @@ public class LrdApiControllerTest {
     public void testRetrieveOrgServiceDetailsByServiceCode() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
         serviceCode = "AAA1";
-        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any())).thenReturn(lrdOrgInfoServiceResponse);
+        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any(), )).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
-        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any());
+        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any(), );
     }
 
     @Test
     public void testRetrieveOrgServiceDetailsByCcdCaseType() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
         ccdCaseType = "ccdCaseType1";
-        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any())).thenReturn(lrdOrgInfoServiceResponse);
+        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any(), )).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
-        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any());
+        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any(), );
     }
 
     @Test
     public void testRetrieveOrgServiceDetailsByDefaultRequestParamsNull() {
         final HttpStatus expectedHttpStatus = HttpStatus.OK;
-        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any())).thenReturn(lrdOrgInfoServiceResponse);
+        when(lrdServiceMock.retrieveOrgServiceDetails(any(), any(), )).thenReturn(lrdOrgInfoServiceResponse);
         ResponseEntity<?> actual = lrdApiController
             .retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
         assertThat(actual).isNotNull();
         assertThat(actual.getStatusCode()).isEqualTo(expectedHttpStatus);
-        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any());
+        verify(lrdServiceMock, times(1)).retrieveOrgServiceDetails(any(), any(), );
     }
 
     @Test(expected = InvalidRequestException.class)

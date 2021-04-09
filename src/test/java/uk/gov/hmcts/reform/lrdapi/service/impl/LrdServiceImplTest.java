@@ -70,7 +70,7 @@ public class LrdServiceImplTest {
     @Test
     public void testRetrieveAnOrgServiceDetailsByServiceCode() {
         String serviceCode = "AAA1";
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, null);
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, null, );
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
         verify(serviceRepository, times(1)).findByServiceCode(serviceCode);
@@ -81,7 +81,7 @@ public class LrdServiceImplTest {
     public void testRetrieveAnOrgServiceDetailsByCcdCodeType() {
         String serviceCode = null;
         String ccdCaseType = "CCDCASETYPE1";
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType);
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, );
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
         verify(serToCcdCsTypeRep, times(1)).findByCcdCaseTypeIgnoreCase(ccdCaseType);
@@ -92,7 +92,7 @@ public class LrdServiceImplTest {
         String serviceCode = "serviceCode";
         String ccdCaseType = null;
         when(serviceRepository.findByServiceCode(any())).thenReturn(null);
-        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType);
+        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, );
         verify(serviceRepository,times(1)).findByServiceCode(any());
     }
 
@@ -101,7 +101,7 @@ public class LrdServiceImplTest {
         String serviceCode = null;
         String ccdCaseType = "ccdcodeType";
         when(serToCcdCsTypeRep.findByCcdCaseTypeIgnoreCase(any())).thenReturn(null);
-        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType);
+        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, );
         verify(serToCcdCsTypeRep,times(1)).findByCcdCaseTypeIgnoreCase(any());
     }
 
@@ -109,7 +109,7 @@ public class LrdServiceImplTest {
     public void testRetrieveAnOrgServiceDetailsByDefaultWithoutAnyQueryFormsInTheRequest() {
         String serviceCode = null;
         String ccdCaseType = null;
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null);
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null, );
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
         verify(serviceRepository, times(1)).findAll();
@@ -121,7 +121,7 @@ public class LrdServiceImplTest {
         String serviceCode = null;
         String ccdCaseType = null;
         when(serviceRepository.findAll()).thenReturn(null);
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null);
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null, );
         assertThat(lrdOrgInfoServiceResponses).isNull();
         verify(serviceRepository,times(1)).findAll();
     }

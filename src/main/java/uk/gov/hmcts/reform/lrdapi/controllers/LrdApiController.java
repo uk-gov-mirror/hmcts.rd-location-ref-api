@@ -66,18 +66,18 @@ public class LrdApiController  {
     public ResponseEntity<Object> retrieveOrgServiceDetails(
         @RequestParam(value = "serviceCode", required = false) String serviceCode,
         @RequestParam(value = "ccdCaseType", required = false) String ccdCaseType,
-        @RequestParam(value = "ccdServiceName", required = false) String ccdServiceName) {
+        @RequestParam(value = "ccdServiceNames", required = false) String ccdServiceNames) {
         log.info("Inside retrieveOrgServiceDetails");
         List<LrdOrgInfoServiceResponse> lrdOrgInfoServiceResponse = null;
 
-        long requestParamSize = Stream.of(serviceCode, ccdCaseType, ccdServiceName)
+        long requestParamSize = Stream.of(serviceCode, ccdCaseType, ccdServiceNames)
             .filter(StringUtils::isNotBlank)
             .count();
         if (requestParamSize > 1) {
             throw new InvalidRequestException("Please provide only 1 of 3 params: "
-                                                  + "serviceCode, ccdCaseType, ccdServiceName ");
+                                                  + "serviceCode, ccdCaseType, ccdServiceNames ");
         }
-        lrdOrgInfoServiceResponse = lrdService.retrieveOrgServiceDetails(serviceCode, ccdCaseType);
+        lrdOrgInfoServiceResponse = lrdService.retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceNames);
         return ResponseEntity.status(200).body(lrdOrgInfoServiceResponse);
     }
 
