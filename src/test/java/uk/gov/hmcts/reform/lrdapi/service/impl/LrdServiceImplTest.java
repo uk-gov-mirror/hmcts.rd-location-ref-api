@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -41,7 +42,7 @@ public class LrdServiceImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        OrgUnit orgUnit = new OrgUnit(1L,"orgUnit");
+        OrgUnit orgUnit = new OrgUnit(1L, "orgUnit");
         Service service = new Service();
         service.setServiceId(1L);
         service.setOrgUnit(orgUnit);
@@ -63,6 +64,7 @@ public class LrdServiceImplTest {
         services.add(service);
         when(serviceRepository.findByServiceCode(any())).thenReturn(service);
         when(serToCcdCsTypeRep.findByCcdCaseTypeIgnoreCase(any())).thenReturn(serviceToCcdCaseTypeAssoc);
+        when(serToCcdCsTypeRep.findByCcdServiceNameInIgnoreCase(any())).thenReturn(List.of(serviceToCcdCaseTypeAssoc));
         when(serviceRepository.findAll()).thenReturn(services);
 
     }
@@ -70,7 +72,7 @@ public class LrdServiceImplTest {
     @Test
     public void testRetrieveAnOrgServiceDetailsByServiceCode() {
         String serviceCode = "AAA1";
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, null, );
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, null, null);
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
         verify(serviceRepository, times(1)).findByServiceCode(serviceCode);
@@ -81,7 +83,7 @@ public class LrdServiceImplTest {
     public void testRetrieveAnOrgServiceDetailsByCcdCodeType() {
         String serviceCode = null;
         String ccdCaseType = "CCDCASETYPE1";
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, );
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, null);
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
         verify(serToCcdCsTypeRep, times(1)).findByCcdCaseTypeIgnoreCase(ccdCaseType);
@@ -92,8 +94,8 @@ public class LrdServiceImplTest {
         String serviceCode = "serviceCode";
         String ccdCaseType = null;
         when(serviceRepository.findByServiceCode(any())).thenReturn(null);
-        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, );
-        verify(serviceRepository,times(1)).findByServiceCode(any());
+        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, null);
+        verify(serviceRepository, times(1)).findByServiceCode(any());
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
@@ -101,15 +103,16 @@ public class LrdServiceImplTest {
         String serviceCode = null;
         String ccdCaseType = "ccdcodeType";
         when(serToCcdCsTypeRep.findByCcdCaseTypeIgnoreCase(any())).thenReturn(null);
-        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, );
-        verify(serToCcdCsTypeRep,times(1)).findByCcdCaseTypeIgnoreCase(any());
+        sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, null);
+        verify(serToCcdCsTypeRep, times(1)).findByCcdCaseTypeIgnoreCase(any());
     }
 
     @Test
     public void testRetrieveAnOrgServiceDetailsByDefaultWithoutAnyQueryFormsInTheRequest() {
         String serviceCode = null;
         String ccdCaseType = null;
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null, );
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null,
+                                                                   null);
         assertThat(lrdOrgInfoServiceResponses).isNotNull();
         assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
         verify(serviceRepository, times(1)).findAll();
@@ -121,9 +124,45 @@ public class LrdServiceImplTest {
         String serviceCode = null;
         String ccdCaseType = null;
         when(serviceRepository.findAll()).thenReturn(null);
-        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null, );
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(null, null, null);
         assertThat(lrdOrgInfoServiceResponses).isNull();
-        verify(serviceRepository,times(1)).findAll();
+        verify(serviceRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testRetrieveAnOrgServiceDetailsByCcdServiceName() {
+        String serviceCode = null;
+        String ccdCaseType = "";
+        String ccdServiceName = "CCDSERVICENAME,  CMC ";
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
+        assertThat(lrdOrgInfoServiceResponses).isNotNull();
+        assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
+        verify(serToCcdCsTypeRep, times(1)).findByCcdServiceNameInIgnoreCase(anyList());
+    }
+
+    @Test
+    public void testRetrieveAnOrgServiceDetailsForCcdServiceNameAllScenario() {
+        String serviceCode = null;
+        String ccdCaseType = null;
+        String ccdServiceName = "All";
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
+
+        assertThat(lrdOrgInfoServiceResponses).isNotNull();
+        assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
+        verify(serviceRepository, times(1)).findAll();
+
+    }
+
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void testRetrieveAnOrgServiceDetailsByCcdServiceNameShouldThrowException() {
+        String serviceCode = null;
+        String ccdCaseType = "";
+        String ccdServiceName = "CCDSERVICENAME,  CMC ";
+        when(serToCcdCsTypeRep.findByCcdServiceNameInIgnoreCase(any())).thenReturn(List.of());
+        lrdOrgInfoServiceResponses = sut.retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceName);
+        assertThat(lrdOrgInfoServiceResponses).isNotNull();
+        assertThat(lrdOrgInfoServiceResponses.size()).isEqualTo(1);
+        verify(serToCcdCsTypeRep, times(1)).findByCcdServiceNameInIgnoreCase(anyList());
     }
 
 }
