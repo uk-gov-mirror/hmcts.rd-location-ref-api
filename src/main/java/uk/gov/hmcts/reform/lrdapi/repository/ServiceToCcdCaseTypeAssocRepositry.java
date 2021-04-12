@@ -9,5 +9,6 @@ public interface ServiceToCcdCaseTypeAssocRepositry extends JpaRepository<Servic
 
     ServiceToCcdCaseTypeAssoc findByCcdCaseTypeIgnoreCase(String ccdCaseType);
 
-    List<ServiceToCcdCaseTypeAssoc> findByCcdServiceNameInEqualsIgnoreCase(List<String> ccdServiceNames);
+    //List<ServiceToCcdCaseTypeAssoc> findByCcdServiceNameInEqualsIgnoreCase(List<String> ccdCaseType);
+    List<ServiceToCcdCaseTypeAssoc> findByCcdServiceNameInIgnoreCase(List<String> ccdServiceName);
 }

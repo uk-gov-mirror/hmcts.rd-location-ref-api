@@ -56,10 +56,10 @@ public class LrdServiceImpl implements LrdService {
             orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(servicePojo));
 
         } else if (StringUtils.isNotBlank(ccdServiceNames) && !ccdServiceNames.equalsIgnoreCase(ALL)) {
-            List<String> serviceNameList = Arrays.asList(ccdServiceNames.split(COMMA));
+           List<String> serviceNameList = Arrays.asList(ccdServiceNames.split(COMMA));
 
             List<ServiceToCcdCaseTypeAssoc> serviceToCcdCaseTypeAssocs = serviceToCcdCaseTypeAssocRepositry
-                .findByCcdServiceNameInEqualsIgnoreCase(serviceNameList
+                .findByCcdServiceNameInIgnoreCase(serviceNameList
                                                             .stream()
                                                             .map(String::trim)
                                                             .collect(Collectors.toList()));
