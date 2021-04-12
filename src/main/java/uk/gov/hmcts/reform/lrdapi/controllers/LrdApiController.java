@@ -75,7 +75,7 @@ public class LrdApiController  {
             .count();
         if (requestParamSize > 1) {
             throw new InvalidRequestException("Please provide only 1 of 3 params: "
-                                                  + "serviceCode, ccdCaseType, ccdServiceNames ");
+                                                  + "serviceCode, ccdCaseType, ccdServiceNames.");
         }
         lrdOrgInfoServiceResponse = lrdService.retrieveOrgServiceDetails(serviceCode, ccdCaseType, ccdServiceNames);
         return ResponseEntity.status(200).body(lrdOrgInfoServiceResponse);

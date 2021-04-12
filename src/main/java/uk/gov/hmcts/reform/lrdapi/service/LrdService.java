@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface LrdService {
 
-    List<LrdOrgInfoServiceResponse> retrieveOrgServiceDetails(String serviceCode, String ccdCode, String ccdServiceName);
+    List<LrdOrgInfoServiceResponse> retrieveOrgServiceDetails(String serviceCode,
+                                                              String ccdCode, String ccdServiceNames);
 }
