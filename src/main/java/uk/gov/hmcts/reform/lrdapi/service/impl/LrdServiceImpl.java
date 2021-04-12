@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse;
 import uk.gov.hmcts.reform.lrdapi.domain.Service;
 import uk.gov.hmcts.reform.lrdapi.domain.ServiceToCcdCaseTypeAssoc;
@@ -13,7 +14,12 @@ import uk.gov.hmcts.reform.lrdapi.repository.ServiceToCcdCaseTypeAssocRepositry;
 import uk.gov.hmcts.reform.lrdapi.service.LrdService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.reform.lrdapi.controllers.constants.LocationRefConstants.ALL;
+import static uk.gov.hmcts.reform.lrdapi.controllers.constants.LocationRefConstants.COMMA;
 
 @org.springframework.stereotype.Service
 @Slf4j
@@ -30,7 +36,7 @@ public class LrdServiceImpl implements LrdService {
 
     @Override
     public List<LrdOrgInfoServiceResponse> retrieveOrgServiceDetails(String serviceCode,
-                                                                     String ccdCaseType) {
+                                                                     String ccdCaseType, String ccdServiceNames) {
         Service servicePojo = null;
         ServiceToCcdCaseTypeAssoc serToCcdCaseType = null;
         List<Service> services = null;
@@ -49,7 +55,24 @@ public class LrdServiceImpl implements LrdService {
             ifServiceResponseNullThrowException(servicePojo);
             orgInfoServiceResponses.add(new LrdOrgInfoServiceResponse(servicePojo));
 
-        } else {
+        } else if (StringUtils.isNotBlank(ccdServiceNames) && !ccdServiceNames.equalsIgnoreCase(ALL)) {
+            List<String> serviceNameList = Arrays.asList(ccdServiceNames.split(COMMA));
+
+            List<ServiceToCcdCaseTypeAssoc> serviceToCcdCaseTypeAssocs = serviceToCcdCaseTypeAssocRepositry
+                .findByCcdServiceNameInEqualsIgnoreCase(serviceNameList
+                                                            .stream()
+                                                            .map(String::trim)
+                                                            .collect(Collectors.toList()));
+
+            if (CollectionUtils.isEmpty(serviceToCcdCaseTypeAssocs)) {
+                throw new EmptyResultDataAccessException(0);
+            }
+            serviceToCcdCaseTypeAssocs.forEach(association ->
+                                                   orgInfoServiceResponses.add(
+                                                       new LrdOrgInfoServiceResponse(association.getService())));
+
+        }
+        else {
 
             services = serviceRepository.findAll();
 
