@@ -3,7 +3,7 @@ create table region (
 	description varchar(256),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT region_id_pk PRIMARY KEY ("region_id")
+	CONSTRAINT region_id_pk PRIMARY KEY (region_id)
 );
 
 create table building_location(
@@ -28,7 +28,7 @@ create table district_family_jurisdiction (
 	description varchar(256),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT district_family_jurisdiction_id_pk PRIMARY KEY ("district_family_jurisdiction_id")
+	CONSTRAINT district_family_jurisdiction_id_pk PRIMARY KEY (district_family_jurisdiction_id)
 );
 
 create table court_district_family_jurisdiction_assoc(
@@ -37,14 +37,14 @@ create table court_district_family_jurisdiction_assoc(
 	court_location_id varchar(16),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT court_district_family_jurisdiction_assoc_id_pk PRIMARY KEY ("court_district_family_jurisdiction_assoc_id"));
+	CONSTRAINT court_district_family_jurisdiction_assoc_id_pk PRIMARY KEY (court_district_family_jurisdiction_assoc_id));
 
 create table district_civil_jurisdiction (
 	district_civil_jurisdiction_id varchar(16) NOT NULL,
 	description varchar(256),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT district_civil_jurisdiction_id_pk PRIMARY KEY ("district_civil_jurisdiction_id")
+	CONSTRAINT district_civil_jurisdiction_id_pk PRIMARY KEY (district_civil_jurisdiction_id)
 
 );
 
@@ -54,7 +54,7 @@ create table court_district_civil_jurisdiction_assoc(
 	court_location_id varchar(16),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT court_district_civil_jurisdiction_assoc_id_pk PRIMARY KEY ("court_district_civil_jurisdiction_assoc_id"));
+	CONSTRAINT court_district_civil_jurisdiction_assoc_id_pk PRIMARY KEY (court_district_civil_jurisdiction_assoc_id));
 
 create table building_loaction_status (
 	building_loaction_status_id varchar(16) NOT NULL,
@@ -72,7 +72,7 @@ create table cluster (
 	welsh_cluster_name varchar(256),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT cluster_id_pk PRIMARY KEY ("cluster_id")
+	CONSTRAINT cluster_id_pk PRIMARY KEY (cluster_id)
 );
 
 create table court_location_category(
@@ -81,7 +81,7 @@ create table court_location_category(
 	welsh_court_location_category varchar(32),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT court_location_category_id_pk PRIMARY KEY ("court_location_category_id")) ;
+	CONSTRAINT court_location_category_id_pk PRIMARY KEY (court_location_category_id)) ;
 
 create table court_location_category_service_assoc(
   court_location_category_service_assoc_id varchar(16) NOT NULL,
@@ -89,7 +89,7 @@ create table court_location_category_service_assoc(
 	court_location_category_id varchar(16),
 	created_time timestamp,
 	updated_time timestamp,
-	CONSTRAINT court_location_category_service_assoc_id_pk PRIMARY KEY ("court_location_category_service_assoc_id")) ;
+	CONSTRAINT court_location_category_service_assoc_id_pk PRIMARY KEY (court_location_category_service_assoc_id)) ;
 
 
 create table building_location_status(
