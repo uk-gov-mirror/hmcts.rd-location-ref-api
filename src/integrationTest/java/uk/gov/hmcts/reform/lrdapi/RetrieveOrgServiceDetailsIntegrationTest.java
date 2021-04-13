@@ -55,6 +55,34 @@ public class RetrieveOrgServiceDetailsIntegrationTest extends LrdAuthorizationEn
     }
 
     @Test
+    public void returnOrgServiceDetailsByCcdServiceName200() throws JsonProcessingException {
+
+        List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
+            lrdApiClient.findOrgServiceDetailsByCcdServiceName("CMC", LrdOrgInfoServiceResponse[].class);
+
+        assertThat(responses.size()).isEqualTo(2);
+        responseVerification(responses);
+    }
+
+    @Test
+    public void returnOrgServiceDetailsByCcdServiceNameAll200() throws JsonProcessingException {
+
+        List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
+            lrdApiClient.findOrgServiceDetailsByCcdServiceName("ALL", LrdOrgInfoServiceResponse[].class);
+
+        assertThat(responses.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void returnOrgServiceDetailsByCcdServiceNameNotFound404() throws JsonProcessingException {
+
+        Map<String, Object> errorResponseMap  = (Map<String, Object>)
+            lrdApiClient.findOrgServiceDetailsByCcdServiceName("someRandomServiceName", ErrorResponse.class);
+
+        assertThat(errorResponseMap.get("http_status").toString()).isEqualTo("404 NOT_FOUND");
+    }
+
+    @Test
     public void returnOrgServiceDetailsByCcdCaseTypeIgnoreCaseCode200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)

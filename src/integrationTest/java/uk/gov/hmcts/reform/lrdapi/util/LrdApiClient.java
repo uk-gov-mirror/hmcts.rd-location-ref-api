@@ -68,6 +68,14 @@ public class LrdApiClient {
         return mapApiResponse(responseEntity,expectedClass);
     }
 
+    public Object findOrgServiceDetailsByCcdServiceName(String ccdServiceNames, Class expectedClass) throws
+        JsonProcessingException {
+
+        ResponseEntity<Object> responseEntity = getRequest(APP_BASE_PATH + "?ccdServiceNames={ccdServiceNames}",
+                                                           expectedClass, ccdServiceNames);
+        return mapApiResponse(responseEntity,expectedClass);
+    }
+
     public Object findOrgServiceDetailsByDefaultAll(Class expectedClass) throws
         JsonProcessingException {
         ResponseEntity<Object> responseEntity = getRequest(APP_BASE_PATH,
