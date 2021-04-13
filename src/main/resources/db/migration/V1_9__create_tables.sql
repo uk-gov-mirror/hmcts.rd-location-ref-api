@@ -8,7 +8,7 @@ create table region (
 
 create table building_location(
 	building_location_id varchar(16),
-	epimms_id integer,
+	epimms_id varchar(16),
 	building_location_name varchar(256),
 	created_time timestamp,
 	updated_time timestamp,
@@ -103,7 +103,7 @@ create table building_location_status(
 
 create table court_location(
 	court_location_id varchar(16),
-	epimms_id integer,
+	epimms_id varchar(16),
 	court_location_name varchar(256),
 	created_time timestamp,
 	updated_time timestamp,
@@ -125,7 +125,7 @@ create table court_location(
 
 create table judicial_location_mapping(
 	judicial_location_mapping_id varchar(16),
-	epimms_id integer,
+	epimms_id varchar(16),
 	judicial_building_location_id varchar(64),
 	created_time timestamp,
 	updated_time timestamp
