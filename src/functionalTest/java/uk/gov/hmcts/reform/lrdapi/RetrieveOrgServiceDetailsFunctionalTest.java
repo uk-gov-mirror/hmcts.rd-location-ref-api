@@ -32,7 +32,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
     public void returnsOrgServiceDetailsByServiceCodeWithStatusCode_200() throws JsonProcessingException {
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
             lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "?serviceCode=AAA6");
-        assertThat(responses.size()).isGreaterThanOrEqualTo(1);
+        assertThat(responses.size()).isPositive();
     }
 
     @SuppressWarnings("unchecked")
@@ -58,7 +58,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
             lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "");
 
-        assertThat(responses.size()).isGreaterThanOrEqualTo(1);
+        assertThat(responses.size()).isPositive();
     }
 
     @Test
@@ -75,8 +75,8 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
 
     private void responseVerification(List<LrdOrgInfoServiceResponse> responses) throws JsonProcessingException {
 
-        responses.stream().forEach(response -> {
-            assertThat(response.getServiceId()).isGreaterThanOrEqualTo(1L);
+        responses.forEach(response -> {
+            assertThat(response.getServiceId()).isPositive();
             assertThat(response.getBusinessArea()).isEqualToIgnoringCase("Civil, Family and Tribunals");
             assertThat(response.getOrgUnit()).isEqualToIgnoringCase("HMCTS");
             assertThat(response.getCcdServiceName()).isNotNull();
@@ -86,7 +86,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
             assertThat(response.getServiceDescription()).isEqualToIgnoringCase("Specified Money Claims");
             assertThat(response.getServiceShortDescription()).isEqualToIgnoringCase("Specified Money Claims");
             assertThat(response.getSubBusinessArea()).isEqualToIgnoringCase("Civil and Family");
-            assertThat(response.getCcdCaseTypes().size()).isGreaterThanOrEqualTo(1);
+            assertThat(response.getCcdCaseTypes().size()).isPositive();
 
         });
     }
