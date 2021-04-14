@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.lrdapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import net.thucydides.core.annotations.WithTag;
 import net.thucydides.core.annotations.WithTags;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpStatus;
