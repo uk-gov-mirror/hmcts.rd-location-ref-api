@@ -60,22 +60,6 @@ spring:
       poolName: LRDHikariCP
       maxLifetime: 1800000
       connectionTimeout: 30000
-    tomcat:
-      max-active: 10
-      max-idle: 10
-      min-idle: 2
-      max-wait: 10000
-      test-on-borrow: true
-      test-on-connect: true
-      test-on-idle: true
-      validation-query: "SELECT 1"
-      time-between-eviction-runs-millis: 10000
-      test-while-idle: true
-      test-on-return: true
-      remove-abandoned: true
-      remove-abandoned-timeout: 60
-      log-abandoned: true
-      abandon-when-percentage-full: 0
 
 security:
   anonymousPaths:
@@ -112,5 +96,3 @@ launchdarkly:
     environment: ${LAUNCH_DARKLY_ENV:local}
     user: rd
 
-logging.level.com.zaxxer.hikari.HikariConfig: DEBUG
-logging.level.com.zaxxer.hikari: DEBUG
