@@ -31,7 +31,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
     @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByServiceCodeWithStatusCode_200() throws JsonProcessingException {
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "?serviceCode=AAA6");
+            lrdApiClient.retrieveOrgServiceInfo(HttpStatus.OK, "?serviceCode=AAA6");
         assertThat(responses.size()).isPositive();
     }
 
@@ -39,9 +39,8 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
     @Test
     @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByCcdCaseTypeWithStatusCode_200() throws JsonProcessingException {
-
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(
+            lrdApiClient.retrieveOrgServiceInfo(
                 HttpStatus.OK,
                 "?ccdCaseType=MoneyClaimCase"
             );
@@ -53,10 +52,22 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
     @SuppressWarnings("unchecked")
     @Test
     @ToggleEnable(mapKey = mapKey, withFeature = true)
+    public void returnsOrgServiceDetailsByCcdServiceNameWithStatusCode_200() {
+        List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
+            lrdApiClient.retrieveOrgServiceInfo(
+                HttpStatus.OK,
+                "?ccdServiceNames=cMc"
+            );
+        assertThat(responses.size()).isEqualTo(2);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    @ToggleEnable(mapKey = mapKey, withFeature = true)
     public void returnsOrgServiceDetailsByDefaultAll_200() throws JsonProcessingException {
 
         List<LrdOrgInfoServiceResponse> responses = (List<LrdOrgInfoServiceResponse>)
-            lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus.OK, "");
+            lrdApiClient.retrieveOrgServiceInfo(HttpStatus.OK, "");
 
         assertThat(responses.size()).isPositive();
     }
@@ -66,7 +77,7 @@ public class RetrieveOrgServiceDetailsFunctionalTest extends AuthorizationFuncti
     public void should_retrieve_403_when_Api_toggled_off() {
         String exceptionMessage = getFeatureFlagName().concat(SPACE).concat(FORBIDDEN_EXCEPTION_LD);
         validateErrorResponse(
-            (ErrorResponse) lrdApiClient.retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(
+            (ErrorResponse) lrdApiClient.retrieveOrgServiceInfo(
                 HttpStatus.FORBIDDEN, ""),
             exceptionMessage,
             exceptionMessage

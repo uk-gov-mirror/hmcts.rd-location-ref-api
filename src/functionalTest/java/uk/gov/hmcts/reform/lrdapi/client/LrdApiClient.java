@@ -39,7 +39,7 @@ public class LrdApiClient {
         this.s2sToken = s2sToken;
     }
 
-    public Object retrieveOrgServiceInfoByServiceCodeOrCaseTypeOrAll(HttpStatus expectedStatus, String param) {
+    public Object retrieveOrgServiceInfo(HttpStatus expectedStatus, String param) {
         Response response = getMultipleAuthHeaders()
             .get("/refdata/location/orgServices" + param)
             .andReturn();
