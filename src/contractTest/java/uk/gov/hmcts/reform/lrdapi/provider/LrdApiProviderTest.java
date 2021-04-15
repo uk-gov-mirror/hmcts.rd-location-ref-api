@@ -104,7 +104,7 @@ public class LrdApiProviderTest {
         when(serviceRepository.findAll()).thenReturn(services);
         when(serviceToCcdCaseTypeAssocRepositry.findByCcdCaseTypeIgnoreCase(any()))
             .thenReturn(serviceToCcdCaseTypeAssoc);
-
+        when(serviceToCcdCaseTypeAssocRepositry.findByCcdServiceNameInIgnoreCase(any()))
+            .thenReturn(List.of(serviceToCcdCaseTypeAssoc));
     }
-
 }
