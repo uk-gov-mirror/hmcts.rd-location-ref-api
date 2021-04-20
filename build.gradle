@@ -333,6 +333,8 @@ dependencies {
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
 
     compile group:"org.yaml", name: "snakeyaml", version:"1.27"
+    //Fix for CVE-2021-29425
+    implementation 'commons-io:commons-io:2.8.0'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
