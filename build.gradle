@@ -426,7 +426,7 @@ dependencies {
   }
 
   testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.7'
-  testImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: '5.5.6'
+  testImplementation group: 'io.rest-assured', name: 'rest-assured-common', version: '5.5.7'
 
   testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1")
 
