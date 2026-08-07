@@ -397,7 +397,7 @@ dependencies {
 
   implementation group: 'io.github.openfeign.form', name: 'feign-form', version: versions.feign
   implementation group: 'io.github.openfeign.form', name: 'feign-form-spring', version: versions.feign
-  implementation 'io.github.openfeign:feign-httpclient:13.6'
+  implementation 'io.github.openfeign:feign-httpclient:13.13'
   implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: versions.log4j
   implementation "com.github.hmcts.java-logging:logging:${versions.reformLogging}"
   implementation('net.logstash.logback:logstash-logback-encoder') {
@@ -448,7 +448,7 @@ dependencies {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
-  testImplementation 'io.github.openfeign:feign-jackson:13.6'
+  testImplementation 'io.github.openfeign:feign-jackson:13.13'
   testImplementation group: 'com.github.mifmif', name: 'generex', version: '1.0.2'
   testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
 
