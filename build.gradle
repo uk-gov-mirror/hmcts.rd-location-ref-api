@@ -393,7 +393,7 @@ dependencies {
   implementation group: 'org.apache.logging.log4j', name: 'log4j', version: versions.log4j
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: versions.log4j
 
-  implementation group:"org.yaml", name: "snakeyaml", version: '2.5'
+  implementation group:"org.yaml", name: "snakeyaml", version: '2.6'
 
   implementation group: 'io.github.openfeign.form', name: 'feign-form', version: versions.feign
   implementation group: 'io.github.openfeign.form', name: 'feign-form-spring', version: versions.feign
