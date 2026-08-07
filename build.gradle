@@ -385,7 +385,7 @@ dependencies {
   implementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
   implementation group: 'jakarta.el', name: 'jakarta.el-api', version: '6.0.1'
 
-  implementation group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: '1.82'
+  implementation group: 'org.bouncycastle', name: 'bcpkix-jdk18on', version: '1.85'
   implementation group: 'ch.qos.logback', name: 'logback-core', version: versions.logback
   implementation group: 'ch.qos.logback', name: 'logback-classic', version: versions.logback
 
