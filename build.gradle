@@ -430,7 +430,7 @@ dependencies {
 
   testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1")
 
-  testImplementation ('org.mockito:mockito-core:5.20.0') {
+  testImplementation ('org.mockito:mockito-core:5.23.0') {
     exclude group: "net.bytebuddy", module: "byte-buddy"
     exclude group: "net.bytebuddy", module: "byte-buddy-agent"
   }
@@ -441,7 +441,7 @@ dependencies {
   testImplementation group: 'net.bytebuddy', name: 'byte-buddy', version: '1.17.8'
   testImplementation group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.17.8'
 
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.20.0'
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.23.0'
   testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.9'
 
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
