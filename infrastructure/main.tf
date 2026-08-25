@@ -33,7 +33,7 @@ resource "azurerm_key_vault_secret" "location_s2s_secret" {
 # Create the database server v16
 # Name and resource group name will be defaults (<product>-<component>-<env> and <product>-<component>-data-<env> respectively)
 module "db-rd-location-ref-api-v16" {
-  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
+  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=DTSPO-30107-additional-postgres-admins"
 
   providers = {
     azurerm.postgres_network = azurerm.postgres_network
@@ -55,7 +55,7 @@ module "db-rd-location-ref-api-v16" {
 
   # Trigger to the force user permission script to rerun
   force_user_permissions_trigger = "3"
-  # Trigger to rerun and grant Access Reader role to the specified tables in the list report_privilege_tables  
+  # Trigger to rerun and grant Access Reader role to the specified tables in the list report_privilege_tables
   force_db_report_privileges_trigger = "2"
 
   # Sets correct DB owner after migration to fix permissions
