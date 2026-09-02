@@ -6,7 +6,8 @@ import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
-import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
+import au.com.dius.pact.provider.junitsupport.loader.PactBrokerConsumerVersionSelectors;
+import au.com.dius.pact.provider.junitsupport.loader.SelectorBuilder;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -57,10 +58,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @Provider("referenceData_location")
-@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}",
-    port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
-        @VersionSelector(tag = "master")},
+@PactBroker(url = "${PACT_BROKER_FULL_URL:http://localhost:9292}",
     providerTags = "${pactbroker.providerTags:master}",
     enablePendingPacts = "${pactbroker.enablePending:true}")
 @ContextConfiguration(classes = {LrdApiController.class, LrdCourtVenueController.class, LrdServiceImpl.class,
@@ -68,6 +66,15 @@ import static org.mockito.Mockito.when;
 @TestPropertySource(properties = {"loggingComponentName=LrdApiProviderTest"})
 @IgnoreNoPactsToVerify
 public class LrdApiProviderTest {
+
+    @PactBrokerConsumerVersionSelectors
+    public static SelectorBuilder consumerVersionSelectors() {
+        String branch = System.getProperty("pactbroker.consumerBranch", "");
+        if (!branch.isBlank()) {
+            return new SelectorBuilder().branch(branch);
+        }
+        return new SelectorBuilder().tag(System.getProperty("pactbroker.consumerTag", "master"));
+    }
 
     public static final String CLUSTER_NAME = "ClusterXYZ";
     public static final String REGION = "Region XYZ";
@@ -268,6 +275,7 @@ public class LrdApiProviderTest {
         CourtTypeServiceAssoc courtTypeServiceAssoc = new CourtTypeServiceAssoc();
         courtTypeServiceAssoc.setCourtType(courtType);
         when(courtTypeServiceAssocRepository.findByServiceCode(anyString())).thenReturn(courtTypeServiceAssoc);
+        when(courtVenueRepository.findByServiceCode(anyString())).thenReturn(List.of(courtVenue));
     }
 
     @State({"Court Venues exist for the input request provided"})
