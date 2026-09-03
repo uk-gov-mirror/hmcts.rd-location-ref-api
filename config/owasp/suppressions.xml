@@ -68,5 +68,6 @@
   <suppress>
         <notes>https://tools.hmcts.net/jira/browse/DTSRD-6684 spring security</notes>
         <cve>CVE-2026-59270</cve>
+        <cve>CVE-2026-59276</cve>
   </suppress>
 </suppressions>
