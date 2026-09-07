@@ -56,6 +56,8 @@ idam:
     services: ${LRD_S2S_AUTHORISED_SERVICES:rd_location_ref_api}
   api:
     url: ${IDAM_URL:http://127.0.0.1:5000}
+  security:
+    issuerValidation: ${JWT_ISSUER_VALIDATION_ENABLED:false}
 
 auth.idam.client.baseUrl: ${http://127.0.0.1:5000/o}
 oidc:
