@@ -95,13 +95,13 @@ public class JwtIssuerValidationEnabledIntegrationTest extends BaseSecurityInteg
                         ? expiredJwt(jwtIssuer)
                         : unexpiredJwt(jwtIssuer);
 
-                jwtRequestSpecification
-                        .when()
-                        .request()
-                        .get(REGIONS_URL)
-                        .then()
-                        .assertThat()
-                        .statusCode(expectedStatusCode);
+        jwtRequestSpecification
+                .when()
+                .request()
+                .get(REGIONS_URL)
+                .then()
+                .assertThat()
+                .statusCode(expectedStatusCode);
     }
 
     private void mockRegions() {
