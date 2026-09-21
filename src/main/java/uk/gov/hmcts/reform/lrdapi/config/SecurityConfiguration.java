@@ -42,9 +42,6 @@ public class SecurityConfiguration {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
-    @Value("${oidc.issuer}")
-    private String issuerOverride;
-
     @Order(1)
     private ServiceAuthFilter serviceAuthFilter;
     @Order(2)

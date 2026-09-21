@@ -56,7 +56,7 @@ class SecurityConfigurationTest {
     @BeforeEach
     void setUp() {
         config = new SecurityConfiguration(jwtGrantedAuthoritiesConverter, authFilter,
-                restAuthenticationEntryPoint, securityEndpointFilter);
+                                           restAuthenticationEntryPoint, securityEndpointFilter);
         ReflectionTestUtils.setField(config, "issuerUri", VALID_ISSUER);
     }
 
@@ -137,16 +137,16 @@ class SecurityConfigurationTest {
     @Test
     void webSecurityCustomized() {
         List<String> anonymousPaths = List.of(
-                "/swagger-ui.html",
-                "/swagger-ui/**",
-                "/swagger-resources/**",
-                "/v3/**",
-                "/health",
-                "/health/liveness",
-                "/health/readiness",
-                "/status/health",
-                "/loggers/**",
-                "/");
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v3/**",
+            "/health",
+            "/health/liveness",
+            "/health/readiness",
+            "/status/health",
+            "/loggers/**",
+            "/");
 
         config.setAnonymousPaths(anonymousPaths);
         WebSecurityCustomizer customizer = config.webSecurityCustomizer();
