@@ -96,6 +96,7 @@ class SecurityConfigurationTest {
     @Test
     void decoderCreated() {
         when(securityProperties.isIssuerValidation()).thenReturn(true);
+        when(securityProperties.getAllowedIssuers()).thenReturn(List.of(VALID_ISSUER));
         NimbusJwtDecoder mockDecoder = mock(NimbusJwtDecoder.class);
 
         try (MockedStatic<JwtDecoders> mocked = mockStatic(JwtDecoders.class)) {
