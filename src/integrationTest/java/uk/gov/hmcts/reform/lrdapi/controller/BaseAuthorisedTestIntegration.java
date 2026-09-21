@@ -113,7 +113,7 @@ public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegratio
 
         HashMap<String,String> data = new HashMap<>();
         data.put("issuer","http://0.0.0.0:6000/o");
-        data.put("jwks_uri","http://0.0.0.0:7000/jwks");
+        data.put("jwks_uri","http://localhost:7000/jwks");
 
         mockHttpServerForOidc.stubFor(get(urlPathMatching("/o/.well-known/openid-configuration"))
                   .willReturn(aResponse()
