@@ -1,9 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.launchdarkly.sdk.server.LDClient;
 import com.nimbusds.jose.JOSEException;
 import io.restassured.specification.RequestSpecification;
@@ -17,17 +14,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 import uk.gov.hmcts.reform.lrdapi.SpringBootIntegrationTest;
 import uk.gov.hmcts.reform.lrdapi.config.LaunchDarklyConfiguration;
 import uk.gov.hmcts.reform.lrdapi.util.WireMockExtension;
+import uk.gov.hmcts.reform.lrdapi.util.WireMockUtil;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -41,16 +38,11 @@ import static uk.gov.hmcts.reform.lrdapi.util.TestAuthenticationUtils.SERVICE_NA
 @ActiveProfiles("itest")
 @ExtendWith(SpringExtension.class)
 @WithTags({@WithTag("testType:Integration")})
-@TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990"})
+@TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990", "IDAM_URL:http://127.0.0.1:5000"})
 public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegrationTest {
 
     protected static final String BASEURL = "http://localhost";
     protected static final String REGIONS_URL = "/refdata/location/regions";
-
-    public static final ObjectMapper OBJECT_MAPPER =
-        new Jackson2ObjectMapperBuilder()
-            .modules(new Jdk8Module(), new JavaTimeModule())
-            .build();
 
     @LocalServerPort
     private int serverPort;
@@ -66,6 +58,9 @@ public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegratio
 
     @RegisterExtension
     public static WireMockExtension mockHttpServerForOidc = new WireMockExtension(7000);
+
+    @RegisterExtension
+    public static final WireMockExtension idamService = new WireMockExtension(5000);
 
     @BeforeEach
     public void setup() throws Exception {
@@ -92,12 +87,20 @@ public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegratio
 
     public void stubIdamConfig() throws JsonProcessingException {
 
-        mockHttpServerForOidc.stubFor(get(urlPathMatching("/o/.well-known/openid-configuration"))
-                  .willReturn(aResponse()
-                                  .withStatus(200)
-                                  .withHeader("Content-Type", APPLICATION_JSON_VALUE)
-                                  .withBody(OBJECT_MAPPER.writeValueAsString(getOpenIdResponse()))
-                  ));
+        UserInfo userDetails = UserInfo.builder()
+            .uid("%s")
+            .givenName("Super")
+            .familyName("User")
+            .roles(List.of("%s"))
+            .build();
+
+        idamService.stubFor(get(urlPathMatching("/o/userinfo"))
+                    .willReturn(aResponse()
+                                    .withStatus(200)
+                                    .withHeader("Content-Type", APPLICATION_JSON_VALUE)
+                                    .withBody(WireMockUtil.getObjectMapper()
+                                                  .writeValueAsString(userDetails))
+                                    .withTransformers("external_user-token-response")));
 
         mockHttpServerForOidc.stubFor(get(urlPathMatching("/o/jwks"))
                   .willReturn(aResponse()
@@ -106,14 +109,6 @@ public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegratio
                                   .withBody(getJwksResponse())
                   ));
 
-    }
-
-    private Map<String, Object> getOpenIdResponse() {
-        LinkedHashMap<String,Object> data1 = new LinkedHashMap<>();
-        data1.put("issuer", "http://localhost:" + mockHttpServerForOidc.port() + "/o");
-        data1.put("jwks_uri", "http://localhost:" + mockHttpServerForOidc.port() + "/o/jwks");
-
-        return data1;
     }
 
     private String getJwksResponse() {
