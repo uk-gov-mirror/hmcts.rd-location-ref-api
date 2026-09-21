@@ -24,6 +24,7 @@ import uk.gov.hmcts.reform.lrdapi.config.LaunchDarklyConfiguration;
 import uk.gov.hmcts.reform.lrdapi.util.WireMockExtension;
 import uk.gov.hmcts.reform.lrdapi.util.WireMockUtil;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -38,7 +39,8 @@ import static uk.gov.hmcts.reform.lrdapi.util.TestAuthenticationUtils.SERVICE_NA
 @ActiveProfiles("itest")
 @ExtendWith(SpringExtension.class)
 @WithTags({@WithTag("testType:Integration")})
-@TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990", "IDAM_URL:http://127.0.0.1:5000"})
+@TestPropertySource(properties = {"S2S_URL=http://127.0.0.1:8990", "IDAM_URL:http://127.0.0.1:5000",
+    "OPEN_ID_API_BASE_URI:http://0.0.0.0:6000/o"})
 public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegrationTest {
 
     protected static final String BASEURL = "http://localhost";
@@ -108,6 +110,16 @@ public abstract class BaseAuthorisedTestIntegration extends SpringBootIntegratio
                                   .withHeader("Content-Type", APPLICATION_JSON_VALUE)
                                   .withBody(getJwksResponse())
                   ));
+
+        HashMap<String,String> data = new HashMap<>();
+        data.put("issuer","http://0.0.0.0:6000/o");
+        data.put("jwks_uri","http://0.0.0.0:7000/jwks");
+
+        mockHttpServerForOidc.stubFor(get(urlPathMatching("/o/.well-known/openid-configuration"))
+                  .willReturn(aResponse()
+                                  .withStatus(200)
+                                  .withHeader("Content-Type", APPLICATION_JSON_VALUE)
+                                  .withBody(WireMockUtil.getObjectMapper().writeValueAsString(data))));
 
     }
 
