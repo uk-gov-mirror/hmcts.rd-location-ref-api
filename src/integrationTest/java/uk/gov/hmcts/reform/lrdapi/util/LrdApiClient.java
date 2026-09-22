@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static uk.gov.hmcts.reform.lrdapi.SpringBootIntegrationTest.getObjectMapper;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateToken;
 
 @Slf4j
@@ -41,7 +42,7 @@ public class LrdApiClient {
 
     private static  String JWT_TOKEN = null;
     private final Integer lrdApiPort;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = getObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
 
     private String baseUrl;

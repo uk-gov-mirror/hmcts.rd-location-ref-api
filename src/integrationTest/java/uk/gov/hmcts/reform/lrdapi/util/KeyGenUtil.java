@@ -1,16 +1,13 @@
 package uk.gov.hmcts.reform.lrdapi.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
-import net.minidev.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static uk.gov.hmcts.reform.lrdapi.SpringBootIntegrationTest.getObjectMapper;
 
 public class KeyGenUtil {
 
@@ -29,14 +26,15 @@ public class KeyGenUtil {
         return rsaJwk;
     }
 
-    public static String getDynamicJwksResponse() throws JOSEException, JsonProcessingException {
-        RSAKey rsaKey = KeyGenUtil.getRsaJwk();
-        Map<String, List<JSONObject>> body = new LinkedHashMap<>();
-        List<JSONObject> keyList = new ArrayList<>();
-        keyList.add((JSONObject) rsaKey.toJSONObject());
-        body.put("keys", keyList);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(body);
+    public static String getDynamicJwksResponse() {
+        try {
+            Map<String, Object> jwks = Map.of(
+                "keys", List.of(getRsaJwk().toPublicJWK().toJSONObject())
+            );
+            return getObjectMapper().writeValueAsString(jwks);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 }
