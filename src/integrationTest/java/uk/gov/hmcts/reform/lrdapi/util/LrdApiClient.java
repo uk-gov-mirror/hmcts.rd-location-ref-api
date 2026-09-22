@@ -2,9 +2,6 @@ package uk.gov.hmcts.reform.lrdapi.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.TextCodec;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,13 +22,13 @@ import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdOrgInfoServiceResponse
 import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdRegionResponse;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static uk.gov.hmcts.reform.lrdapi.SpringBootIntegrationTest.getObjectMapper;
+import static uk.gov.hmcts.reform.lrdapi.util.FeatureConditionEvaluationTest.generateDummyS2SToken;
 import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateToken;
 
 @Slf4j
@@ -327,14 +324,6 @@ public class LrdApiClient {
 
         return generateToken(issuer, expiration, userId);
 
-    }
-
-    public static String generateDummyS2SToken(String serviceName) {
-        return Jwts.builder()
-            .setSubject(serviceName)
-            .setIssuedAt(new Date())
-            .signWith(SignatureAlgorithm.HS256, TextCodec.BASE64.encode("AA"))
-            .compact();
     }
 
 }
