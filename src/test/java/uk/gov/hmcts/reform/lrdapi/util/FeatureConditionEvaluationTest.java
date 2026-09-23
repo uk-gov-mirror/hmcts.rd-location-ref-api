@@ -57,7 +57,7 @@ class FeatureConditionEvaluationTest {
         launchDarklyMap.put("WelcomeController.test", "test-flag");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(httpRequest));
         when(featureToggleService.getLaunchDarklyMap()).thenReturn(launchDarklyMap);
-        String token = generateDummyS2SToken("rd_professional_api");
+        String token = generateS2SToken("rd_location_ref_api");
         when(httpRequest.getHeader(SERVICE_AUTHORIZATION)).thenReturn(BEARER + token);
         when(featureToggleService.isFlagEnabled(anyString(), anyString())).thenReturn(true);
         assertTrue(featureConditionEvaluation.preHandle(httpRequest, httpServletResponse, handlerMethod));
@@ -71,7 +71,7 @@ class FeatureConditionEvaluationTest {
         launchDarklyMap.put("WelcomeController.test", "test-flag");
         when(featureToggleService.getLaunchDarklyMap()).thenReturn(launchDarklyMap);
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(httpRequest));
-        String token = generateDummyS2SToken("rd_professional_api");
+        String token = generateS2SToken("rd_location_ref_api");
         when(httpRequest.getHeader(SERVICE_AUTHORIZATION)).thenReturn(BEARER + token);
         when(featureToggleService.isFlagEnabled(anyString(), anyString())).thenReturn(false);
         assertThrows(ForbiddenException.class, () -> featureConditionEvaluation
@@ -112,7 +112,7 @@ class FeatureConditionEvaluationTest {
             .preHandle(httpRequest, httpServletResponse, handlerMethod);
     }
 
-    public static String generateDummyS2SToken(String serviceName) {
+    public static String generateS2SToken(String serviceName) {
         return Jwts.builder()
             .setSubject(serviceName)
             .setIssuedAt(new Date())

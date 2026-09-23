@@ -42,9 +42,6 @@ public class SecurityConfiguration {
     @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
-    @Value("${oidc.issuer}")
-    private String issuerOverride;
-
     @Order(1)
     private ServiceAuthFilter serviceAuthFilter;
     @Order(2)
@@ -113,7 +110,7 @@ public class SecurityConfiguration {
     private OAuth2TokenValidator<Jwt> getIssuerValidator(IdamSecurityProperties securityProperties) {
         OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
         OAuth2TokenValidator<Jwt> validator;
-        if (Boolean.parseBoolean(System.getProperty("idam.security.issuerValidation"))) {
+        if (securityProperties.isIssuerValidation()) {
             log.debug("Validating issuers");
             validator = new DelegatingOAuth2TokenValidator<>(withTimestamp,
                                 allowedIssuersValidator(securityProperties.getAllowedIssuers())
