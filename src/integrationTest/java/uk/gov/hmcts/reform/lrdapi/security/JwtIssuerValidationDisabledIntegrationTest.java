@@ -89,7 +89,7 @@ public class JwtIssuerValidationDisabledIntegrationTest extends BaseSecurityInte
     void issuerValidationDisabled_shouldReturnExpectedStatus(String scenario,
                                                              String jwtIssuer,
                                                              boolean tokenExpired,
-                                                             int expectedStatusCode) throws Exception {
+                                                             int expectedStatusCode) {
 
         mockRegions();
         RequestSpecification jwtRequestSpecification =

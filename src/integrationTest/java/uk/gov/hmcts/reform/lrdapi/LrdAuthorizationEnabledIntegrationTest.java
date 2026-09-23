@@ -28,6 +28,8 @@ import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateS2SToken;
 @DirtiesContext
 public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootIntegrationTest {
 
+    public static final String LRD_SERVICE_NAME = "rd_location_ref_api";
+
     @Autowired
     protected ServiceRepository serviceRepository;
 
@@ -58,7 +60,7 @@ public abstract class LrdAuthorizationEnabledIntegrationTest extends SpringBootI
         HttpHeaders headers = new HttpHeaders();
         var userAuthToken = generateAuthToken(issuer, isExpired, userId, role);
         headers.setBearerAuth(userAuthToken);
-        headers.add(SERVICE_AUTHORIZATION, "Bearer " + generateS2SToken("rd_location_api"));
+        headers.add(SERVICE_AUTHORIZATION, "Bearer " + generateS2SToken(LRD_SERVICE_NAME));
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;
     }

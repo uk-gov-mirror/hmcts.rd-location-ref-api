@@ -6,6 +6,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static uk.gov.hmcts.reform.lrdapi.LrdAuthorizationEnabledIntegrationTest.LRD_SERVICE_NAME;
 
 public class S2sWireMockStubs {
 
@@ -18,7 +19,7 @@ public class S2sWireMockStubs {
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBody("rd_location_api")));
+                        .withBody(LRD_SERVICE_NAME)));
 
         server.stubFor(post(urlEqualTo("/lease"))
                 .willReturn(aResponse()

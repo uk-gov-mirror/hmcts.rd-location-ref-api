@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi.wiremock;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.reform.lrdapi.SpringBootIntegrationTest.getObjectMapper;
 
@@ -28,42 +26,9 @@ public final class IdamWireMockStubs {
                                         .withStatus(200)
                                         .withHeader("Content-Type", APPLICATION_JSON_VALUE)
                                         .withBody(getUserDetailsJson())
-                                        .withTransformers("external_user-token-response")
+                                        .withTransformers("location_token_response")
                         )
         );
-    }
-
-    public static StubMapping stubIdamWithInvalidRole(WireMockServer server) {
-        try {
-
-            return server.stubFor(get(urlPathMatching("/o/userinfo.*"))
-                    .atPriority(1)
-                    .willReturn(aResponse()
-                            .withStatus(200)
-                            .withHeader("Content-Type", APPLICATION_JSON_VALUE)
-                            .withHeader("Connection", "close")
-                            .withBody(getUserDetailsJson())
-                            .withTransformers("user-token-response")));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    public static StubMapping stubIdamWithGivenRoleAndStatus(WireMockServer server, String status, List<String> roles) {
-        try {
-
-            return server.stubFor(get(urlPathMatching("/o/userinfo.*"))
-                    .atPriority(1)
-                    .willReturn(aResponse()
-                            .withStatus(200)
-                            .withHeader("Content-Type", APPLICATION_JSON_VALUE)
-                            .withHeader("Connection", "close")
-                            .withBody(getUserDetailsJson())
-                            .withTransformers("user-token-response")));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static String getUserDetailsJson() {

@@ -40,7 +40,7 @@ public class IdamResponseTransformer extends ResponseTransformer {
 
     @Override
     public String getName() {
-        return "external_user-token-response";
+        return "location_token_response";
     }
 
     public boolean applyGlobally() {

@@ -52,7 +52,8 @@ public final class JwtTokenUtil {
 
         JWTClaimsSet.Builder claimsBuilder =
             getJwtClaimsBuilder(Date.from(issuedAt), Date.from(expiresAt))
-                .subject(role + " " + userId).audience(role);
+                .subject(role + " " + userId)
+                .audience(role);
 
         if (issuer != null) {
             claimsBuilder.issuer(issuer);
@@ -72,41 +73,6 @@ public final class JwtTokenUtil {
             throw new RuntimeException(e);
         }
 
-    }
-
-    /**
-     * Generate JWT Signed Token.
-     * @param issuer    Issuer
-     * @param ttlMillis Time to live
-     * @return String
-     */
-    public static String generateToken(String issuer, long ttlMillis, String userId) {
-        final long nowMillis = System.currentTimeMillis();
-
-        JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder()
-                .subject(userId)
-                .issueTime(new Date())
-                .issuer(issuer)
-                .audience("lrd-admin")
-                .claim("tokenName", "access_token");
-
-        if (ttlMillis >= 0) {
-            long expMillis = nowMillis + ttlMillis;
-            Date exp = new Date(expMillis);
-            builder.expirationTime(exp);
-        }
-
-        SignedJWT signedJwt = null;
-        try {
-            signedJwt = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256)
-                                          .keyID(TEST_RSA_JWK.getKeyID())
-                                          .build(),
-                    builder.build());
-            signedJwt.sign(new RSASSASigner(TEST_RSA_JWK));;
-        } catch (JOSEException e) {
-            log.error("error while creating bearer token : " + (e.getMessage()));
-        }
-        return signedJwt.serialize();
     }
 
     private static JWTClaimsSet.Builder getJwtClaimsBuilder(Date issuedAt,

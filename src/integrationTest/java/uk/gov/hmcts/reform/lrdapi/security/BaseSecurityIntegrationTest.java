@@ -21,16 +21,12 @@ public class BaseSecurityIntegrationTest extends LrdAuthorizationEnabledIntegrat
             .headers(getHttpHeaders(issuer, expired, null, "lrd-admin"));
     }
 
-    protected RequestSpecification unexpiredJwt(
-            String issuer)
-            throws Exception {
+    protected RequestSpecification unexpiredJwt(String issuer) {
 
         return jwtRequest(issuer, false);
     }
 
-    protected RequestSpecification expiredJwt(
-            String issuer)
-            throws Exception {
+    protected RequestSpecification expiredJwt(String issuer) {
 
         return jwtRequest(issuer, true);
     }

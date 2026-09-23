@@ -28,8 +28,8 @@ import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static uk.gov.hmcts.reform.lrdapi.SpringBootIntegrationTest.getObjectMapper;
-import static uk.gov.hmcts.reform.lrdapi.util.FeatureConditionEvaluationTest.generateDummyS2SToken;
-import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateToken;
+import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateAuthToken;
+import static uk.gov.hmcts.reform.lrdapi.util.JwtTokenUtil.generateS2SToken;
 
 @Slf4j
 @PropertySource(value = "/integrationTest/resources/application-test.yml")
@@ -292,26 +292,13 @@ public class LrdApiClient {
         return responseEntity;
     }
 
-    private Map getResponse(ResponseEntity<Map> responseEntity) {
-
-        Map response = objectMapper
-            .convertValue(
-                responseEntity.getBody(),
-                Map.class);
-
-        response.put("http_status", responseEntity.getStatusCode().toString());
-        response.put("headers", responseEntity.getHeaders().toString());
-
-        return response;
-    }
-
     private HttpHeaders getMultipleAuthHeaders() {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(APPLICATION_JSON);
         if (StringUtils.isBlank(JWT_TOKEN)) {
 
-            JWT_TOKEN = generateDummyS2SToken(serviceName);
+            JWT_TOKEN = generateS2SToken(serviceName);
         }
         headers.add("ServiceAuthorization", JWT_TOKEN);
         String bearerToken = "Bearer ".concat(getBearerToken(UUID.randomUUID().toString()));
@@ -320,9 +307,9 @@ public class LrdApiClient {
         return headers;
     }
 
-    private final String getBearerToken(String userId) {
+    private String getBearerToken(String userId) {
 
-        return generateToken(issuer, expiration, userId);
+        return generateAuthToken(issuer, false, userId, null);
 
     }
 
