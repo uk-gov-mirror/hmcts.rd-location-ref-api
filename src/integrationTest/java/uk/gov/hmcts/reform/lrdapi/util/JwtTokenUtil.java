@@ -12,8 +12,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.TextCodec;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames.ACCESS_TOKEN;
@@ -35,22 +35,23 @@ public final class JwtTokenUtil {
     private JwtTokenUtil() {
     }
 
-    public static String generateAuthToken(String issuer,
-                                           boolean isExpired,
-                                           String userId,
-                                           String role) {
-        Instant now = Instant.now();
+    public static String generateAuthToken(final String issuer,
+                                           final boolean isExpired,
+                                           final String userId,
+                                           final String role) {
 
-        Instant issuedAt = isExpired
-            ? now.minus(2, ChronoUnit.HOURS)
+        final LocalDateTime now = LocalDateTime.now();
+
+        final LocalDateTime issuedAt = isExpired
+            ? now.minusHours(2)
             : now.minusSeconds(60);
 
-        Instant expiresAt = isExpired
-            ? now.minus(1, ChronoUnit.HOURS)
-            : now.plusSeconds(3600);
+        final LocalDateTime expiresAt = isExpired
+            ? now.minusHours(1)
+            : now.plusHours(1);
 
-        JWTClaimsSet.Builder claimsBuilder =
-            getJwtClaimsBuilder(Date.from(issuedAt), Date.from(expiresAt))
+        final JWTClaimsSet.Builder claimsBuilder =
+            getJwtClaimsBuilder(issuedAt, expiresAt)
                 .subject(role + " " + userId)
                 .audience(role);
 
@@ -59,26 +60,32 @@ public final class JwtTokenUtil {
         }
 
         try {
-            JWSHeader header =
+            final JWSHeader header =
                 new JWSHeader.Builder(JWSAlgorithm.RS256)
                     .keyID(TEST_RSA_JWK.getKeyID())
                     .build();
 
-            SignedJWT signedJwt = new SignedJWT(header, claimsBuilder.build());
+            final SignedJWT signedJwt =
+                new SignedJWT(header, claimsBuilder.build());
 
             signedJwt.sign(new RSASSASigner(TEST_RSA_JWK));
+
             return signedJwt.serialize();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Failed to generate JWT", e);
         }
     }
 
-    private static JWTClaimsSet.Builder getJwtClaimsBuilder(Date issuedAt,
-                                                            Date expiresAt) {
+    private static JWTClaimsSet.Builder getJwtClaimsBuilder(
+        final LocalDateTime issuedAt,
+        final LocalDateTime expiresAt) {
+
+        final ZoneId zoneId = ZoneId.systemDefault();
+
         return new JWTClaimsSet.Builder()
-            .issueTime(issuedAt)
+            .issueTime(Date.from(issuedAt.atZone(zoneId).toInstant()))
             .claim(TOKEN_NAME, ACCESS_TOKEN)
-            .expirationTime(expiresAt);
+            .expirationTime(Date.from(expiresAt.atZone(zoneId).toInstant()));
     }
 
     public static String generateS2SToken(String serviceName) {

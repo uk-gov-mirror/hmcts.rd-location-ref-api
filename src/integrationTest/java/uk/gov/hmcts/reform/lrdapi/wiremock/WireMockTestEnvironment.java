@@ -1,8 +1,6 @@
 package uk.gov.hmcts.reform.lrdapi.wiremock;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.nimbusds.jose.JOSEException;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -11,23 +9,24 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMoc
 public final class WireMockTestEnvironment {
 
     private static final WireMockServer OIDC_MOCK_SERVER =
-            new WireMockServer(wireMockConfig().dynamicPort());
+        new WireMockServer(wireMockConfig().dynamicPort());
 
     private static final WireMockServer IDAM_MOCK_SERVER =
-            new WireMockServer(wireMockConfig().dynamicPort().extensions(new IdamResponseTransformer()));
+        new WireMockServer(wireMockConfig().dynamicPort()
+                               .extensions(new IdamResponseTransformer()));
 
     private static final WireMockServer S2S_MOCK_SERVER =
-            new WireMockServer(wireMockConfig().dynamicPort());
+        new WireMockServer(wireMockConfig().dynamicPort());
 
     private static final AtomicBoolean STARTED = new AtomicBoolean(false);
 
-    private WireMockTestEnvironment() {
-    }
-
     static {
         Runtime.getRuntime().addShutdownHook(
-                new Thread(WireMockTestEnvironment::stop)
+            new Thread(WireMockTestEnvironment::stop)
         );
+    }
+
+    private WireMockTestEnvironment() {
     }
 
     public static void start() {
@@ -39,16 +38,13 @@ public final class WireMockTestEnvironment {
             startOidcMockServer();
             startIdamMockServer();
             startS2sMockServer();
-        } catch (RuntimeException ex) {
+        } catch (RuntimeException e) {
             stop();
-            throw ex;
-        } catch (JOSEException | JsonProcessingException ex) {
-            stop();
-            throw new RuntimeException(ex.getMessage(), ex);
+            throw e;
         }
     }
 
-    private static void startOidcMockServer() throws JOSEException, JsonProcessingException {
+    private static void startOidcMockServer() {
         if (!OIDC_MOCK_SERVER.isRunning()) {
             OIDC_MOCK_SERVER.start();
             OidcWireMockStubs.registerDefaults(OIDC_MOCK_SERVER);
