@@ -25,21 +25,53 @@ import static uk.gov.hmcts.reform.lrdapi.controllers.constants.LocationRefConsta
 class RetrieveCourtVenuesBySearchStringV2FunctionalTest extends AuthorizationFunctionalTest {
 
     private static final String PATH = "/v2/court-venues/venue-search";
+    private static final String[] SEARCH_STRINGS = {"Abe", "Court", "Tribunal"};
 
     @Test
     void getCourtVenuesBySearchStringV2WithStatusCode_200() {
+        String searchString = findSearchStringWithV2Results();
+        LrdCourtVenueV2Response[] searchResponse = (LrdCourtVenueV2Response[])
+            lrdApiClient.retrieveResponseForGivenRequest(
+                HttpStatus.OK,
+                "?search-string=" + searchString,
+                LrdCourtVenueV2Response[].class,
+                PATH
+            );
+
+        assertNotNull(searchResponse);
+        assertThat(searchResponse).isNotEmpty();
+        String serviceCode = searchResponse[0].getServiceCode();
+        assertThat(serviceCode).isNotBlank();
+
         LrdCourtVenueV2Response[] response = (LrdCourtVenueV2Response[])
             lrdApiClient.retrieveResponseForGivenRequest(
                 HttpStatus.OK,
-                "?search-string=Abe&service_code=AAA6",
+                "?search-string=" + searchString + "&service_code=" + serviceCode,
                 LrdCourtVenueV2Response[].class,
                 PATH
             );
 
         assertNotNull(response);
         assertThat(response).isNotEmpty();
-        assertThat(response).extracting(LrdCourtVenueV2Response::getServiceCode).contains("AAA6");
+        assertThat(response).extracting(LrdCourtVenueV2Response::getServiceCode).contains(serviceCode);
         assertThat(response).extracting(LrdCourtVenueV2Response::getMrdVenueId).doesNotContainNull();
+    }
+
+    private String findSearchStringWithV2Results() {
+        for (String searchString : SEARCH_STRINGS) {
+            LrdCourtVenueV2Response[] response = (LrdCourtVenueV2Response[])
+                lrdApiClient.retrieveResponseForGivenRequest(
+                    HttpStatus.OK,
+                    "?search-string=" + searchString,
+                    LrdCourtVenueV2Response[].class,
+                    PATH
+                );
+
+            if (response.length > 0) {
+                return searchString;
+            }
+        }
+        return SEARCH_STRINGS[0];
     }
 
     @ParameterizedTest
