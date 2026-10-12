@@ -16,8 +16,6 @@ import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdCourtVenueResponse;
 import uk.gov.hmcts.reform.lrdapi.util.FeatureToggleConditionExtension;
 import uk.gov.hmcts.reform.lrdapi.util.ToggleEnable;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -226,23 +224,14 @@ class RetrieveCourtVenueDetailsFunctionalTest extends AuthorizationFunctionalTes
     @Test
     @ToggleEnable(mapKey = mapKey, withFeature = true)
     void shouldRetrieveCourtVenues_CourtVenueNameGiven_WithStatusCode_200() throws JsonProcessingException {
-        final var allCourtVenues = (LrdCourtVenueResponse[]) lrdApiClient.retrieveResponseForGivenRequest(
-            HttpStatus.OK, null, LrdCourtVenueResponse[].class, path);
-
-        String courtVenueName = Arrays.stream(allCourtVenues)
-            .map(venue -> isNotBlank(venue.getCourtName()) ? venue.getCourtName() : venue.getSiteName())
-            .filter(this::isNotBlank)
-            .findFirst()
-            .orElseThrow(() -> new AssertionError("No court venue test data found to search by name"));
-
         final var response = (LrdCourtVenueResponse[]) lrdApiClient.retrieveResponseForGivenRequest(HttpStatus.OK,
-                                                         "?court_venue_name=" + encode(courtVenueName),
+                                                         "?court_venue_name=Aberdeen Tribunal Hearing Centre",
                                                          LrdCourtVenueResponse[].class, path);
         assertThat(response).isNotEmpty();
         boolean isExpectedMatch = Arrays
             .stream(response)
-            .allMatch(venue -> courtVenueName.equalsIgnoreCase(venue.getCourtName())
-            || courtVenueName.equalsIgnoreCase(venue.getSiteName()));
+            .allMatch(venue -> venue.getCourtName().equalsIgnoreCase("Aberdeen Tribunal Hearing Centre")
+            || venue.getSiteName().equalsIgnoreCase("Aberdeen Tribunal Hearing Centre"));
         assertTrue(isExpectedMatch);
     }
 
@@ -385,13 +374,5 @@ class RetrieveCourtVenueDetailsFunctionalTest extends AuthorizationFunctionalTes
 
         assertNotNull(response);
         assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
-    }
-
-    private boolean isNotBlank(String value) {
-        return value != null && !value.isBlank();
-    }
-
-    private String encode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }
