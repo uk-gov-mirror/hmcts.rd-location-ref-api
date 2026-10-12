@@ -24,7 +24,9 @@ import uk.gov.hmcts.reform.lrdapi.service.CourtVenueService;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.reform.lrdapi.util.ValidationUtils.trimCourtVenueRequestParam;
 import static uk.gov.hmcts.reform.lrdapi.util.ValidationUtils.validateCourtTypeId;
+import static uk.gov.hmcts.reform.lrdapi.util.ValidationUtils.validateCourtVenueFilters;
 import static uk.gov.hmcts.reform.lrdapi.util.ValidationUtils.validateSearchString;
 import static uk.gov.hmcts.reform.lrdapi.util.ValidationUtils.validateServiceCodes;
 
@@ -125,10 +127,13 @@ public class LrdCourtVenueV2Controller {
             .isDistrictRegistry(isDistrictRegistry)
             .isAppealCentre(isAppealCentre)
             .build();
+        CourtVenueRequestParam result = trimCourtVenueRequestParam(requestParam);
+
+        validateCourtVenueFilters(result);
 
         log.info("{} : Calling retrieveCourtVenuesBySearchStringV2", loggingComponentName);
         var lrdCourtVenueResponses = courtVenueService.retrieveCourtVenuesBySearchStringV2(
-            trimmedSearchString, courtTypeId, serviceCode, requestParam);
+            trimmedSearchString, courtTypeId, serviceCode, result);
         return ResponseEntity.status(HttpStatus.OK).body(lrdCourtVenueResponses);
     }
 

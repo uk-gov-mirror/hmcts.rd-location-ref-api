@@ -111,7 +111,7 @@ public class CourtVenueServiceImpl implements CourtVenueService {
 
         log.info("{} : Obtaining court venues for service code: {}", loggingComponentName, trimmedServiceCode);
 
-        List<CourtVenue> courtVenues = courtVenueRepository.findByServiceCode(serviceCodeIgnoreCase);
+        List<CourtVenue> courtVenues = courtVenueRepository.findByServiceCodeWithOpenCourtStatus(serviceCodeIgnoreCase);
 
         handleIfCourtVenuesEmpty(
             () -> isEmpty(courtVenues),
@@ -254,14 +254,14 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         }
         if (isNotBlank(epimmsIds)) {
             return getLrdCourtVenueResponses(
-                retrieveCourtVenuesByEpimmsId(epimmsIds),
+                retrieveCourtVenuesByEpimmsId(epimmsIds, courtVenueRequestParam),
                 courtVenueRequestParam
             );
 
         }
         if (isNotBlank(mrdVenueId)) {
             return getLrdCourtVenueResponses(
-                retrieveCourtVenuesByMrdVenueId(mrdVenueId),
+                retrieveCourtVenuesByMrdVenueId(mrdVenueId, courtVenueRequestParam),
                 courtVenueRequestParam
             );
         }
@@ -317,7 +317,9 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         if (isNotEmpty(courtVenueName)) {
             log.info("{} : Obtaining court venues for court venue name: {}", loggingComponentName, courtVenueName);
             List<LrdCourtVenueResponse> lrdCourtVenueResponse = getAllCourtVenues(
-                () -> courtVenueRepository.findByCourtVenueNameOrSiteName(courtVenueName.strip()),
+                () -> isCourtStatusFilterPresent(courtVenueRequestParam)
+                    ? courtVenueRepository.findByCourtVenueNameOrSiteName(courtVenueName.strip())
+                    : courtVenueRepository.findByCourtVenueNameOrSiteNameWithOpenCourtStatus(courtVenueName.strip()),
                 courtVenueName,
                 NO_COURT_VENUES_FOUND_FOR_COURT_VENUE_NAME
             );
@@ -344,7 +346,8 @@ public class CourtVenueServiceImpl implements CourtVenueService {
             return List.of();
         }
 
-        Map<String, CourtVenue> courtVenuesByMrdVenueId = courtVenueRepository.findByMrdVenueIdIn(mrdVenueIds)
+        Map<String, CourtVenue> courtVenuesByMrdVenueId = courtVenueRepository
+            .findByMrdVenueIdInWithOpenCourtStatus(mrdVenueIds)
             .stream()
             .collect(Collectors.toMap(
                 courtVenue -> courtVenue.getMrdVenueId().toUpperCase(),
@@ -406,18 +409,31 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         return VALUE_Y.equalsIgnoreCase(requestedValue) == actualValue;
     }
 
-    private List<LrdCourtVenueResponse> retrieveCourtVenuesByEpimmsId(String epimmsId) {
+    private List<LrdCourtVenueResponse> retrieveCourtVenuesByEpimmsId(String epimmsId,
+                                                                      CourtVenueRequestParam requestParam) {
         log.info("{} : Obtaining court venue for epimms id(s): {}", loggingComponentName, epimmsId);
 
         if (epimmsId.strip().equalsIgnoreCase(LocationRefConstants.ALL)) {
-            return getAllCourtVenues(() -> courtVenueRepository.findAll(), null, NO_COURT_VENUES_FOUND);
+            return getAllCourtVenues(
+                () -> isCourtStatusFilterPresent(requestParam)
+                    ? courtVenueRepository.findAll()
+                    : courtVenueRepository.findAllWithOpenCourtStatus(),
+                null,
+                NO_COURT_VENUES_FOUND
+            );
         }
         List<String> epimsIdList = checkIfValidCsvIdentifiersAndReturnList(
             epimmsId,
             EXCEPTION_MSG_NO_VALID_EPIM_ID_PASSED
         );
         if (isListContainsTextIgnoreCase(epimsIdList, LocationRefConstants.ALL)) {
-            return getAllCourtVenues(() -> courtVenueRepository.findAll(), null, NO_COURT_VENUES_FOUND);
+            return getAllCourtVenues(
+                () -> isCourtStatusFilterPresent(requestParam)
+                    ? courtVenueRepository.findAll()
+                    : courtVenueRepository.findAllWithOpenCourtStatus(),
+                null,
+                NO_COURT_VENUES_FOUND
+            );
         }
         checkForInvalidIdentifiersAndRemoveFromIdList(
             epimsIdList,
@@ -426,7 +442,9 @@ public class CourtVenueServiceImpl implements CourtVenueService {
             EXCEPTION_MSG_NO_VALID_EPIM_ID_PASSED
         );
 
-        List<CourtVenue> courtVenues = courtVenueRepository.findByEpimmsIdIn(epimsIdList);
+        List<CourtVenue> courtVenues = isCourtStatusFilterPresent(requestParam)
+            ? courtVenueRepository.findByEpimmsIdIn(epimsIdList)
+            : courtVenueRepository.findByEpimmsIdInWithOpenCourtStatus(epimsIdList);
 
         handleIfCourtVenuesEmpty(
             () -> isEmpty(courtVenues), NO_COURT_VENUES_FOUND_FOR_FOR_EPIMMS_ID, epimsIdList.toString()
@@ -435,7 +453,8 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         return getCourtVenueListResponse(courtVenues);
     }
 
-    private List<LrdCourtVenueResponse> retrieveCourtVenuesByMrdVenueId(String mrdVenueId) {
+    private List<LrdCourtVenueResponse> retrieveCourtVenuesByMrdVenueId(String mrdVenueId,
+                                                                        CourtVenueRequestParam requestParam) {
         log.info("{} : Obtaining court venue for mrd venue id: {}", loggingComponentName, mrdVenueId);
 
         String trimmedMrdVenueId = mrdVenueId.strip();
@@ -445,7 +464,9 @@ public class CourtVenueServiceImpl implements CourtVenueService {
             );
         }
 
-        List<CourtVenue> courtVenues = courtVenueRepository.findByMrdVenueId(trimmedMrdVenueId);
+        List<CourtVenue> courtVenues = isCourtStatusFilterPresent(requestParam)
+            ? courtVenueRepository.findByMrdVenueId(trimmedMrdVenueId)
+            : courtVenueRepository.findByMrdVenueIdWithOpenCourtStatus(trimmedMrdVenueId);
 
         handleIfCourtVenuesEmpty(
             () -> isEmpty(courtVenues), NO_COURT_VENUES_FOUND_FOR_MRD_VENUE_ID, trimmedMrdVenueId

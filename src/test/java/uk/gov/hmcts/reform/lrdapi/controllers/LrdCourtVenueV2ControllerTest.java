@@ -2,6 +2,8 @@ package uk.gov.hmcts.reform.lrdapi.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -104,6 +107,37 @@ class LrdCourtVenueV2ControllerTest {
                 null
             ));
         verify(courtVenueServiceMock, times(0)).retrieveCourtVenuesBySearchStringV2(
+            any(),
+            any(),
+            any(),
+            any()
+        );
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "is_nightingale_court,Invalid is_nightingale_court. Allowed values are Y OR N",
+        "is_district_registry,Invalid is_district_registry. Allowed values are Y OR N",
+        "is_appeal_centre,Invalid is_appeal_centre. Allowed values are Y OR N"
+    })
+    void testGetCourtVenuesBySearchStringV2WithInvalidCourtUseFilterThrows400(String filterName,
+                                                                              String expectedMessage) {
+        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () ->
+            lrdCourtVenueV2Controller.retrieveCourtVenuesBySearchStringV2(
+                "ABC",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                filterName.equals("is_nightingale_court") ? "@" : null,
+                filterName.equals("is_district_registry") ? "@" : null,
+                filterName.equals("is_appeal_centre") ? "@" : null
+            ));
+
+        assertEquals(expectedMessage, exception.getMessage());
+        verify(courtVenueServiceMock, never()).retrieveCourtVenuesBySearchStringV2(
             any(),
             any(),
             any(),
