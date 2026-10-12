@@ -12,6 +12,8 @@ import uk.gov.hmcts.reform.lib.util.serenity5.SerenityTest;
 import uk.gov.hmcts.reform.lrdapi.controllers.advice.ErrorResponse;
 import uk.gov.hmcts.reform.lrdapi.controllers.response.LrdCourtVenueV2Response;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,37 +31,25 @@ class RetrieveCourtVenuesBySearchStringV2FunctionalTest extends AuthorizationFun
 
     @Test
     void getCourtVenuesBySearchStringV2WithStatusCode_200() {
-        String searchString = findSearchStringWithV2Results();
-        LrdCourtVenueV2Response[] searchResponse = (LrdCourtVenueV2Response[])
-            lrdApiClient.retrieveResponseForGivenRequest(
-                HttpStatus.OK,
-                "?search-string=" + searchString,
-                LrdCourtVenueV2Response[].class,
-                PATH
-            );
-
-        assertNotNull(searchResponse);
-        assertThat(searchResponse).isNotEmpty();
-        String serviceCode = searchResponse[0].getServiceCode();
-        assertThat(serviceCode).isNotBlank();
+        SearchResult searchResult = findSearchResultWithServiceCode();
 
         LrdCourtVenueV2Response[] response = (LrdCourtVenueV2Response[])
             lrdApiClient.retrieveResponseForGivenRequest(
                 HttpStatus.OK,
-                "?search-string=" + searchString + "&service_code=" + serviceCode,
+                "?search-string=" + searchResult.searchString() + "&service_code=" + searchResult.serviceCode(),
                 LrdCourtVenueV2Response[].class,
                 PATH
             );
 
         assertNotNull(response);
         assertThat(response).isNotEmpty();
-        assertThat(response).extracting(LrdCourtVenueV2Response::getServiceCode).contains(serviceCode);
+        assertThat(response).extracting(LrdCourtVenueV2Response::getServiceCode).contains(searchResult.serviceCode());
         assertThat(response).extracting(LrdCourtVenueV2Response::getMrdVenueId).doesNotContainNull();
     }
 
-    private String findSearchStringWithV2Results() {
+    private SearchResult findSearchResultWithServiceCode() {
         for (String searchString : SEARCH_STRINGS) {
-            LrdCourtVenueV2Response[] response = (LrdCourtVenueV2Response[])
+            LrdCourtVenueV2Response[] searchResponse = (LrdCourtVenueV2Response[])
                 lrdApiClient.retrieveResponseForGivenRequest(
                     HttpStatus.OK,
                     "?search-string=" + searchString,
@@ -67,11 +57,23 @@ class RetrieveCourtVenuesBySearchStringV2FunctionalTest extends AuthorizationFun
                     PATH
                 );
 
-            if (response.length > 0) {
-                return searchString;
+            if (searchResponse != null) {
+                for (LrdCourtVenueV2Response venue : searchResponse) {
+                    if (isNotBlank(venue.getServiceCode())) {
+                        return new SearchResult(searchString, venue.getServiceCode());
+                    }
+                }
             }
         }
-        return SEARCH_STRINGS[0];
+        throw new AssertionError("No court venue test data with a service code found for search strings "
+            + Arrays.toString(SEARCH_STRINGS));
+    }
+
+    private boolean isNotBlank(String value) {
+        return value != null && !value.isBlank();
+    }
+
+    private record SearchResult(String searchString, String serviceCode) {
     }
 
     @ParameterizedTest
