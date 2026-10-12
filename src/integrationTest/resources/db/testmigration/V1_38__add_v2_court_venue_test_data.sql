@@ -1,3 +1,12 @@
+INSERT INTO service (
+    service_id, org_unit_id, business_area_id, sub_business_area_id, jurisdiction_id, service_code,
+    service_description, service_short_description, last_update
+)
+VALUES (
+    9999, 1, 1, 1, 1, 'SVC9', 'V2 Court Venue Test Service', 'V2 Court Venue Test Service', now()
+)
+ON CONFLICT (service_code) DO NOTHING;
+
 INSERT INTO court_venue (
     court_venue_id, epimms_id, site_name, created_time, updated_time, region_id, court_type_id, cluster_id,
     open_for_public, court_address, postcode, court_status, court_name, is_case_management_location,
@@ -6,7 +15,7 @@ INSERT INTO court_venue (
     court_status_code, open_date, contact_email, breathing_space_email, is_district_registry, is_appeal_centre
 )
 VALUES (
-    16, '223462', 'Aberdeen Tribunal Hearing Centre 8', '2021-07-05 09:50:46.269032',
+    16, '123463', 'Aberdeen Tribunal Hearing Centre 8', '2021-07-05 09:50:46.269032',
     '2021-07-05 09:50:46.269032', '4', '17', '1', true, 'AB8, 54 HUNTLY STREET, ABERDEEN',
     'AB11 1TY', 'Open', 'ABERDEEN TRIBUNAL HEARING CENTRE 24', 'N', 'N', 'N', 'N', 'Court', 'SVC9',
     'Llys Sirol Abertawe', '100070987654', 'VOU987654', 'MRD-BLD-987', 'MRD-987654321',
