@@ -1,27 +1,3 @@
-insert into cluster(
-    cluster_id,
-    cluster_name,
-    welsh_cluster_name,
-    updated_time)
-values(
-    '19',
-    'Cluster A',
-    'Clwstwr A',
-    now())
-;
-
-insert into cluster(
-    cluster_id,
-    cluster_name,
-    welsh_cluster_name,
-    updated_time)
-values(
-    '20',
-    'Cluster B',
-    'Clwstwr B',
-    now())
-;
-
 insert into
   building_location(
     building_location_id,
