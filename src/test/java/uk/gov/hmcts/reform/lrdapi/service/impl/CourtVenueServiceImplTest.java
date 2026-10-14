@@ -118,7 +118,7 @@ class CourtVenueServiceImplTest {
 
         List<CourtVenue> courtVenues = Collections.singletonList(courtVenue);
 
-        when(courtVenueRepository.findByServiceCodeWithOpenCourtStatus(anyString())).thenReturn(courtVenues);
+        when(courtVenueRepository.findByServiceCode(anyString())).thenReturn(courtVenues);
 
         LrdCourtVenuesByServiceCodeResponse response
             = courtVenueService.retrieveCourtVenuesByServiceCode("ABC1");
@@ -143,12 +143,12 @@ class CourtVenueServiceImplTest {
         assertEquals("https://facturl.com",response.getCourtVenues().get(0).getFactUrl());
         assertEquals("ABC1",response.getCourtVenues().get(0).getServiceCode());
 
-        verify(courtVenueRepository, times(1)).findByServiceCodeWithOpenCourtStatus("ABC1");
+        verify(courtVenueRepository, times(1)).findByServiceCode("ABC1");
     }
 
     @Test
     void testRetrieveCourtVenuesByServiceCode_WithInvalidServiceCode() {
-        when(courtVenueRepository.findByServiceCodeWithOpenCourtStatus(anyString())).thenReturn(null);
+        when(courtVenueRepository.findByServiceCode(anyString())).thenReturn(null);
 
         assertThrows(ResourceNotFoundException.class, () -> courtVenueService.retrieveCourtVenuesByServiceCode("ABC1"));
     }
@@ -168,7 +168,7 @@ class CourtVenueServiceImplTest {
     @Test
     void testRetrieveCourtVenuesByServiceCode_WithNoCourtVenues() {
 
-        when(courtVenueRepository.findByServiceCodeWithOpenCourtStatus(anyString())).thenReturn(List.of());
+        when(courtVenueRepository.findByServiceCode(anyString())).thenReturn(List.of());
 
         assertThrows(ResourceNotFoundException.class, () -> courtVenueService.retrieveCourtVenuesByServiceCode("ABC1"));
     }
