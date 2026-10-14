@@ -111,7 +111,7 @@ public class CourtVenueServiceImpl implements CourtVenueService {
 
         log.info("{} : Obtaining court venues for service code: {}", loggingComponentName, trimmedServiceCode);
 
-        List<CourtVenue> courtVenues = courtVenueRepository.findByServiceCodeWithOpenCourtStatus(serviceCodeIgnoreCase);
+        List<CourtVenue> courtVenues = courtVenueRepository.findByServiceCode(serviceCodeIgnoreCase);
 
         handleIfCourtVenuesEmpty(
             () -> isEmpty(courtVenues),
@@ -254,11 +254,12 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         }
         if (isNotBlank(epimmsIds)) {
             return getLrdCourtVenueResponses(
-                retrieveCourtVenuesByEpimmsId(epimmsIds, courtVenueRequestParam),
+                retrieveCourtVenuesByEpimmsId(epimmsIds),
                 courtVenueRequestParam
             );
 
         }
+
         if (isNotBlank(mrdVenueId)) {
             return getLrdCourtVenueResponses(
                 retrieveCourtVenuesByMrdVenueId(mrdVenueId, courtVenueRequestParam),
@@ -317,9 +318,7 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         if (isNotEmpty(courtVenueName)) {
             log.info("{} : Obtaining court venues for court venue name: {}", loggingComponentName, courtVenueName);
             List<LrdCourtVenueResponse> lrdCourtVenueResponse = getAllCourtVenues(
-                () -> isCourtStatusFilterPresent(courtVenueRequestParam)
-                    ? courtVenueRepository.findByCourtVenueNameOrSiteName(courtVenueName.strip())
-                    : courtVenueRepository.findByCourtVenueNameOrSiteNameWithOpenCourtStatus(courtVenueName.strip()),
+                () -> courtVenueRepository.findByCourtVenueNameOrSiteName(courtVenueName.strip()),
                 courtVenueName,
                 NO_COURT_VENUES_FOUND_FOR_COURT_VENUE_NAME
             );
@@ -409,31 +408,18 @@ public class CourtVenueServiceImpl implements CourtVenueService {
         return VALUE_Y.equalsIgnoreCase(requestedValue) == actualValue;
     }
 
-    private List<LrdCourtVenueResponse> retrieveCourtVenuesByEpimmsId(String epimmsId,
-                                                                      CourtVenueRequestParam requestParam) {
+    private List<LrdCourtVenueResponse> retrieveCourtVenuesByEpimmsId(String epimmsId) {
         log.info("{} : Obtaining court venue for epimms id(s): {}", loggingComponentName, epimmsId);
 
         if (epimmsId.strip().equalsIgnoreCase(LocationRefConstants.ALL)) {
-            return getAllCourtVenues(
-                () -> isCourtStatusFilterPresent(requestParam)
-                    ? courtVenueRepository.findAll()
-                    : courtVenueRepository.findAllWithOpenCourtStatus(),
-                null,
-                NO_COURT_VENUES_FOUND
-            );
+            return getAllCourtVenues(() -> courtVenueRepository.findAll(), null, NO_COURT_VENUES_FOUND);
         }
         List<String> epimsIdList = checkIfValidCsvIdentifiersAndReturnList(
             epimmsId,
             EXCEPTION_MSG_NO_VALID_EPIM_ID_PASSED
         );
         if (isListContainsTextIgnoreCase(epimsIdList, LocationRefConstants.ALL)) {
-            return getAllCourtVenues(
-                () -> isCourtStatusFilterPresent(requestParam)
-                    ? courtVenueRepository.findAll()
-                    : courtVenueRepository.findAllWithOpenCourtStatus(),
-                null,
-                NO_COURT_VENUES_FOUND
-            );
+            return getAllCourtVenues(() -> courtVenueRepository.findAll(), null, NO_COURT_VENUES_FOUND);
         }
         checkForInvalidIdentifiersAndRemoveFromIdList(
             epimsIdList,
@@ -442,9 +428,7 @@ public class CourtVenueServiceImpl implements CourtVenueService {
             EXCEPTION_MSG_NO_VALID_EPIM_ID_PASSED
         );
 
-        List<CourtVenue> courtVenues = isCourtStatusFilterPresent(requestParam)
-            ? courtVenueRepository.findByEpimmsIdIn(epimsIdList)
-            : courtVenueRepository.findByEpimmsIdInWithOpenCourtStatus(epimsIdList);
+        List<CourtVenue> courtVenues = courtVenueRepository.findByEpimmsIdIn(epimsIdList);
 
         handleIfCourtVenuesEmpty(
             () -> isEmpty(courtVenues), NO_COURT_VENUES_FOUND_FOR_FOR_EPIMMS_ID, epimsIdList.toString()

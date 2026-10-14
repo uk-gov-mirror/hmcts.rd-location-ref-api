@@ -176,7 +176,7 @@ class CourtVenueServiceImplTest {
     @Test
     void test_RetrieveCourtVenuesByEpimsIDs_OneIdPassed() {
 
-        when(courtVenueRepository.findByEpimmsIdInWithOpenCourtStatus(anyList())).thenReturn(prepareCourtVenue());
+        when(courtVenueRepository.findByEpimmsIdIn(anyList())).thenReturn(prepareCourtVenue());
 
         List<LrdCourtVenueResponse> courtVenueResponses =
             courtVenueService
@@ -191,7 +191,7 @@ class CourtVenueServiceImplTest {
     @Test
     void test_RetrieveBuildingLocationsByEpimsIDs_MultipleIdsPassed() {
 
-        when(courtVenueRepository.findByEpimmsIdInWithOpenCourtStatus(anyList()))
+        when(courtVenueRepository.findByEpimmsIdIn(anyList()))
             .thenReturn(prepareMultiCourtVenueResponse());
         List<LrdCourtVenueResponse> courtVenueResponses =
             courtVenueService
@@ -202,7 +202,7 @@ class CourtVenueServiceImplTest {
 
     @Test
     void testGetAllCourtVenues_EpimmsIdAll() {
-        when(courtVenueRepository.findAllWithOpenCourtStatus())
+        when(courtVenueRepository.findAll())
             .thenReturn(prepareMultiCourtVenueResponse());
         List<LrdCourtVenueResponse> courtVenueResponses =
             courtVenueService
@@ -213,7 +213,7 @@ class CourtVenueServiceImplTest {
 
     @Test
     void testGetAllCourtVenues_EpimmsIdAllWithMultipleIds() {
-        when(courtVenueRepository.findAllWithOpenCourtStatus())
+        when(courtVenueRepository.findAll())
             .thenReturn(prepareMultiCourtVenueResponse());
         List<LrdCourtVenueResponse> courtVenueResponses =
             courtVenueService
@@ -466,7 +466,7 @@ class CourtVenueServiceImplTest {
     @Test
     void test_RetrieveCourtVenuesByCourtVenueName() {
 
-        when(courtVenueRepository.findByCourtVenueNameOrSiteNameWithOpenCourtStatus(anyString()))
+        when(courtVenueRepository.findByCourtVenueNameOrSiteName(anyString()))
             .thenReturn(prepareCourtVenue());
 
         List<LrdCourtVenueResponse> courtVenueResponses =
@@ -481,12 +481,12 @@ class CourtVenueServiceImplTest {
 
     @Test
     void test_RetrieveCourtVenuesByEpimmsId_NotFound() {
-        when(courtVenueRepository.findByEpimmsIdInWithOpenCourtStatus(anyList())).thenReturn(null);
+        when(courtVenueRepository.findByEpimmsIdIn(anyList())).thenReturn(null);
         assertThrows(ResourceNotFoundException.class, () -> courtVenueService
             .retrieveCourtVenueDetails("123", null, null, null, null, null,
                                        false, courtVenueRequestParam));
 
-        verify(courtVenueRepository, times(1)).findByEpimmsIdInWithOpenCourtStatus(anyList());
+        verify(courtVenueRepository, times(1)).findByEpimmsIdIn(anyList());
         verify(courtVenueRepository, times(0)).findByRegionIdWithOpenCourtStatus(anyString());
         verify(courtVenueRepository, times(0))
             .findByClusterIdWithOpenCourtStatus(anyString());
@@ -584,7 +584,7 @@ class CourtVenueServiceImplTest {
         verify(courtVenueRepository, times(0)).findAll();
         verify(courtVenueRepository, times(0)).findAllWithOpenCourtStatus();
         verify(courtVenueRepository, times(0)).findByCourtTypeIdWithOpenCourtStatus(anyString());
-        verify(courtVenueRepository, times(1)).findByCourtVenueNameOrSiteNameWithOpenCourtStatus(anyString());
+        verify(courtVenueRepository, times(1)).findByCourtVenueNameOrSiteName(anyString());
     }
 
     @Test
