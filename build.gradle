@@ -225,13 +225,20 @@ task contract(type: Test) {
 }
 
 task runProviderPactVerification(type: Test) {
+  // Pact results depend on broker state and runtime selector properties, neither
+  // of which Gradle can track as normal task inputs.
+  outputs.upToDateWhen { false }
   useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
-  if (project.hasProperty('pact.verifier.publishResults')) {
-    systemProperty 'pact.verifier.publishResults', project.property('pact.verifier.publishResults')
+  ['pact.verifier.publishResults', 'pactbroker.consumerTag', 'pactbroker.consumerBranch',
+   'pactbroker.providerTags'].each { propertyName ->
+    if (System.getProperty(propertyName) != null) {
+      systemProperty propertyName, System.getProperty(propertyName)
+    }
   }
   systemProperty 'pact.provider.version', project.pactVersion
+  systemProperty 'pact.provider.branch', System.getenv("PACT_BRANCH_NAME") ?: 'Dev'
   include "uk/gov/hmcts/reform/lrdapi/provider/**"
 }
 
@@ -243,7 +250,8 @@ task fortifyScan(type: JavaExec)  {
   ignoreExitValue = true as JavaExecSpec
 }
 
-runProviderPactVerification.dependsOn contract
+// Compile the contract-test source set without running the broad contract suite.
+runProviderPactVerification.dependsOn contractTestClasses
 
 runProviderPactVerification.finalizedBy pactVerify
 
