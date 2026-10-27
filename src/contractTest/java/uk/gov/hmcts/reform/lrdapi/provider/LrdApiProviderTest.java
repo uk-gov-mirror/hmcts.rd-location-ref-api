@@ -2,11 +2,9 @@ package uk.gov.hmcts.reform.lrdapi.provider;
 
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
-import au.com.dius.pact.provider.junitsupport.IgnoreNoPactsToVerify;
 import au.com.dius.pact.provider.junitsupport.Provider;
 import au.com.dius.pact.provider.junitsupport.State;
 import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
-import au.com.dius.pact.provider.junitsupport.loader.VersionSelector;
 import au.com.dius.pact.provider.spring.junit5.MockMvcTestTarget;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestTemplate;
@@ -57,16 +55,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @Provider("referenceData_location")
-@PactBroker(scheme = "${PACT_BROKER_SCHEME:http}",
-    host = "${PACT_BROKER_URL:localhost}",
-    port = "${PACT_BROKER_PORT:80}", consumerVersionSelectors = {
-        @VersionSelector(tag = "master")},
+@PactBroker(url = "${PACT_BROKER_FULL_URL:http://localhost:9292}",
     providerTags = "${pactbroker.providerTags:master}",
     enablePendingPacts = "${pactbroker.enablePending:true}")
 @ContextConfiguration(classes = {LrdApiController.class, LrdCourtVenueController.class, LrdServiceImpl.class,
     LrdBuildingLocationServiceImpl.class, RegionServiceImpl.class, CourtVenueServiceImpl.class})
 @TestPropertySource(properties = {"loggingComponentName=LrdApiProviderTest"})
-@IgnoreNoPactsToVerify
 public class LrdApiProviderTest {
 
     public static final String CLUSTER_NAME = "ClusterXYZ";
@@ -268,6 +262,7 @@ public class LrdApiProviderTest {
         CourtTypeServiceAssoc courtTypeServiceAssoc = new CourtTypeServiceAssoc();
         courtTypeServiceAssoc.setCourtType(courtType);
         when(courtTypeServiceAssocRepository.findByServiceCode(anyString())).thenReturn(courtTypeServiceAssoc);
+        when(courtVenueRepository.findByServiceCode(anyString())).thenReturn(List.of(courtVenue));
     }
 
     @State({"Court Venues exist for the input request provided"})
@@ -325,6 +320,33 @@ public class LrdApiProviderTest {
 
         when(courtVenueRepository.findBySearchStringAndCourtTypeId(
             any(),any(),any(),any(),any(),any(),any())).thenReturn(courtVenues);
+    }
+
+    @State({"Search for locations"})
+    public void searchForLocations() {
+        Cluster cluster = getCluster();
+        Region region = getRegion();
+        CourtType courtType = getCourtType();
+        CourtVenue courtVenue = getCourtVenue(cluster, region, courtType);
+
+        courtVenue.setCluster(null);
+        courtVenue.setClosedDate(null);
+        courtVenue.setWelshCourtAddress("");
+        courtVenue.setWelshSiteName("");
+        courtVenue.setServiceCode("BFA1");
+        courtVenue.setServiceUrl("");
+        courtVenue.setFactUrl("");
+
+        courtType.setCourtVenues(Collections.singletonList(courtVenue));
+        CourtTypeServiceAssoc courtTypeServiceAssoc = new CourtTypeServiceAssoc();
+        courtTypeServiceAssoc.setCourtType(courtType);
+
+        when(courtTypeServiceAssocRepository.findByServiceCode(anyString())).thenReturn(courtTypeServiceAssoc);
+        when(courtVenueRepository.findByEpimmsIdIn(anyList())).thenReturn(List.of(courtVenue));
+        when(courtVenueRepository.findBySearchStringAndCourtTypeId(
+            any(),any(),any(),any(),any(),any(),any())).thenReturn(List.of(courtVenue));
+        when(courtVenueRepository.findByServiceCode(anyString())).thenReturn(List.of(courtVenue));
+        when(courtVenueRepository.findByServiceCodeWithOpenCourtStatus(anyString())).thenReturn(List.of(courtVenue));
     }
 
     private CourtVenue getCourtVenue(Cluster cluster, Region region, CourtType courtType) {
